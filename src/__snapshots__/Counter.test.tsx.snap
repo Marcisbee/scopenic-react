@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render user name 1`] = `
+<div>
+  Hello 
+  John
+</div>
+`;
+
+exports[`renders without crashing 1`] = `
+<div>
+  Hello 
+  <button
+    onClick={[Function]}
+  >
+    Login
+  </button>
+</div>
+`;
