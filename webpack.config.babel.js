@@ -172,7 +172,8 @@ module.exports = {
     port: 3000,
     hot: true,
     open: true,
-    overlay: true
+    overlay: true,
+    historyApiFallback: true,
   },
   // devtool: 'eval-source-map',
   devtool: 'cheap-module-source-map',
