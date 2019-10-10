@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useAuth } from '../../context/auth';
 
-const Layout: React.FC = ({ children, ...props }) => {
+const Layout: React.FC<any> = ({ children, ...props }) => {
   const { authClient, removeAuthToken } = useAuth();
 
   return (

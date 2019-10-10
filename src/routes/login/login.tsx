@@ -42,46 +42,48 @@ const Login: React.FC<any> = () => {
         //   }
         // }}
         onSubmit={async (values, actions) => {
-          actions.setError(null);
-
           await login({ variables: values })
             .then((response) => {
               if (!response.data || !response.data.login) {
                 throw new Error('Email or password was incorrect!');
               }
 
-              actions.setStatus({ response, success: 'Logged in' });
+              actions.setStatus({ success: response.data.login });
               setAuthToken(response.data.login.id);
             })
             .catch((error) => {
-              actions.setError(error.message);
+              actions.setStatus({ error: error.message });
             })
             .finally(() => {
               actions.setSubmitting(false);
             });
         }}
       >
-        {({ isValidating, isSubmitting, status, error, errors }) => (
-          <Form>
+        {({ isValidating, isSubmitting, status = {}, errors }) => (
+          <Form className="pure-form pure-form-stacked">
             <fieldset disabled={isSubmitting}>
-              <div>{status && status.success}</div>
-              <div>{error}</div>
-              <br/>
-              <Field
-                name="email"
-                className={cc({ error: errors.email })}
-                type="email"
-                autoComplete="current-email"
-              />
-              <ErrorMessage component={FieldError} name="email" />
-              <Field
-                name="password"
-                className={cc({ error: errors.password })}
-                type="password"
-                autoComplete="current-password"
-              />
-              <ErrorMessage component={FieldError} name="password" />
-              <button type="submit" disabled={isSubmitting || isValidating}>Login</button>
+              {status.error && (
+                <div>{status.error}</div>
+              )}
+              <div className="field">
+                <Field
+                  name="email"
+                  className={cc({ error: errors.email })}
+                  type="email"
+                  autoComplete="email"
+                />
+                <ErrorMessage component={FieldError} name="email" />
+              </div>
+              <div className="field">
+                <Field
+                  name="password"
+                  className={cc({ error: errors.password })}
+                  type="password"
+                  autoComplete="current-password"
+                />
+                <ErrorMessage component={FieldError} name="password" />
+              </div>
+              <button className="pure-button" type="submit" disabled={isSubmitting || isValidating}>Login</button>
             </fieldset>
           </Form>
         )}
