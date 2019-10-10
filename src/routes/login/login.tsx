@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../../context/auth';
 import FieldError from '../../components/field-error';
-import { LOGIN } from '../../graphql/queries';
+import { LOGIN } from '../../graphql/mutations';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
