@@ -4,7 +4,8 @@
     "parser": {
       "syntax": "typescript",
       "tsx": true,
-      "decorators": false
+      "decorators": false,
+      "dynamicImport": true
     }
   }
 }
