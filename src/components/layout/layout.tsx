@@ -8,7 +8,7 @@ import LoadingMessage from '../loading-message';
 const Login = lazy(() => import('../../routes/login/login'));
 
 const Layout: React.FC = ({ children }) => {
-  const { authClient, authToken, setAuthClient } = useAuth();
+  const { authToken, setAuthClient } = useAuth();
   const { client, loading, data, refetch } = useQuery(
     GET_CURRENT_USER,
     { fetchPolicy: 'network-only' },
@@ -17,13 +17,9 @@ const Layout: React.FC = ({ children }) => {
   useEffect(() => {
     if (authToken) {
       refetch();
-      setAuthClient(client);
     }
-  }, [authToken]);
-
-  if (!authClient) {
     setAuthClient(client);
-  }
+  }, [authToken]);
 
   if (loading) {
     return <LoadingMessage />;
