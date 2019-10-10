@@ -36,6 +36,9 @@ const App: React.FC = () => {
                     <li>
                       <Link to="/">Home</Link>
                     </li>
+                    <li>
+                      <Link to="/settings">Settings</Link>
+                    </li>
                   </ul>
                   <Logout>Log out</Logout>
                 </header>
@@ -43,6 +46,7 @@ const App: React.FC = () => {
                 <Suspense fallback={<LoadingMessage />}>
                   <Switch>
                     <Route exact path="/" component={lazy(() => import('../routes/home'))} />
+                    <Route exact path="/settings" component={lazy(() => import('../routes/settings'))} />
                   </Switch>
                 </Suspense>
               </div>
