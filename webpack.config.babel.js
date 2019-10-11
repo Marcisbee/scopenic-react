@@ -169,7 +169,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     compress: false,
-    port: 3000,
+    port: process.env.PORT || 3000,
     hot: true,
     open: true,
     overlay: true,
