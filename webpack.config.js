@@ -168,7 +168,6 @@ module.exports = {
     mainFields: ['browser', 'jsnext:main', 'main'],
   },
   devServer: {
-    host: '0.0.0.0',
     contentBase: path.join(__dirname, 'public'),
     compress: false,
     port: process.env.PORT || 3000,
