@@ -16,7 +16,8 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'build'),
-    filename: 'bundle.js',
+    filename: 'main.[hash].min.js',
+    publicPath: '/',
   },
   resolve: {
     modules: ['node_modules'],
@@ -167,6 +168,7 @@ module.exports = {
     mainFields: ['browser', 'jsnext:main', 'main'],
   },
   devServer: {
+    host: '0.0.0.0',
     contentBase: path.join(__dirname, 'public'),
     compress: false,
     port: process.env.PORT || 3000,
@@ -178,6 +180,9 @@ module.exports = {
   // devtool: 'eval-source-map',
   devtool: 'cheap-module-source-map',
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(env),
+    }),
     new webpack.WatchIgnorePlugin([
       /css\.d\.ts$/
     ]),

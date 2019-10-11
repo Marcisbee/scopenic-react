@@ -2,8 +2,10 @@ import React from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
+const API_URL = process.env.API_URL;
+
 const client = new ApolloClient({
-  uri: 'http://localhost:5577/graphql',
+  uri: API_URL,
   fetch: window.fetch,
   request: (operation) => {
     const token = localStorage.getItem('token');
