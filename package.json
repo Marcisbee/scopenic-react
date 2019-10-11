@@ -6,7 +6,8 @@
     "test": "jest --coverage",
     "dev": "webpack-dev-server --hot",
     "start": "node server.js",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
