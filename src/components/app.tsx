@@ -8,6 +8,7 @@ import GraphqlProvider from '../graphql';
 
 import Layout from './layout';
 import LoadingMessage from './loading-message';
+import PanelLayout from '../layouts/panel';
 
 // function queryString(value: string): Record<string, string> {
 //   if (!value) return {};
@@ -45,6 +46,11 @@ const PrivateRoute: React.FC<any> = (props) => {
   );
 }
 
+const Routes = {
+  Projects: lazy(() => import('../routes/projects')),
+  Settings: lazy(() => import('../routes/settings')),
+};
+
 const App: React.FC = () => {
   return (
     <GraphqlProvider>
@@ -58,8 +64,16 @@ const App: React.FC = () => {
                     <Redirect to="/login" />
                   </Route>
                   <Route exact path="/login" component={lazy(() => import('../routes/login'))} />
-                  <PrivateRoute exact path="/projects" component={lazy(() => import('../routes/projects'))} />
-                  <PrivateRoute exact path="/settings" component={lazy(() => import('../routes/settings'))} />
+                  <PrivateRoute exact path="/projects" component={() => (
+                    <PanelLayout>
+                      <Routes.Projects />
+                    </PanelLayout>
+                  )} />
+                  <PrivateRoute exact path="/settings" component={() => (
+                    <PanelLayout>
+                      <Routes.Settings />
+                    </PanelLayout>
+                  )} />
                 </Switch>
               </Suspense>
             </Layout>

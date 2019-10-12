@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 // import Header from '../components/header';
+import Logout from '../components/logout';
 
 import styles from './panel.module.scss';
+import LoadingMessage from '../components/loading-message';
 
 const PanelLayout: React.FC = ({ children }) => {
   return (
@@ -22,19 +24,22 @@ const PanelLayout: React.FC = ({ children }) => {
           </li>
         </ul>
 
-        <ul>
+        <ul className={styles.bottomMenu}>
           <li>
             Notifications
           </li>
           <li>
             User
+            <Logout className="pure-button">Log out</Logout>
           </li>
         </ul>
       </div>
       <div className={styles.main}>
         <div className={styles.wrapper}>
           {/* <Header /> */}
-          {children}
+          <Suspense fallback={<LoadingMessage />}>
+            {children}
+          </Suspense>
         </div>
       </div>
     </div>
