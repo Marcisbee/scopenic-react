@@ -1,10 +1,11 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import cc from 'classcat';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useMutation } from '@apollo/react-hooks';
 
-import { useAuth } from '../../context/auth';
+import { useAuth, useLoggedInGuard } from '../../context/auth';
 import FieldError from '../../components/field-error';
 import { LOGIN } from '../../graphql/mutations';
 
@@ -19,6 +20,11 @@ const SignupSchema = Yup.object().shape({
 const Login: React.FC<any> = () => {
   const { setAuthToken } = useAuth();
   const [login] = useMutation(LOGIN);
+  const redirect = useLoggedInGuard();
+
+  if (redirect) {
+    return <Redirect to={redirect} />;
+  }
 
   return (
     <div>

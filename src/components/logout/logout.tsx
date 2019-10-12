@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useAuth } from '../../context/auth';
 
-const Layout: React.FC<any> = ({ children, ...props }) => {
+const Logout: React.FC<any> = ({ children, ...props }) => {
   const { authClient, removeAuthToken } = useAuth();
 
   return (
@@ -15,4 +15,4 @@ const Layout: React.FC<any> = ({ children, ...props }) => {
   );
 }
 
-export default Layout;
+export default Logout;

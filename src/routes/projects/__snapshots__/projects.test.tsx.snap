@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Projects renders without crashing 1`] = `
+<PanelLayout>
+  <div>
+    <h1>
+      Projects
+    </h1>
+  </div>
+</PanelLayout>
+`;
