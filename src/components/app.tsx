@@ -8,7 +8,6 @@ import GraphqlProvider from '../graphql';
 
 import Layout from './layout';
 import LoadingMessage from './loading-message';
-import PanelLayout from '../layouts/panel';
 
 // function queryString(value: string): Record<string, string> {
 //   if (!value) return {};

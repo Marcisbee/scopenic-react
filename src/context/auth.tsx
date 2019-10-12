@@ -4,12 +4,16 @@ import { useHistory, useLocation } from 'react-router';
 export interface IAuthContext {
   authToken: string | null;
   setAuthToken: (value: string) => void;
+  userData: Record<string, any> | null;
+  setUserData: (value: string) => void;
   removeAuthToken: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({
   authToken: null,
   setAuthToken: () => {},
+  userData: null,
+  setUserData: () => {},
   removeAuthToken: () => {},
 });
 
@@ -17,10 +21,15 @@ export const AuthProvider: React.FC = ({ children }) => {
   const token = localStorage.getItem('token');
   const history = useHistory();
   const [authToken, setAuthToken] = useState(token);
+  const [userData, setUserData] = useState(token);
 
   const setToken = (value: string) => {
     localStorage.setItem('token', value);
     setAuthToken(value);
+  }
+
+  const setUser = (data: any) => {
+    setUserData(data);
   }
 
   const removeToken = () => {
@@ -33,6 +42,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     <AuthContext.Provider value={{
       authToken,
       setAuthToken: setToken,
+      userData: userData as Record<string, any> | null,
+      setUserData: setUser,
       removeAuthToken: removeToken,
     }}>
       {children}

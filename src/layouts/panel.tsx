@@ -2,11 +2,16 @@ import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import Logout from '../components/logout';
+import LoadingMessage from '../components/loading-message';
+import { useAuth } from '../context/auth';
 
 import styles from './panel.module.scss';
-import LoadingMessage from '../components/loading-message';
 
 const PanelLayout: React.FC = ({ children }) => {
+  const { userData } = useAuth();
+
+  console.log({ userData });
+
   return (
     <div className={styles.panel}>
       <div className={styles.sidebar}>

@@ -5,8 +5,8 @@ import { useAuth } from '../../context/auth';
 import { GET_CURRENT_USER } from '../../graphql/queries';
 
 const Layout: React.FC = ({ children }) => {
-  const { authToken } = useAuth();
-  const { refetch } = useQuery(
+  const { authToken, setUserData } = useAuth();
+  const { data, refetch } = useQuery(
     GET_CURRENT_USER,
     { fetchPolicy: 'network-only' },
   );
@@ -17,6 +17,9 @@ const Layout: React.FC = ({ children }) => {
     }
   }, [authToken]);
 
+  useEffect(() => {
+    setUserData(data && data.currentUser);
+  }, [data]);
 
   return <>{children}</>;
 }
