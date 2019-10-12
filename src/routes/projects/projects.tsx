@@ -2,16 +2,13 @@ import React from 'react';
 
 import Header from '../../components/header';
 
-const Settings: React.FC<any> = () => {
-
+const Projects: React.FC = () => {
   return (
     <div>
       <Header />
-      <div>
-        <h1>Settings</h1>
-      </div>
+      <h1>Projects</h1>
     </div>
   );
 }
 
-export default Settings;
+export default Projects;
