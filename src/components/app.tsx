@@ -6,7 +6,6 @@ import Store from 'statux';
 import { AuthProvider, useAuth } from '../context/auth';
 import GraphqlProvider from '../graphql';
 
-import styles from './app.module.css';
 import Layout from './layout';
 import LoadingMessage from './loading-message';
 
@@ -53,18 +52,16 @@ const App: React.FC = () => {
         <Router>
           <AuthProvider>
             <Layout>
-              <div className={styles.app}>
-                <Suspense fallback={<LoadingMessage />}>
-                  <Switch>
-                    <Route exact path="/">
-                      <Redirect to="/login" />
-                    </Route>
-                    <Route exact path="/login" component={lazy(() => import('../routes/login'))} />
-                    <PrivateRoute exact path="/projects" component={lazy(() => import('../routes/projects'))} />
-                    <PrivateRoute exact path="/settings" component={lazy(() => import('../routes/settings'))} />
-                  </Switch>
-                </Suspense>
-              </div>
+              <Suspense fallback={<LoadingMessage />}>
+                <Switch>
+                  <Route exact path="/">
+                    <Redirect to="/login" />
+                  </Route>
+                  <Route exact path="/login" component={lazy(() => import('../routes/login'))} />
+                  <PrivateRoute exact path="/projects" component={lazy(() => import('../routes/projects'))} />
+                  <PrivateRoute exact path="/settings" component={lazy(() => import('../routes/settings'))} />
+                </Switch>
+              </Suspense>
             </Layout>
           </AuthProvider>
         </Router>

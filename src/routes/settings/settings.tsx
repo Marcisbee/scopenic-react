@@ -1,16 +1,14 @@
 import React from 'react';
 
-import Header from '../../components/header';
+import PanelLayout from '../../layouts/panel';
 
-const Settings: React.FC<any> = () => {
-
+const Settings: React.FC = () => {
   return (
-    <div>
-      <Header />
+    <PanelLayout>
       <div>
         <h1>Settings</h1>
       </div>
-    </div>
+    </PanelLayout>
   );
 }
 

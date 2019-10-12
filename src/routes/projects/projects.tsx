@@ -1,13 +1,14 @@
 import React from 'react';
 
-import Header from '../../components/header';
+import PanelLayout from '../../layouts/panel';
 
 const Projects: React.FC = () => {
   return (
-    <div>
-      <Header />
-      <h1>Projects</h1>
-    </div>
+    <PanelLayout>
+      <div>
+        <h1>Projects</h1>
+      </div>
+    </PanelLayout>
   );
 }
 
