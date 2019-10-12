@@ -3,10 +3,13 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const getClientEnvironment = require('./utils/env');
 
 // Get environment variables to inject into our app.
 const env = getClientEnvironment();
+
+const isDevelopment = true;
 
 module.exports = {
   mode: 'development',
@@ -70,21 +73,27 @@ module.exports = {
         // Preprocess our own .css files
         // This is the place to add your own loaders (e.g. sass/less etc.)
         // for a list of loaders, see https://webpack.js.org/loaders/#styling
-        test: /^(?!.*?\.module).*\.css$/,
+        test: /^(?!.*?\.module).*\.(sa|sc|c)ss$/,
         exclude: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader'
+        ],
       },
       {
         // Preprocess 3rd party .css files located in node_modules
-        test: /^(?!.*?\.module).*\.css$/,
+        test: /^(?!.*?\.module).*\.(sa|sc|c)ss$/,
         include: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader'
+        ],
       },
       {
-        test: /\.module\.css$/,
+        test: /\.module\.(sa|sc|c)ss$/,
         exclude: /node_modules/,
         use: [
-          'style-loader',
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-modules-typescript-loader',
             options: {
@@ -95,7 +104,13 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              sourceMap: true
+              sourceMap: true,
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
             }
           }
         ]
@@ -129,25 +144,25 @@ module.exports = {
           },
           {
             loader: 'image-webpack-loader',
-            options: {
-              mozjpeg: {
-                enabled: false,
-                // NOTE: mozjpeg is disabled as it causes errors in some Linux environments
-                // Try enabling it in your environment by switching the config to:
-                // enabled: true,
-                // progressive: true,
-              },
-              gifsicle: {
-                interlaced: false,
-              },
-              optipng: {
-                optimizationLevel: 7,
-              },
-              pngquant: {
-                quality: '65-90',
-                speed: 4,
-              },
-            },
+            // options: {
+            //   mozjpeg: {
+            //     enabled: false,
+            //     // NOTE: mozjpeg is disabled as it causes errors in some Linux environments
+            //     // Try enabling it in your environment by switching the config to:
+            //     // enabled: true,
+            //     // progressive: true,
+            //   },
+            //   gifsicle: {
+            //     interlaced: false,
+            //   },
+            //   optipng: {
+            //     optimizationLevel: 7,
+            //   },
+            //   pngquant: {
+            //     quality: '65-90',
+            //     speed: 4,
+            //   },
+            // },
           },
         ],
       },
@@ -179,6 +194,10 @@ module.exports = {
   // devtool: 'eval-source-map',
   devtool: 'cheap-module-source-map',
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: isDevelopment ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
+    }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(env),
     }),

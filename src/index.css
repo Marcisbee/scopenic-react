@@ -5,6 +5,10 @@
 @import './assets/css/tables.css';
 @import './assets/css/menus.css';
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   height: 100%;
 }
@@ -31,4 +35,8 @@ fieldset {
   border: 0;
   padding: 0;
   margin: 0;
+}
+
+img {
+  max-width: 100%;
 }

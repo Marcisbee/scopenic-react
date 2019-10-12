@@ -1,0 +1,42 @@
+.panel {
+  min-height: 100vh;
+  background-color: #f1f7fb;
+}
+
+.sidebar {
+  background-color: #fff;
+  border-right: 1px solid #e7edf1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 80px;
+}
+
+.logo {
+  width: 44px;
+
+  img {
+    margin: 17px;
+  }
+}
+
+.menu {
+  display: block;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: block;
+  }
+}
+
+.main {
+  padding: 20px 0 20px 80px;
+}
+
+.wrapper {
+  width: 800px;
+  max-width: 98%;
+  margin: 0 auto;
+}
