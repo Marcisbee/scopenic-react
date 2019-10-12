@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
-// import Header from '../components/header';
 import Logout from '../components/logout';
 
 import styles from './panel.module.scss';
