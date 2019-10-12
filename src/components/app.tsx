@@ -46,6 +46,10 @@ const PrivateRoute: React.FC<any> = (props) => {
   );
 }
 
+const Layouts = {
+  Panel: lazy(() => import('../layouts/panel')),
+};
+
 const Routes = {
   Projects: lazy(() => import('../routes/projects')),
   Settings: lazy(() => import('../routes/settings')),
@@ -65,14 +69,14 @@ const App: React.FC = () => {
                   </Route>
                   <Route exact path="/login" component={lazy(() => import('../routes/login'))} />
                   <PrivateRoute exact path="/projects" component={() => (
-                    <PanelLayout>
+                    <Layouts.Panel>
                       <Routes.Projects />
-                    </PanelLayout>
+                    </Layouts.Panel>
                   )} />
                   <PrivateRoute exact path="/settings" component={() => (
-                    <PanelLayout>
+                    <Layouts.Panel>
                       <Routes.Settings />
-                    </PanelLayout>
+                    </Layouts.Panel>
                   )} />
                 </Switch>
               </Suspense>
