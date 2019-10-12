@@ -1,13 +1,15 @@
 import React from 'react';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import { useAuth } from '../../context/auth';
 
 const Logout: React.FC<any> = ({ children, ...props }) => {
-  const { authClient, removeAuthToken } = useAuth();
+  const client = useApolloClient();
+  const { removeAuthToken } = useAuth();
 
   return (
     <button {...props} onClick={() => {
-      authClient && authClient.resetStore();
+      client.resetStore();
       removeAuthToken();
     }}>
       {children}

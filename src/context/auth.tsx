@@ -1,19 +1,14 @@
 import React, { createContext, useState, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { ApolloClient } from 'apollo-boost';
 
 export interface IAuthContext {
   authToken: string | null;
-  authClient: ApolloClient<any> | null;
-  setAuthClient: (client: ApolloClient<any>) => void;
   setAuthToken: (value: string) => void;
   removeAuthToken: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({
   authToken: null,
-  authClient: null,
-  setAuthClient: () => {},
   setAuthToken: () => {},
   removeAuthToken: () => {},
 });
@@ -21,12 +16,7 @@ const AuthContext = createContext<IAuthContext>({
 export const AuthProvider: React.FC = ({ children }) => {
   const token = localStorage.getItem('token');
   const history = useHistory();
-  const [authClient, setAuthClient] = useState();
   const [authToken, setAuthToken] = useState(token);
-
-  const setClient = (client: ApolloClient<any>) => {
-    setAuthClient(client);
-  }
 
   const setToken = (value: string) => {
     localStorage.setItem('token', value);
@@ -42,8 +32,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   return (
     <AuthContext.Provider value={{
       authToken,
-      authClient,
-      setAuthClient: setClient,
       setAuthToken: setToken,
       removeAuthToken: removeToken,
     }}>
