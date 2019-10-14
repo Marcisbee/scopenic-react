@@ -45,13 +45,14 @@ const PrivateRoute: React.FC<any> = (props) => {
   );
 }
 
-const Layouts = {
-  Panel: lazy(() => import('../layouts/panel')),
-};
-
-const Routes = {
-  Projects: lazy(() => import('../routes/projects')),
-  Settings: lazy(() => import('../routes/settings')),
+const layouts = {
+  Panel: {
+    component: lazy(() => import('../layouts/panel')),
+    routes: {
+      '/projects': lazy(() => import('../routes/projects')),
+      '/settings': lazy(() => import('../routes/settings')),
+    },
+  },
 };
 
 const App: React.FC = () => {
@@ -67,16 +68,28 @@ const App: React.FC = () => {
                     <Redirect to="/login" />
                   </Route>
                   <Route exact path="/login" component={lazy(() => import('../routes/login'))} />
-                  <PrivateRoute exact path="/projects" component={() => (
-                    <Layouts.Panel>
-                      <Routes.Projects />
-                    </Layouts.Panel>
-                  )} />
-                  <PrivateRoute exact path="/settings" component={() => (
-                    <Layouts.Panel>
-                      <Routes.Settings />
-                    </Layouts.Panel>
-                  )} />
+                  {Object.values(layouts).map(({ component: LayoutComponent, routes }) => {
+                    const routeKeys = Object.keys(routes);
+
+                    return (
+                      <PrivateRoute key={routeKeys.join('')} exact path={routeKeys} component={() => (
+                        <LayoutComponent>
+                          {routeKeys.map((path) => {
+                            const RouteComponent = (routes as any)[path];
+
+                            return (
+                              <Route key={path} exact path={path} component={() => (
+                                <RouteComponent />
+                              )} />
+                            )
+                          })}
+                        </LayoutComponent>
+                      )} />
+                    );
+                  })}
+                  <Route path="*">
+                    Error 404
+                  </Route>
                 </Switch>
               </Suspense>
             </Layout>

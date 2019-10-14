@@ -1,16 +1,23 @@
 import React, { Suspense } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 import Logout from '../components/logout';
 import LoadingMessage from '../components/loading-message';
 import { useAuth } from '../context/auth';
+import Avatar from '../components/avatar';
 
 import styles from './panel.module.scss';
 
+const MenuLinkBackground: React.FC = () => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
+      <path d="M12 0c-9.432 0-12 2.568-12 12s2.551 12 12 12 12-2.551 12-12-2.568-12-12-12z"/>
+    </svg>
+  );
+}
+
 const PanelLayout: React.FC = ({ children }) => {
   const { userData } = useAuth();
-
-  console.log({ userData });
 
   return (
     <div className={styles.panel}>
@@ -21,26 +28,42 @@ const PanelLayout: React.FC = ({ children }) => {
 
         <ul className={styles.menu}>
           <li>
-            <Link to="/projects">Projects</Link>
+            <NavLink exact={true} activeClassName={styles.menuActive} to="/projects">
+              <MenuLinkBackground />
+              <i className="im im-home"></i>
+            </NavLink>
           </li>
           <li>
-            <Link to="/settings">Settings</Link>
+            <NavLink exact={true} activeClassName={styles.menuActive} to="/settings">
+              <MenuLinkBackground />
+              <i className="im im-gear"></i>
+            </NavLink>
           </li>
         </ul>
 
         <ul className={styles.bottomMenu}>
           <li>
-            Notifications
+            <a>
+              <MenuLinkBackground />
+              <i className="im im-bell"></i>
+            </a>
           </li>
           <li>
-            User
-            <Logout className="pure-button">Log out</Logout>
+            <a>
+              <Avatar src={userData.email} />
+            </a>
+
+            <ul>
+              <li><a>Help</a></li>
+              <li><Link to="/settings">Edit profile</Link></li>
+              <li><Logout>Sign out</Logout></li>
+            </ul>
           </li>
         </ul>
       </div>
+
       <div className={styles.main}>
         <div className={styles.wrapper}>
-          {/* <Header /> */}
           <Suspense fallback={<LoadingMessage />}>
             {children}
           </Suspense>

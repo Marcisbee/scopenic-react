@@ -5,6 +5,7 @@ interface CssExports {
   'logo': string;
   'main': string;
   'menu': string;
+  'menuActive': string;
   'panel': string;
   'sidebar': string;
   'wrapper': string;

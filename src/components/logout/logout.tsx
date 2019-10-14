@@ -8,12 +8,12 @@ const Logout: React.FC<any> = ({ children, ...props }) => {
   const { removeAuthToken } = useAuth();
 
   return (
-    <button {...props} onClick={() => {
+    <a {...props} onClick={() => {
       client.resetStore();
       removeAuthToken();
     }}>
       {children}
-    </button>
+    </a>
   );
 }
 

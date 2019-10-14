@@ -77,7 +77,13 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader'
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDevelopment,
+            }
+          },
         ],
       },
       {
@@ -86,7 +92,13 @@ module.exports = {
         include: /node_modules/,
         use: [
           isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader'
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDevelopment,
+            }
+          },
         ],
       },
       {
@@ -104,13 +116,13 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              sourceMap: true,
+              sourceMap: isDevelopment,
             }
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true,
+              sourceMap: isDevelopment,
             }
           }
         ]
