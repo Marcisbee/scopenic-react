@@ -155,19 +155,24 @@ module.exports = (options) => ({
   optimization: {
     namedModules: true,
     splitChunks: {
-      chunks: 'all',
-      name: true,
-      minChunks: 2,
       cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
+        // vendor chunk
+        vendor: {
+          name: 'vendor',
+          // sync + async chunks
+          chunks: 'all',
+          // import file path containing node_modules
+          test: /node_modules/,
+          priority: 20,
         },
-        default: {
+        common: {
+          name: 'common',
           minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
-        }
+          chunks: 'async',
+          priority: 10,
+          reuseExistingChunk: true,
+          enforce: true,
+        },
       },
     },
   },
