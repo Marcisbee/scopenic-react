@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-import Logout from '../components/logout';
 import LoadingMessage from '../components/loading-message';
 import { useAuth } from '../context/auth';
 import Avatar from '../components/avatar';
@@ -17,7 +16,7 @@ const MenuLinkBackground: React.FC = () => {
 }
 
 const PanelLayout: React.FC = ({ children }) => {
-  const { userData } = useAuth();
+  const { userData, logout } = useAuth();
 
   return (
     <div className={styles.panel}>
@@ -56,7 +55,7 @@ const PanelLayout: React.FC = ({ children }) => {
             <ul>
               <li><a>Help</a></li>
               <li><Link to="/settings">Edit profile</Link></li>
-              <li><Logout>Sign out</Logout></li>
+              <li><a onClick={logout}>Sign out</a></li>
             </ul>
           </li>
         </ul>
