@@ -47,10 +47,10 @@ const PrivateRoute: React.FC<any> = (props) => {
 
 const layouts = {
   Panel: {
-    component: lazy(() => import('../layouts/panel')),
+    component: lazy(() => import(/* webpackChunkName: "panel" */ '../layouts/panel')),
     routes: {
-      '/projects': lazy(() => import('../routes/projects')),
-      '/settings': lazy(() => import('../routes/settings')),
+      '/projects': lazy(() => import(/* webpackChunkName: "projects" */ '../routes/projects')),
+      '/settings': lazy(() => import(/* webpackChunkName: "settings" */ '../routes/settings')),
     },
   },
 };
@@ -67,7 +67,7 @@ const App: React.FC = () => {
                   <Route exact path="/">
                     <Redirect to="/login" />
                   </Route>
-                  <Route exact path="/login" component={lazy(() => import('../routes/login'))} />
+                  <Route exact path="/login" component={lazy(() => import(/* webpackChunkName: "login" */ '../routes/login'))} />
                   {Object.values(layouts).map(({ component: LayoutComponent, routes }) => {
                     const routeKeys = Object.keys(routes);
 

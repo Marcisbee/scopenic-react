@@ -10,7 +10,9 @@ const Settings: React.FC = () => {
         <h1>Settings</h1>
       </div>
 
-      <SettingsBlock header="Profile details">
+      <SettingsBlock
+        header="Profile details"
+      >
         Hello world
       </SettingsBlock>
 

@@ -2,7 +2,11 @@ import React from 'react';
 
 import styles from './settings-block.module.scss';
 
-const SettingsBlock: React.FC<{ header: string }> = ({ header, children }) => {
+interface ISettingsBlock {
+  header: string;
+}
+
+const SettingsBlock: React.FC<ISettingsBlock> = ({ header, children }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
