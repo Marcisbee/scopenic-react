@@ -51,4 +51,4 @@ const Avatar: React.FC<{ src: string, color?: string }> = ({ src, color }) => {
   );
 }
 
-export default React.memo(Avatar);
+export default Avatar;

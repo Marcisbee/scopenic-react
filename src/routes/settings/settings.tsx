@@ -11,7 +11,10 @@ const Settings: React.FC = () => {
       </div>
 
       <SettingsBlock
-        header="Profile details"
+        icon="id-card"
+        color="#0a8ffb"
+        title="Profile details"
+        description="Lorem ipsum"
       >
         Hello world
       </SettingsBlock>

@@ -2,8 +2,11 @@
 // Please do not change this file!
 interface CssExports {
   'container': string;
+  'description': string;
   'header': string;
+  'icon': string;
   'main': string;
+  'toggle': string;
 }
 declare const cssExports: CssExports;
 export = cssExports;
