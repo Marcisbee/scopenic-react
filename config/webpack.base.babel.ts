@@ -156,6 +156,8 @@ module.exports = (options) => ({
     namedModules: true,
     splitChunks: {
       cacheGroups: {
+        default: false,
+        vendors: false,
         // vendor chunk
         vendor: {
           name: 'vendor',
@@ -168,7 +170,7 @@ module.exports = (options) => ({
         common: {
           name: 'common',
           minChunks: 2,
-          chunks: 'async',
+          chunks: 'all',
           priority: 10,
           reuseExistingChunk: true,
           enforce: true,
