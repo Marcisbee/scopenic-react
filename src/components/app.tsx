@@ -6,7 +6,7 @@ import Store from 'statux';
 import GraphqlProvider from '../graphql';
 import { ProvideAuth, useAuth } from '../hooks/use-auth';
 
-import LoadingMessage from './loading-message';
+import Spinner from './spinner';
 
 const layouts = {
   Panel: {
@@ -78,7 +78,7 @@ const App: React.FC = () => {
       <Store user={null}>
         <Router>
           <ProvideAuth>
-            <Suspense fallback={<LoadingMessage />}>
+            <Suspense fallback={<Spinner type="full" />}>
               <Switch>
                 <Route exact={true} path="/">
                   <Redirect to="/login" />

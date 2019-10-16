@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
-import LoadingMessage from '../components/loading-message';
+import Spinner from '../components/spinner';
 import { useAuth } from '../hooks/use-auth';
 
 import styles from './panel.module.scss';
@@ -56,7 +56,7 @@ const PanelLayout: React.FC = ({ children }) => {
 
       <div className={styles.main}>
         <div className={styles.wrapper}>
-          <Suspense fallback={<LoadingMessage />}>
+          <Suspense fallback={<Spinner type="full" />}>
             {children}
           </Suspense>
         </div>
