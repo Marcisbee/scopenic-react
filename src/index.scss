@@ -1,12 +1,10 @@
 @import './assets/css/normalize.css';
-@import './assets/css/forms.css';
-@import './assets/css/grids.css';
-@import './assets/css/buttons.css';
-@import './assets/css/tables.css';
-@import './assets/css/menus.css';
+@import './assets/scss/forms.scss';
+@import './assets/scss/grids.scss';
 
 * {
   box-sizing: border-box;
+  outline: none;
 }
 
 html {

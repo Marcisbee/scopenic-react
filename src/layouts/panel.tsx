@@ -34,6 +34,13 @@ const PanelLayout: React.FC = ({ children }) => {
         </ul>
 
         <ul className={styles.bottomMenu}>
+          {/* @TODO: Enable dark mode option */}
+          <li>
+            <a>
+              <ScopeShape />
+              <i className="im im-paintbrush"/>
+            </a>
+          </li>
           <li>
             <a>
               <ScopeShape />
@@ -48,6 +55,7 @@ const PanelLayout: React.FC = ({ children }) => {
             <ul>
               <li><a>Help</a></li>
               <li><Link to="/settings">Edit profile</Link></li>
+              <li className={styles.divider}/>
               <li><a onClick={signout}>Sign out</a></li>
             </ul>
           </li>
