@@ -6,6 +6,6 @@ const Projects: React.FC = () => {
       <h1>Projects</h1>
     </div>
   );
-}
+};
 
 export default Projects;

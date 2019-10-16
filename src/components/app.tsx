@@ -1,6 +1,6 @@
-import { hot } from 'react-hot-loader/root';
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { hot } from 'react-hot-loader/root';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Store from 'statux';
 
 import { AuthProvider, useAuth } from '../context/auth';
@@ -36,14 +36,14 @@ const PrivateRoute: React.FC<any> = (props) => {
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: location }
+              state: { from: location },
             }}
           />
         )
       }
     />
   );
-}
+};
 
 const layouts = {
   Panel: {
@@ -64,27 +64,37 @@ const App: React.FC = () => {
             <Layout>
               <Suspense fallback={<LoadingMessage />}>
                 <Switch>
-                  <Route exact path="/">
+                  <Route exact={true} path="/">
                     <Redirect to="/login" />
                   </Route>
-                  <Route exact path="/login" component={lazy(() => import(/* webpackChunkName: "login" */ '../routes/login'))} />
+                  <Route exact={true} path="/login" component={lazy(() => import(/* webpackChunkName: "login" */ '../routes/login'))} />
                   {Object.values(layouts).map(({ component: LayoutComponent, routes }) => {
                     const routeKeys = Object.keys(routes);
 
                     return (
-                      <PrivateRoute key={routeKeys.join('')} exact path={routeKeys} component={() => (
-                        <LayoutComponent>
-                          {routeKeys.map((path) => {
-                            const RouteComponent = (routes as any)[path];
+                      <PrivateRoute
+                        key={routeKeys.join('')}
+                        exact={true}
+                        path={routeKeys}
+                        component={() => (
+                          <LayoutComponent>
+                            {routeKeys.map((path) => {
+                              const RouteComponent = (routes as any)[path];
 
-                            return (
-                              <Route key={path} exact path={path} component={() => (
-                                <RouteComponent />
-                              )} />
-                            )
-                          })}
-                        </LayoutComponent>
-                      )} />
+                              return (
+                                <Route
+                                  key={path}
+                                  exact={true}
+                                  path={path}
+                                  component={() => (
+                                    <RouteComponent />
+                                  )}
+                                />
+                              );
+                            })}
+                          </LayoutComponent>
+                        )}
+                      />
                     );
                   })}
                   <Route path="*">
@@ -98,6 +108,6 @@ const App: React.FC = () => {
       </Store>
     </GraphqlProvider>
   );
-}
+};
 
 export default hot(App);

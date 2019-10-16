@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useHistory, useLocation } from 'react-router';
 import { useApolloClient } from '@apollo/react-hooks';
+import React, { createContext, useContext, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
 
 export interface IAuthUserData {
   id: string;
@@ -17,10 +17,10 @@ export interface IAuthContext {
 }
 
 const AuthContext = createContext<IAuthContext>({
-  setAuthToken: () => {},
-  userData: {} as IAuthUserData,
-  setUserData: () => {},
   removeAuthToken: () => {},
+  setAuthToken: () => {},
+  setUserData: () => {},
+  userData: {} as IAuthUserData,
 });
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -33,36 +33,38 @@ export const AuthProvider: React.FC = ({ children }) => {
   const setToken = (value: string) => {
     localStorage.setItem('token', value);
     setAuthToken(value);
-  }
+  };
 
   const setUser = (data: any) => {
     setUserData(data);
-  }
+  };
 
   const removeToken = () => {
     localStorage.removeItem('token');
     setAuthToken(null);
     history.push('/login');
-  }
+  };
 
   const logout = () => {
     client.resetStore();
     removeToken();
-  }
+  };
 
   return (
-    <AuthContext.Provider value={{
-      authToken,
-      userData,
-      setAuthToken: setToken,
-      setUserData: setUser,
-      removeAuthToken: removeToken,
-      logout,
-    }}>
+    <AuthContext.Provider
+      value={{
+        authToken,
+        logout,
+        removeAuthToken: removeToken,
+        setAuthToken: setToken,
+        setUserData: setUser,
+        userData,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
 export function useAuth() {
   return useContext(AuthContext);

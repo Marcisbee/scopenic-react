@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
-import LoadingMessage from '../components/loading-message';
-import { useAuth } from '../context/auth';
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
+import LoadingMessage from '../components/loading-message';
+import { useAuth } from '../context/auth';
 
 import styles from './panel.module.scss';
 
@@ -22,13 +22,13 @@ const PanelLayout: React.FC = ({ children }) => {
           <li>
             <NavLink exact={true} activeClassName={styles.menuActive} to="/projects">
               <ScopeShape />
-              <i className="im im-home"></i>
+              <i className="im im-home"/>
             </NavLink>
           </li>
           <li>
             <NavLink exact={true} activeClassName={styles.menuActive} to="/settings">
               <ScopeShape />
-              <i className="im im-gear"></i>
+              <i className="im im-gear"/>
             </NavLink>
           </li>
         </ul>
@@ -37,7 +37,7 @@ const PanelLayout: React.FC = ({ children }) => {
           <li>
             <a>
               <ScopeShape />
-              <i className="im im-bell"></i>
+              <i className="im im-bell"/>
             </a>
           </li>
           <li>
@@ -62,7 +62,7 @@ const PanelLayout: React.FC = ({ children }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default PanelLayout;

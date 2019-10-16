@@ -1,9 +1,9 @@
+import cc from 'classcat';
 import React, { useState } from 'react';
 
 import ScopeShape from '../decorations/scope-shape';
 
 import styles from './settings-block.module.scss';
-import cc from 'classcat';
 
 export interface ISettingsBlock {
   icon: string;
@@ -32,7 +32,7 @@ const SettingsBlock: React.FC<ISettingsBlock> = ({
       <div className={styles.header} onClick={onClick}>
         <div className={styles.icon}>
           <ScopeShape color={color} />
-          <i className={`im im-${icon}`}></i>
+          <i className={`im im-${icon}`} />
         </div>
 
         <div className={styles.description}>
@@ -40,14 +40,16 @@ const SettingsBlock: React.FC<ISettingsBlock> = ({
           <p>{description}</p>
         </div>
 
-        <i className={cc([
-          styles.toggle,
-          'im',
-          {
-            'im-angle-up': isOpen,
-            'im-angle-down': !isOpen,
-          },
-        ])}></i>
+        <i
+          className={cc([
+            styles.toggle,
+            'im',
+            {
+              'im-angle-down': !isOpen,
+              'im-angle-up': isOpen,
+            },
+          ])}
+        />
       </div>
 
       {isOpen && (
@@ -57,6 +59,6 @@ const SettingsBlock: React.FC<ISettingsBlock> = ({
       )}
     </div>
   );
-}
+};
 
 export default SettingsBlock;

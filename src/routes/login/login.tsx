@@ -1,12 +1,12 @@
+import { useMutation } from '@apollo/react-hooks';
+import cc from 'classcat';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import { Redirect } from 'react-router';
-import cc from 'classcat';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useMutation } from '@apollo/react-hooks';
 
-import { useAuth, useLoggedInGuard } from '../../context/auth';
 import FieldError from '../../components/field-error';
+import { useAuth, useLoggedInGuard } from '../../context/auth';
 import { LOGIN } from '../../graphql/mutations';
 
 const SignupSchema = Yup.object().shape({
@@ -96,6 +96,6 @@ const Login: React.FC<any> = () => {
       </Formik>
     </div>
   );
-}
+};
 
 export default Login;

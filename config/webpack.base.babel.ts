@@ -11,6 +11,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { TypedCssModulesPlugin } = require('typed-css-modules-webpack-plugin');
 
 const ENV_PATH = path.resolve(process.cwd(), '.env');
 dotenv.config(ENV_PATH);
@@ -89,12 +90,6 @@ module.exports = (options) => ({
         use: [
           options.mode === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
-            loader: 'css-modules-typescript-loader',
-            options: {
-              mode: process.env.CI ? 'verify' : 'emit'
-            }
-          },
-          {
             loader: 'css-loader',
             options: {
               modules: true,
@@ -120,6 +115,10 @@ module.exports = (options) => ({
     ]
   },
   plugins: options.plugins.concat([
+    new TypedCssModulesPlugin({
+      globPattern: 'src/**/*.module.scss',
+    }),
+
     new webpack.NamedModulesPlugin(),
 
     new webpack.ProvidePlugin({

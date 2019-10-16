@@ -22,6 +22,6 @@ const Settings: React.FC = () => {
       <p>Lalala</p>
     </div>
   );
-}
+};
 
 export default Settings;

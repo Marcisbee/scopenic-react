@@ -5,9 +5,10 @@ import styles from './avatar.module.scss';
 // @TODO: Make color scheme for this
 function getColorFromInitials(initials: string): string {
   const [first, second] = initials.toUpperCase().split('');
-  const number = first.charCodeAt(0) + (second && second.charCodeAt(0) || 0);
-  const percent = Math.max(0, Math.min(1, 1 / 180 * number));
+  const num = first.charCodeAt(0) + (second && second.charCodeAt(0) || 0);
+  const percent = Math.max(0, Math.min(1, 1 / 180 * num));
 
+  /* tslint:disable no-bitwise */
   return '#' + ((1 << 24) * percent | 0).toString(16);
 }
 
@@ -49,6 +50,6 @@ const Avatar: React.FC<{ src: string, color?: string }> = ({ src, color }) => {
       {initials}
     </div>
   );
-}
+};
 
 export default Avatar;
