@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/react-hooks';
 import cc from 'classcat';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
@@ -6,8 +5,7 @@ import { Redirect } from 'react-router';
 import * as Yup from 'yup';
 
 import FieldError from '../../components/field-error';
-import { useAuth, useLoggedInGuard } from '../../context/auth';
-import { LOGIN } from '../../graphql/mutations';
+import { useAuth, useLoggedInGuard } from '../../hooks/use-auth';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -18,9 +16,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Login: React.FC<any> = () => {
-  const { setAuthToken } = useAuth();
-  const [login] = useMutation(LOGIN);
   const redirect = useLoggedInGuard();
+  const { signin } = useAuth();
 
   if (redirect) {
     return <Redirect to={redirect} />;
@@ -48,16 +45,13 @@ const Login: React.FC<any> = () => {
         //   }
         // }}
         onSubmit={async (values, actions) => {
-          await login({ variables: values })
-            .then((response) => {
+          await signin(values.email, values.password)
+            .then((response: any) => {
               if (!response.data || !response.data.login) {
                 throw new Error('Email or password was incorrect!');
               }
-
-              actions.setStatus({ success: response.data.login });
-              setAuthToken(response.data.login.id);
             })
-            .catch((error) => {
+            .catch((error: any) => {
               actions.setStatus({ error: error.message });
             })
             .finally(() => {

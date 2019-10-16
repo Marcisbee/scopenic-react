@@ -4,12 +4,12 @@ import { Link, NavLink } from 'react-router-dom';
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
 import LoadingMessage from '../components/loading-message';
-import { useAuth } from '../context/auth';
+import { useAuth } from '../hooks/use-auth';
 
 import styles from './panel.module.scss';
 
 const PanelLayout: React.FC = ({ children }) => {
-  const { userData, logout } = useAuth();
+  const { user, signout } = useAuth();
 
   return (
     <div className={styles.panel}>
@@ -42,13 +42,13 @@ const PanelLayout: React.FC = ({ children }) => {
           </li>
           <li>
             <a>
-              <Avatar src={userData.email} />
+              <Avatar src={user.email} />
             </a>
 
             <ul>
               <li><a>Help</a></li>
               <li><Link to="/settings">Edit profile</Link></li>
-              <li><a onClick={logout}>Sign out</a></li>
+              <li><a onClick={signout}>Sign out</a></li>
             </ul>
           </li>
         </ul>
