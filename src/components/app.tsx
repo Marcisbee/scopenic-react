@@ -42,7 +42,7 @@ const PrivateRoute: React.FC<any> = (props) => {
   if (error && token) {
     return (
       <div>
-        <h1>Error</h1>
+        <h1>Your session has expired</h1>
         <p>{JSON.stringify(error)}</p>
         <button onClick={signout}>Try to sign in</button>
       </div>
