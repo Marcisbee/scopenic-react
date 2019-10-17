@@ -1,3 +1,5 @@
+@import '../assets/scss/variables.scss';
+
 .panel {
   min-height: 100vh;
   background-color: #f1f7fb;
@@ -118,7 +120,7 @@
 
 .menuActive {
   color: #fff !important;
-  fill: #0a8ffb !important;
+  fill: $primary-color !important;
 }
 
 .bottomMenu {
@@ -142,4 +144,41 @@
   width: 800px;
   max-width: 98%;
   margin: 0 auto;
+}
+
+// Dark theme
+:global(.pt-dark) {
+  .panel {
+    background-color: #293742;
+  }
+
+  .sidebar {
+    background-color: #30404d;
+    border-color: #27353e;
+  }
+
+  .menu > li {
+    & > a {
+      color: #a8bac7;
+
+      &:hover {
+        fill: #395369;
+        color: $primary-color;
+      }
+    }
+
+    ul {
+      background: #30404d;
+      color: #f5f8fa;
+      box-shadow: 0 0 0 1px rgba(16,22,26,.2), 0 2px 4px rgba(16,22,26,.4), 0 8px 24px rgba(16,22,26,.4);
+
+      li a:hover {
+        background-color: rgba(138,155,168,.15);
+      }
+    }
+  }
+
+  .divider {
+    border-color: hsla(0,0%,100%,.15);
+  }
 }

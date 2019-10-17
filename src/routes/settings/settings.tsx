@@ -17,6 +17,13 @@ const Settings: React.FC = () => {
         description="Lorem ipsum"
       >
         Hello world
+        <div className="row">
+          <div className="one column">
+            <div className="pt-form-group">
+              <label className="pt-label" htmlFor="example-form-group-input-a">
+                Label A
+                <span className="pt-text-muted">(required)</span>
+              </label>
       </SettingsBlock>
 
       <p>Lalala</p>

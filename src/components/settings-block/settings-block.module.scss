@@ -1,3 +1,5 @@
+@import '../../assets/scss/variables.scss';
+
 .container {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(16, 22, 26, 0.05), 0 8px 24px rgba(16, 22, 26, 0.02);
@@ -12,11 +14,10 @@
 
   &:hover {
     background-color: #fbfdff;
-    color: #0a8ffb;
     border-radius: inherit;
 
     .toggle {
-      color: #0a8ffb;
+      color: $primary-color;
     }
   }
 }
@@ -82,5 +83,20 @@
     margin-bottom: 0;
     color: #aaa;
     font-size: 14px;
+  }
+}
+
+// Dark theme
+:global(.pt-dark) {
+  .container {
+    background-color: #30404d;
+  }
+
+  .header:hover {
+    background-color: #374754;
+  }
+
+  .main {
+    border-color: #293742;
   }
 }

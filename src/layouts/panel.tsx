@@ -5,11 +5,13 @@ import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
 import Spinner from '../components/spinner';
 import { useAuth } from '../hooks/use-auth';
+import { useDarkMode } from '../hooks/use-dark-mode';
 
 import styles from './panel.module.scss';
 
 const PanelLayout: React.FC = ({ children }) => {
   const { user, signout } = useAuth();
+  const [darkMode, setDarkMode] = useDarkMode();
 
   return (
     <div className={styles.panel}>
@@ -36,7 +38,7 @@ const PanelLayout: React.FC = ({ children }) => {
         <ul className={styles.bottomMenu}>
           {/* @TODO: Enable dark mode option */}
           <li>
-            <a>
+            <a onClick={() => { setDarkMode(!darkMode); }}>
               <ScopeShape />
               <i className="im im-paintbrush"/>
             </a>

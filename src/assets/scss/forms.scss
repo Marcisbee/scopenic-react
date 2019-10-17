@@ -1,7 +1,4 @@
-$primary-color: #088ffb;
-$primary-hover-color: #0c85e9;
-$primary-active-color: #0c78cf;
-$primary-translucent-color: #088efb46;
+@import './variables.scss';
 
 .pt-text-muted {
   color: #5c7080

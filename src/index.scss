@@ -38,14 +38,14 @@ img {
 }
 
 a {
-  color: #00aced;
+  color: $primary-color;
   text-decoration: none;
   transition: all 0.2s;
   cursor: pointer;
 
   &:active,
   &:hover {
-    color: #0a8ffb;
+    color: $primary-hover-color;
   }
 }
 

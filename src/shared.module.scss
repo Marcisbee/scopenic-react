@@ -8,3 +8,10 @@
     margin: 10px 0 20px 0;
   }
 }
+
+// Dark theme
+:global(.pt-dark) {
+  .heading {
+    border-color: #354552;
+  }
+}
