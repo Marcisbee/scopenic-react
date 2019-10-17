@@ -46,13 +46,18 @@ const Login: React.FC<any> = () => {
         // }}
         onSubmit={async (values, actions) => {
           await signin(values.email, values.password)
-            .then((response: any) => {
+            .then((response) => {
               if (!response.data || !response.data.login) {
-                throw new Error('Email or password was incorrect!');
+                throw new Error('Something went wrong');
               }
             })
-            .catch((error: any) => {
-              actions.setStatus({ error: error.message });
+            .catch((error) => {
+              const errorMessage = error.graphQLErrors
+                && error.graphQLErrors[0]
+                && error.graphQLErrors[0].message
+                || error.message;
+
+              actions.setStatus({ error: errorMessage });
             })
             .finally(() => {
               actions.setSubmitting(false);

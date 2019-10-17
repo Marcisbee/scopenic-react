@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import Store from 'statux';
 
 import GraphqlProvider from '../graphql';
@@ -13,6 +13,8 @@ const Layouts = {
 };
 
 const Routes = {
+  login: lazy(() => import(/* webpackChunkName: "login" */ '../routes/login')),
+
   projects: lazy(() => import(/* webpackChunkName: "projects" */ '../routes/projects')),
   settings: lazy(() => import(/* webpackChunkName: "settings" */ '../routes/settings')),
 };
@@ -37,6 +39,7 @@ const Suspend: React.FC = () => {
 const PrivateRoute: React.FC<any> = (props) => {
   const { component: Component, ...rest } = props;
   const { token, user, error, signout } = useAuth();
+  const location = useLocation();
 
   if (error && token) {
     return (
@@ -52,21 +55,16 @@ const PrivateRoute: React.FC<any> = (props) => {
     return <Suspend />;
   }
 
+  if (user) {
+    return <Component {...rest} />;
+  }
+
   return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        user ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: location },
-            }}
-          />
-        )
-      }
+    <Redirect
+      to={{
+        pathname: '/login',
+        state: { from: location },
+      }}
     />
   );
 };
@@ -79,10 +77,20 @@ const App: React.FC = () => {
           <ProvideAuth>
             <Suspense fallback={<Spinner type="full" />}>
               <Switch>
-                <Route exact={true} path="/">
-                  <Redirect to="/login" />
-                </Route>
-                <Route exact={true} path="/login" component={lazy(() => import(/* webpackChunkName: "login" */ '../routes/login'))} />
+                <Route
+                  exact={true}
+                  path="/"
+                  component={() => (
+                    <Redirect to="/login" />
+                  )}
+                />
+                <Route
+                  exact={true}
+                  path="/login"
+                  component={() => (
+                    <Routes.login />
+                  )}
+                />
 
                 <PrivateRoute
                   exact={true}
@@ -90,24 +98,25 @@ const App: React.FC = () => {
                     '/projects',
                     '/settings',
                   ]}
-                >
-                  <Layouts.panel>
-                    <Route
-                      exact={true}
-                      path="/projects"
-                      component={() => (
-                        <Routes.projects />
-                      )}
-                    />
-                    <Route
-                      exact={true}
-                      path="/settings"
-                      component={() => (
-                        <Routes.settings />
-                      )}
-                    />
-                  </Layouts.panel>
-                </PrivateRoute>
+                  component={() => (
+                    <Layouts.panel>
+                      <Route
+                        exact={true}
+                        path="/projects"
+                        component={() => (
+                          <Routes.projects />
+                        )}
+                      />
+                      <Route
+                        exact={true}
+                        path="/settings"
+                        component={() => (
+                          <Routes.settings />
+                        )}
+                      />
+                    </Layouts.panel>
+                  )}
+                />
 
                 <Route path="*">
                   Error 404

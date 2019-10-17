@@ -1575,3 +1575,104 @@ a.pt-button.pt-disabled {
 .pt-text-small {
   font-size: 0.85rem;
 }
+
+.pt-callout {
+  line-height: 1.5;
+  font-size: 14px;
+  position: relative;
+  border-radius: 3px;
+  background-color: rgba(138,155,168,.15);
+  width: 100%;
+  padding: 15px 12px 12px
+}
+
+.pt-callout.pt-callout-icon {
+  padding-left: 50px
+}
+
+.pt-callout.pt-callout-icon .im {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: #5c7080
+}
+
+.pt-callout .pt-callout-title {
+  margin-top: 0;
+  margin-bottom: 5px;
+  line-height: 20px
+}
+
+.pt-dark .pt-callout {
+  background-color: rgba(138,155,168,.2)
+}
+
+.pt-dark .pt-callout[class*=pt-icon-]:before {
+  color: #bfccd6
+}
+
+.pt-callout.pt-intent-primary {
+  background-color: rgba(19,124,189,.15)
+}
+
+.pt-callout.pt-intent-primary .pt-callout-title,.pt-callout.pt-intent-primary .im,.pt-callout.pt-intent-primary[class*=pt-icon-]:before {
+  color: #106ba3
+}
+
+.pt-dark .pt-callout.pt-intent-primary {
+  background-color: rgba(19,124,189,.25)
+}
+
+.pt-dark .pt-callout.pt-intent-primary .pt-callout-icon,.pt-dark .pt-callout.pt-intent-primary .pt-callout-title,.pt-dark .pt-callout.pt-intent-primary[class*=pt-icon-]:before {
+  color: #48aff0
+}
+
+.pt-callout.pt-intent-success {
+  background-color: rgba(15,153,96,.15)
+}
+
+.pt-callout.pt-intent-success .pt-callout-title,.pt-callout.pt-intent-success .im,.pt-callout.pt-intent-success[class*=pt-icon-]:before {
+  color: #0d8050
+}
+
+.pt-dark .pt-callout.pt-intent-success {
+  background-color: rgba(15,153,96,.25)
+}
+
+.pt-dark .pt-callout.pt-intent-success .pt-callout-icon,.pt-dark .pt-callout.pt-intent-success .pt-callout-title,.pt-dark .pt-callout.pt-intent-success[class*=pt-icon-]:before {
+  color: #3dcc91
+}
+
+.pt-callout.pt-intent-warning {
+  background-color: rgba(217,130,43,.15)
+}
+
+.pt-callout.pt-intent-warning .pt-callout-title,.pt-callout.pt-intent-warning .im,.pt-callout.pt-intent-warning[class*=pt-icon-]:before {
+  color: #bf7326
+}
+
+.pt-dark .pt-callout.pt-intent-warning {
+  background-color: rgba(217,130,43,.25)
+}
+
+.pt-dark .pt-callout.pt-intent-warning .pt-callout-icon,.pt-dark .pt-callout.pt-intent-warning .pt-callout-title,.pt-dark .pt-callout.pt-intent-warning[class*=pt-icon-]:before {
+  color: #ffb366
+}
+
+.pt-callout.pt-intent-danger {
+  background-color: rgba(219,55,55,.15)
+}
+
+.pt-callout.pt-intent-danger .pt-callout-title,.pt-callout.pt-intent-danger .im,.pt-callout.pt-intent-danger[class*=pt-icon-]:before {
+  color: #c23030
+}
+
+.pt-dark .pt-callout.pt-intent-danger {
+  background-color: rgba(219,55,55,.25)
+}
+
+.pt-dark .pt-callout.pt-intent-danger .pt-callout-icon,.pt-dark .pt-callout.pt-intent-danger .pt-callout-title,.pt-dark .pt-callout.pt-intent-danger[class*=pt-icon-]:before {
+  color: #ff7373
+}
+
+
