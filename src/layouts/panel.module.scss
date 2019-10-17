@@ -44,7 +44,7 @@
       border-radius: 42%;
       fill: transparent;
 
-      svg {
+      > svg {
         display: block;
         position: absolute;
         left: 0;
@@ -141,7 +141,7 @@
 }
 
 .wrapper {
-  width: 800px;
+  width: 750px;
   max-width: 98%;
   margin: 0 auto;
 }

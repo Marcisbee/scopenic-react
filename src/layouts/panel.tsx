@@ -9,7 +9,7 @@ import { useDarkMode } from '../hooks/use-dark-mode';
 
 import styles from './panel.module.scss';
 
-const PanelLayout: React.FC = ({ children }) => {
+const PanelLayout: React.FC = React.memo(({ children }) => {
   const { user, signout } = useAuth();
   const [darkMode, setDarkMode] = useDarkMode();
 
@@ -73,6 +73,6 @@ const PanelLayout: React.FC = ({ children }) => {
       </div>
     </div>
   );
-};
+}, () => false);
 
 export default PanelLayout;

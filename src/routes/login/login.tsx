@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import FieldError from '../../components/field-error';
 import { useAuth, useLoggedInGuard } from '../../hooks/use-auth';
 
-const SignupSchema = Yup.object().shape({
+const SigninSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Required'),
@@ -31,7 +31,7 @@ const Login: React.FC<any> = () => {
           email: '',
           password: '',
         }}
-        validationSchema={SignupSchema}
+        validationSchema={SigninSchema}
         // validate={async (values) => {
         //   const errors: Record<string, any> = {};
         //   await sleep(1000);

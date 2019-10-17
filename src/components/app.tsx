@@ -8,14 +8,13 @@ import { ProvideAuth, useAuth } from '../hooks/use-auth';
 
 import Spinner from './spinner';
 
-const layouts = {
-  Panel: {
-    component: lazy(() => import(/* webpackChunkName: "panel" */ '../layouts/panel')),
-    routes: {
-      '/projects': lazy(() => import(/* webpackChunkName: "projects" */ '../routes/projects')),
-      '/settings': lazy(() => import(/* webpackChunkName: "settings" */ '../routes/settings')),
-    },
-  },
+const Layouts = {
+  panel: lazy(() => import(/* webpackChunkName: "panel" */ '../layouts/panel')),
+};
+
+const Routes = {
+  projects: lazy(() => import(/* webpackChunkName: "projects" */ '../routes/projects')),
+  settings: lazy(() => import(/* webpackChunkName: "settings" */ '../routes/settings')),
 };
 
 // function queryString(value: string): Record<string, string> {
@@ -84,35 +83,32 @@ const App: React.FC = () => {
                   <Redirect to="/login" />
                 </Route>
                 <Route exact={true} path="/login" component={lazy(() => import(/* webpackChunkName: "login" */ '../routes/login'))} />
-                {Object.values(layouts).map(({ component: LayoutComponent, routes }) => {
-                  const routeKeys = Object.keys(routes);
 
-                  return (
-                    <PrivateRoute
-                      key={routeKeys.join('')}
+                <PrivateRoute
+                  exact={true}
+                  path={[
+                    '/projects',
+                    '/settings',
+                  ]}
+                >
+                  <Layouts.panel>
+                    <Route
                       exact={true}
-                      path={routeKeys}
+                      path="/projects"
                       component={() => (
-                        <LayoutComponent>
-                          {routeKeys.map((path) => {
-                            const RouteComponent = (routes as any)[path];
-
-                            return (
-                              <Route
-                                key={path}
-                                exact={true}
-                                path={path}
-                                component={() => (
-                                  <RouteComponent />
-                                )}
-                              />
-                            );
-                          })}
-                        </LayoutComponent>
+                        <Routes.projects />
                       )}
                     />
-                  );
-                })}
+                    <Route
+                      exact={true}
+                      path="/settings"
+                      component={() => (
+                        <Routes.settings />
+                      )}
+                    />
+                  </Layouts.panel>
+                </PrivateRoute>
+
                 <Route path="*">
                   Error 404
                 </Route>

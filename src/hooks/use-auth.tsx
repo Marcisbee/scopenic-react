@@ -3,12 +3,24 @@ import { ApolloError, FetchResult } from 'apollo-boost';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
-import { LOGIN } from '../graphql/mutations';
+import { LOGIN, UPDATE_USER_DATA } from '../graphql/mutations';
 import { GET_CURRENT_USER } from '../graphql/queries';
+
+export type IUpdateUserMethod = (variables: {
+  email: string,
+  first_name: string,
+  last_name: string,
+  language: string,
+  avatar?: string,
+}) => Promise<{ data: any, errors: any }>;
 
 export interface IAuthUserData {
   id: string;
   email: string;
+  first_name: string;
+  last_name: string;
+  avatar: string;
+  language: string;
 }
 
 export interface IAuthContext {
@@ -17,6 +29,7 @@ export interface IAuthContext {
   user: IAuthUserData;
   signin: (email: string, password: string) => any;
   signout: () => void;
+  updateUser: IUpdateUserMethod;
 }
 
 const authContext = createContext<IAuthContext>({} as any);
@@ -92,6 +105,22 @@ function useProvideAuth() {
     setError(null);
   };
 
+  const updateUser: IUpdateUserMethod = (variables) => {
+    return client.mutate({
+      mutation: UPDATE_USER_DATA,
+      variables,
+    }).then((response) => {
+      const { data, errors } = response;
+
+      if (data.updateUserData) {
+        setUser(data.updateUserData);
+        setError(null);
+      }
+
+      return { data, errors };
+    });
+  };
+
   // @TODO: Do these
   // const signup = (email, password) => {
   // };
@@ -139,7 +168,13 @@ function useProvideAuth() {
     signout,
     // signup,
 
+    updateUser,
+
     // confirmPasswordReset,
     // sendPasswordResetEmail,
   };
 }
+
+const useUpdateUser = () => {
+
+};

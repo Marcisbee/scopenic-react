@@ -936,6 +936,10 @@ label.pt-label {
   font-size: 14px;
 }
 
+label.pt-label .pt-text-muted {
+  padding-left: 6px;
+}
+
 label.pt-label .pt-input,label.pt-label .pt-popover-wrapper,label.pt-label .pt-select {
   display: block;
   margin-top: 5px;
@@ -1525,4 +1529,49 @@ label.pt-label.pt-disabled,label.pt-label.pt-disabled .pt-text-muted {
 
 .pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled.pt-active,.pt-dark .pt-button-group.pt-minimal .pt-button.pt-disabled:hover.pt-active,.pt-dark .pt-button-group.pt-minimal .pt-button:disabled.pt-active,.pt-dark .pt-button-group.pt-minimal .pt-button:disabled:hover.pt-active {
   background: rgba(138,155,168,.3)
+}
+
+.pt-button.pt-large,.pt-large .pt-button {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 5px 15px;
+  font-size: 16px
+}
+
+.pt-button.pt-large:before,.pt-button.pt-large>*,.pt-large .pt-button:before,.pt-large .pt-button>* {
+  margin-right: 10px
+}
+
+.pt-button.pt-large:empty:before,.pt-button.pt-large>:last-child,.pt-large .pt-button:empty:before,.pt-large .pt-button>:last-child {
+  margin-right: 0
+}
+
+.pt-button.pt-small,.pt-small .pt-button {
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 7px
+}
+
+a.pt-button {
+  text-align: center;
+  text-decoration: none;
+  -webkit-transition: none;
+  transition: none
+}
+
+a.pt-button,a.pt-button:active,a.pt-button:hover {
+  color: #182026
+}
+
+a.pt-button.pt-disabled {
+  color: rgba(92,112,128,.5)
+}
+
+.pt-label.pt-fill .pt-input {
+  width: 100%;
+  margin-left: 0 !important;
+}
+
+.pt-text-small {
+  font-size: 0.85rem;
 }
