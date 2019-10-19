@@ -1,3 +1,4 @@
+import cc from 'classcat';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
@@ -106,6 +107,8 @@ const Settings: React.FC = () => {
           initialValues={user}
           validationSchema={UpdateUserDataSchema}
           onSubmit={async (values, actions) => {
+            actions.setStatus();
+
             await updateUser(values)
               .then((response) => {
                 if (!response.data || !response.data.updateUserData) {
@@ -244,7 +247,10 @@ const Settings: React.FC = () => {
                   )}
                   <button
                     type="submit"
-                    className="pt-button pt-large pt-intent-success"
+                    className={cc([
+                      'pt-button pt-large pt-intent-success',
+                      (isSubmitting || isValidating) && 'pt-loading',
+                    ])}
                     disabled={!dirty || isSubmitting || isValidating}
                   >
                     Save changes
@@ -272,6 +278,8 @@ const Settings: React.FC = () => {
           }}
           validationSchema={UpdateUserPasswordSchema}
           onSubmit={async (values, actions) => {
+            actions.setStatus();
+
             await updatePassword({
               currentPassword: values.currentPassword,
               newPassword: values.newPassword,
@@ -389,7 +397,10 @@ const Settings: React.FC = () => {
                   )}
                   <button
                     type="submit"
-                    className="pt-button pt-large pt-intent-success"
+                    className={cc([
+                      'pt-button pt-large pt-intent-success',
+                      (isSubmitting || isValidating) && 'pt-loading',
+                    ])}
                     disabled={!dirty || isSubmitting || isValidating}
                   >
                     Save changes

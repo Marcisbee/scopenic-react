@@ -6,7 +6,7 @@ export const LOGIN = gql`
     $password: String!
   ) {
     login(email: $email, password: $password) {
-      id
+      token
     }
   }
 `;
@@ -26,11 +26,7 @@ export const UPDATE_USER_DATA = gql`
       avatar: $avatar
       language: $language
     ) {
-      email
-      first_name
-      last_name
-      avatar
-      language
+      token
     }
   }
 `;

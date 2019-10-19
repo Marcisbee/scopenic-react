@@ -1,10 +1,10 @@
 import { useApolloClient } from '@apollo/react-hooks';
 import { ApolloError, FetchResult } from 'apollo-boost';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import jwtDecode from 'jwt-decode';
+import React, { createContext, useContext, useLayoutEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { LOGIN, UPDATE_USER_DATA, UPDATE_USER_PASSWORD } from '../graphql/mutations';
-import { GET_CURRENT_USER } from '../graphql/queries';
 
 export type IUpdateUserMethod = (variables: {
   email: string,
@@ -81,6 +81,16 @@ function useProvideAuth() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState();
 
+  const setTokenData = (tokenValue: string | null) => {
+    if (tokenValue) {
+      localStorage.setItem('token', tokenValue);
+    } else {
+      localStorage.removeItem('token');
+    }
+
+    setToken(tokenValue);
+  };
+
   const signin = (email: string, password: string): ISigninOutput => {
     return client.mutate({
         mutation: LOGIN,
@@ -92,11 +102,10 @@ function useProvideAuth() {
       .then((response) => {
         const { data, errors } = response;
 
-        if (data.login && data.login.id) {
-          const loginToken = data.login.id;
+        if (data.login && data.login.token) {
+          const loginToken = data.login.token;
 
-          localStorage.setItem('token', loginToken);
-          setToken(loginToken);
+          setTokenData(loginToken);
           setError(null);
         }
 
@@ -105,9 +114,8 @@ function useProvideAuth() {
   };
 
   const signout = () => {
-    localStorage.removeItem('token');
     client.resetStore();
-    setToken(null);
+    setTokenData(null);
     setError(null);
   };
 
@@ -118,9 +126,8 @@ function useProvideAuth() {
     }).then((response) => {
       const { data, errors } = response;
 
-      if (data.updateUserData) {
-        setUser(data.updateUserData);
-        setError(null);
+      if (data.updateUserData && data.updateUserData.token) {
+        setTokenData(data.updateUserData.token);
       }
 
       return { data, errors };
@@ -152,32 +159,20 @@ function useProvideAuth() {
   // const confirmPasswordReset = (code, password) => {
   // };
 
-  useEffect(() => {
-    if (!token) {
-      setUser(undefined);
-      setError(null);
-      return;
+  useLayoutEffect(() => {
+    if (token) {
+      try {
+        const decodedUserData = jwtDecode(token);
+        setUser(decodedUserData);
+        setError(null);
+      } catch (e) {
+        setError(e);
+      }
     }
 
-    client.query({
-      fetchPolicy: 'network-only',
-      query: GET_CURRENT_USER,
-    })
-    .then(({ data, errors }) => {
-      if (errors) {
-        throw errors;
-      }
-
-      if (!data || !data.currentUser) {
-        throw new Error('no-user');
-      }
-
-      setUser(data.currentUser);
-      setError(null);
-    })
-    .catch((e) => {
-      setError(e);
-    });
+    if (!token) {
+      setUser(null);
+    }
   }, [token]);
 
   return {

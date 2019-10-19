@@ -37,7 +37,7 @@ const Suspend: React.FC = () => {
 };
 
 const PrivateRoute: React.FC<any> = (props) => {
-  const { component: Component, ...rest } = props;
+  const { children } = props;
   const { token, user, error, signout } = useAuth();
   const location = useLocation();
 
@@ -56,7 +56,7 @@ const PrivateRoute: React.FC<any> = (props) => {
   }
 
   if (user) {
-    return <Component {...rest} />;
+    return <>{children}</>;
   }
 
   return (
@@ -98,25 +98,24 @@ const App: React.FC = () => {
                     '/projects',
                     '/settings',
                   ]}
-                  component={() => (
-                    <Layouts.panel>
-                      <Route
-                        exact={true}
-                        path="/projects"
-                        component={() => (
-                          <Routes.projects />
-                        )}
-                      />
-                      <Route
-                        exact={true}
-                        path="/settings"
-                        component={() => (
-                          <Routes.settings />
-                        )}
-                      />
-                    </Layouts.panel>
-                  )}
-                />
+                >
+                  <Layouts.panel>
+                    <Route
+                      exact={true}
+                      path="/projects"
+                      component={() => (
+                        <Routes.projects />
+                      )}
+                    />
+                    <Route
+                      exact={true}
+                      path="/settings"
+                      component={() => (
+                        <Routes.settings />
+                      )}
+                    />
+                  </Layouts.panel>
+                </PrivateRoute>
 
                 <Route path="*">
                   Error 404

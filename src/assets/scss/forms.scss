@@ -1675,4 +1675,41 @@ a.pt-button.pt-disabled {
   color: #ff7373
 }
 
+.pt-button.pt-loading {
+  position: relative;
+  color: transparent !important;
+  overflow: hidden;
+  opacity: 1 !important;
+
+  &::before {
+    position: absolute;
+    display: block;
+    content: '';
+    left: 50%;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 2px solid rgba(92,112,128,.2);
+    border-right-color: #fff;
+    animation: pt-spinner-animation .4s linear infinite;
+  }
+}
+
+.pt-dark .pt-button.pt-loading::before {
+  border: 2px solid rgba(0,0,0,.2);
+  border-right-color: #fff;
+}
+
+@keyframes pt-spinner-animation {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
 
