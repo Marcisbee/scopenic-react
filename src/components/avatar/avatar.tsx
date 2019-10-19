@@ -41,8 +41,16 @@ function getInitials(value: string): string | null {
   return null;
 }
 
-const Avatar: React.FC<{ src: string, color?: string }> = ({ src, color }) => {
-  const initials = getInitials(src) || (src && src[0]);
+const Avatar: React.FC<{ src?: string, text: string, color?: string }> = ({ text, src, color }) => {
+  if (src) {
+    return (
+      <div className={styles.avatar}>
+        <img src={src} alt={text}/>
+      </div>
+    );
+  }
+
+  const initials = text && (getInitials(text) || text[0]);
   const colorData = color || getColorFromInitials(initials);
 
   return (

@@ -1,4 +1,5 @@
 @import './assets/css/normalize.css';
+@import './assets/scss/variables.scss';
 @import './assets/scss/forms.scss';
 @import './assets/scss/grids.scss';
 
@@ -60,6 +61,31 @@ hr {
   margin: 28px 0;
   border: 0;
   border-top: 1px solid rgba(16,22,26,.1);
+}
+
+.inline-error {
+  display: block;
+  color: $error-color;
+  font-weight: bold;
+  line-height: 150%;
+  margin-top: 10px;
+  font-size: 13px;
+
+  &::before {
+    display: inline-block;
+    font-family: "iconmonstr-iconic-font";
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    line-height: 1rem;
+    content: "\e049";
+    pointer-events: none;
+    padding-right: 6px;
+    vertical-align: middle;
+  }
 }
 
 .text-right { text-align: right; }

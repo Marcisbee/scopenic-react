@@ -51,7 +51,7 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
           </li>
           <li>
             <a>
-              <Avatar src={user.email} />
+              <Avatar src={user.avatar} text={`${user.first_name} ${user.last_name}`} />
             </a>
 
             <ul>
