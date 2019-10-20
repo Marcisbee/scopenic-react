@@ -3,6 +3,8 @@ declare const styles: {
   readonly "sidebar": string;
   readonly "logo": string;
   readonly "menu": string;
+  readonly "menuIcon": string;
+  readonly "menuIconBg": string;
   readonly "divider": string;
   readonly "menuActive": string;
   readonly "bottomMenu": string;

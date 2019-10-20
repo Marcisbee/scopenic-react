@@ -16,6 +16,7 @@
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.6.0",
+    "@svgr/webpack": "^4.3.3",
     "@swc/core": "^1.0.45",
     "@types/enzyme": "^3.10.3",
     "@types/graphql": "^14.5.0",

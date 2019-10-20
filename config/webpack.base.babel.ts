@@ -112,7 +112,31 @@ module.exports = (options) => ({
         test: /\.(jpg|png|gif|ico)$/,
         use: 'file-loader',
       },
-    ]
+      {
+        issuer: {
+          test: /\.tsx?$/,
+        },
+        test: /\.icon\.svg$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              icon: true,
+              svgoConfig: {
+                plugins: [{ prefixIds: false }],
+              },
+            },
+          },
+          'url-loader',
+        ],
+      },
+      {
+        test: /(?!.*?\.icon)\.svg$/,
+        use: [
+          'url-loader',
+        ],
+      },
+    ],
   },
   plugins: options.plugins.concat([
     new TypedCssModulesPlugin({

@@ -1,6 +1,11 @@
 import React, { Suspense } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import { ReactComponent as HomeIcon } from '../assets/svg/icons/home.icon.svg';
+import { ReactComponent as MoonIcon } from '../assets/svg/icons/moon.icon.svg';
+import { ReactComponent as NotificationIcon } from '../assets/svg/icons/notification.icon.svg';
+import { ReactComponent as SettingIcon } from '../assets/svg/icons/setting.icon.svg';
+import { ReactComponent as SunIcon } from '../assets/svg/icons/sun.icon.svg';
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
 import Spinner from '../components/spinner';
@@ -23,30 +28,32 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
         <ul className={styles.menu}>
           <li>
             <NavLink exact={true} activeClassName={styles.menuActive} to="/projects">
-              <ScopeShape />
-              <i className="im im-home"/>
+              <ScopeShape className={styles.menuIconBg} />
+              <HomeIcon className={styles.menuIcon} />
             </NavLink>
           </li>
           <li>
             <NavLink exact={true} activeClassName={styles.menuActive} to="/settings">
-              <ScopeShape />
-              <i className="im im-gear"/>
+              <ScopeShape className={styles.menuIconBg} />
+              <SettingIcon className={styles.menuIcon} />
             </NavLink>
           </li>
         </ul>
 
         <ul className={styles.bottomMenu}>
-          {/* @TODO: Enable dark mode option */}
           <li>
             <a onClick={() => { setDarkMode(!darkMode); }}>
-              <ScopeShape />
-              <i className="im im-paintbrush"/>
+              <ScopeShape className={styles.menuIconBg} />
+              {darkMode
+                ? <SunIcon className={styles.menuIcon} />
+                : <MoonIcon className={styles.menuIcon} />
+              }
             </a>
           </li>
           <li>
             <a>
-              <ScopeShape />
-              <i className="im im-bell"/>
+              <ScopeShape className={styles.menuIconBg} />
+              <NotificationIcon className={styles.menuIcon} />
             </a>
           </li>
           <li>
