@@ -10,9 +10,9 @@ import { useAuth, useLoggedInGuard } from '../../hooks/use-auth';
 const SigninSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Field is required'),
   password: Yup.string()
-    .required('Required'),
+    .required('Field is required'),
 });
 
 const Login: React.FC<any> = () => {

@@ -132,11 +132,11 @@
   fill: $primary-color !important;
 
   :global(.primary) {
-    fill: #caf0ff;
+    fill: #caf0ff !important;
   }
 
   :global(.secondary) {
-    fill: #fff;
+    fill: #fff !important;
   }
 }
 
@@ -177,6 +177,10 @@
   .menu > li {
     & > a {
       color: #a8bac7;
+
+      :global(.primary) {
+        fill: #1b698a;
+      }
 
       &:hover {
         fill: #395369;

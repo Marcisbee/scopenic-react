@@ -1587,7 +1587,15 @@ label.pt-label.pt-fill .pt-select {
   border-radius: 3px;
   background-color: rgba(138,155,168,.15);
   width: 100%;
-  padding: 15px 12px 12px
+  padding: 15px 12px 12px;
+
+  svg .primary {
+    fill: rgba(138,155,168,.5);
+  }
+
+  svg .secondary {
+    fill: rgb(138,155,168);
+  }
 }
 
 .pt-callout.pt-callout-icon {
@@ -1598,13 +1606,20 @@ label.pt-label.pt-fill .pt-select {
   position: absolute;
   top: 15px;
   left: 15px;
-  color: #5c7080
+  color: #5c7080;
+}
+
+.pt-callout.pt-callout-icon svg.im {
+  margin-top: -4px;
+  margin-left: -4px;
+  width: 30px;
+  height: 30px;
 }
 
 .pt-callout .pt-callout-title {
   margin-top: 0;
   margin-bottom: 5px;
-  line-height: 20px
+  line-height: 20px;
 }
 
 .pt-dark .pt-callout {
@@ -1616,7 +1631,15 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-callout.pt-intent-primary {
-  background-color: rgba(19,124,189,.15)
+  background-color: rgba(19,124,189,.15);
+
+  svg .primary {
+    fill: rgba(16, 107, 163, 0.5);
+  }
+
+  svg .secondary {
+    fill: #106ba3;
+  }
 }
 
 .pt-callout.pt-intent-primary .pt-callout-title,.pt-callout.pt-intent-primary .im,.pt-callout.pt-intent-primary[class*=pt-icon-]:before {
@@ -1624,15 +1647,31 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-dark .pt-callout.pt-intent-primary {
-  background-color: rgba(19,124,189,.25)
+  background-color: rgba(19,124,189,.25);
+
+  svg .primary {
+    fill: rgba(72, 176, 240, 0.5);
+  }
+
+  svg .secondary {
+    fill: #48aff0;
+  }
 }
 
 .pt-dark .pt-callout.pt-intent-primary .pt-callout-icon,.pt-dark .pt-callout.pt-intent-primary .pt-callout-title,.pt-dark .pt-callout.pt-intent-primary[class*=pt-icon-]:before {
-  color: #48aff0
+  color: #48aff0;
 }
 
 .pt-callout.pt-intent-success {
-  background-color: rgba(15,153,96,.15)
+  background-color: rgba(15,153,96,.15);
+
+  svg .primary {
+    fill: rgba(13, 128, 80, 0.5);
+  }
+
+  svg .secondary {
+    fill: #0d8050;
+  }
 }
 
 .pt-callout.pt-intent-success .pt-callout-title,.pt-callout.pt-intent-success .im,.pt-callout.pt-intent-success[class*=pt-icon-]:before {
@@ -1640,7 +1679,15 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-dark .pt-callout.pt-intent-success {
-  background-color: rgba(15,153,96,.25)
+  background-color: rgba(15,153,96,.25);
+
+  svg .primary {
+    fill: rgba(61, 204, 144, 0.5);
+  }
+
+  svg .secondary {
+    fill: #3dcc91;
+  }
 }
 
 .pt-dark .pt-callout.pt-intent-success .pt-callout-icon,.pt-dark .pt-callout.pt-intent-success .pt-callout-title,.pt-dark .pt-callout.pt-intent-success[class*=pt-icon-]:before {
@@ -1648,7 +1695,15 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-callout.pt-intent-warning {
-  background-color: rgba(217,130,43,.15)
+  background-color: rgba(217,130,43,.15);
+
+  svg .primary {
+    fill: rgba(191, 115, 38, 0.5);
+  }
+
+  svg .secondary {
+    fill: #bf7326;
+  }
 }
 
 .pt-callout.pt-intent-warning .pt-callout-title,.pt-callout.pt-intent-warning .im,.pt-callout.pt-intent-warning[class*=pt-icon-]:before {
@@ -1656,7 +1711,15 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-dark .pt-callout.pt-intent-warning {
-  background-color: rgba(217,130,43,.25)
+  background-color: rgba(217,130,43,.25);
+
+  svg .primary {
+    fill: rgba(255, 179, 102, 0.5);
+  }
+
+  svg .secondary {
+    fill: #ffb366;
+  }
 }
 
 .pt-dark .pt-callout.pt-intent-warning .pt-callout-icon,.pt-dark .pt-callout.pt-intent-warning .pt-callout-title,.pt-dark .pt-callout.pt-intent-warning[class*=pt-icon-]:before {
@@ -1664,7 +1727,15 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-callout.pt-intent-danger {
-  background-color: rgba(219,55,55,.15)
+  background-color: rgba(219,55,55,.15);
+
+  svg .primary {
+    fill: rgba(194, 48, 48, 0.5);
+  }
+
+  svg .secondary {
+    fill: #c23030;
+  }
 }
 
 .pt-callout.pt-intent-danger .pt-callout-title,.pt-callout.pt-intent-danger .im,.pt-callout.pt-intent-danger[class*=pt-icon-]:before {
@@ -1672,7 +1743,15 @@ label.pt-label.pt-fill .pt-select {
 }
 
 .pt-dark .pt-callout.pt-intent-danger {
-  background-color: rgba(219,55,55,.25)
+  background-color: rgba(219,55,55,.25);
+
+  svg .primary {
+    fill: rgba(255, 115, 115, 0.5);
+  }
+
+  svg .secondary {
+    fill: #ff7373;
+  }
 }
 
 .pt-dark .pt-callout.pt-intent-danger .pt-callout-icon,.pt-dark .pt-callout.pt-intent-danger .pt-callout-title,.pt-dark .pt-callout.pt-intent-danger[class*=pt-icon-]:before {

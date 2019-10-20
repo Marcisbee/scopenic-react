@@ -3,6 +3,8 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
+import { ReactComponent as AlertIcon } from '../../assets/svg/icons/alert.icon.svg';
+import { ReactComponent as CheckIcon } from '../../assets/svg/icons/check.icon.svg';
 import { ReactComponent as PersonIcon } from '../../assets/svg/icons/person.icon.svg';
 import { ReactComponent as ShieldCheckIcon } from '../../assets/svg/icons/shield-check.icon.svg';
 import FormInput from '../../components/form-input';
@@ -14,22 +16,22 @@ import { formatErrorMessage } from '../../utils/format-error-message';
 const UpdateUserDataSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Field is required'),
   first_name: Yup.string()
-    .required('Required'),
+    .required('Field is required'),
   last_name: Yup.string()
-    .required('Required'),
+    .required('Field is required'),
 });
 
 const UpdateUserPasswordSchema = Yup.object().shape({
   currentPassword: Yup.string()
-    .required('Required'),
+    .required('Field is required'),
 
   confirmNewPassword: Yup.string()
-    .required('Required')
+    .required('Field is required')
     .oneOf([Yup.ref('newPassword'), null], 'New password must match'),
   newPassword: Yup.string()
-    .required('Required'),
+    .required('Field is required'),
 });
 
 const Settings: React.FC = () => {
@@ -84,7 +86,7 @@ const Settings: React.FC = () => {
               <fieldset>
                 {status.error && (
                   <div className="m-b-30 pt-callout pt-callout-icon pt-intent-danger">
-                    <i className="im im-warning" />
+                    <AlertIcon className="im" />
                     <h4 className="pt-callout-title">Error ocurred</h4>
                     {status.error}
                   </div>
@@ -92,7 +94,7 @@ const Settings: React.FC = () => {
 
                 {status.success && (
                   <div className="m-b-30 pt-callout pt-callout-icon pt-intent-success">
-                    <i className="im im-check-mark" />
+                    <CheckIcon className="im" />
                     <h4 className="pt-callout-title">{status.success}</h4>
                   </div>
                 )}
@@ -295,7 +297,7 @@ const Settings: React.FC = () => {
               <fieldset>
                 {status.error && (
                   <div className="m-b-30 pt-callout pt-callout-icon pt-intent-danger">
-                    <i className="im im-warning" />
+                    <AlertIcon className="im" />
                     <h4 className="pt-callout-title">Error ocurred</h4>
                     {status.error}
                   </div>
@@ -303,7 +305,7 @@ const Settings: React.FC = () => {
 
                 {status.success && (
                   <div className="m-b-30 pt-callout pt-callout-icon pt-intent-success">
-                    <i className="im im-check-mark" />
+                    <CheckIcon className="im" />
                     <h4 className="pt-callout-title">{status.success}</h4>
                   </div>
                 )}
