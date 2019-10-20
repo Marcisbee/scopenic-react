@@ -72,11 +72,9 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
       </div>
 
       <div className={styles.main}>
-        <div className={styles.wrapper}>
-          <Suspense fallback={<Spinner type="full" />}>
-            {children}
-          </Suspense>
-        </div>
+        <Suspense fallback={<Spinner type="full" />}>
+          {children}
+        </Suspense>
       </div>
     </div>
   );

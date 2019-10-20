@@ -131,6 +131,17 @@ function useProvideAuth() {
       }
 
       return { data, errors };
+    }).catch((e) => {
+      const firstError = e.networkError
+        && e.networkError.result
+        && e.networkError.result.errors
+        && e.networkError.result.errors[0];
+
+      if (firstError) {
+        throw new Error(firstError.message);
+      }
+
+      throw e;
     });
   };
 

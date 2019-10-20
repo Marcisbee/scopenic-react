@@ -16,7 +16,7 @@ export const UPDATE_USER_DATA = gql`
     $email: String!
     $first_name: String!
     $last_name: String!
-    $avatar: String
+    $avatar: URI
     $language: String!
   ) {
     updateUserData(

@@ -37,7 +37,6 @@ module.exports = require('./webpack.base.babel.ts')({
     ]),
     new ForkTsCheckerWebpackPlugin({
       async: false,
-      tslint: true,
     }),
     new HtmlWebpackPlugin({
       inject: true,

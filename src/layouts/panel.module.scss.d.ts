@@ -9,7 +9,6 @@ declare const styles: {
   readonly "menuActive": string;
   readonly "bottomMenu": string;
   readonly "main": string;
-  readonly "wrapper": string;
 };
 export = styles;
 

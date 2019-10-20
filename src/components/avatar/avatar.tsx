@@ -41,7 +41,14 @@ function getInitials(value: string): string | null {
   return null;
 }
 
-const Avatar: React.FC<{ src?: string, text: string, color?: string }> = ({ text, src, color }) => {
+interface IAvatarProps {
+  src?: string;
+  text: string;
+  color?: string;
+  size?: number;
+}
+
+const Avatar: React.FC<IAvatarProps> = ({ text, src, color, size }) => {
   if (src) {
     return (
       <div className={styles.avatar}>
@@ -54,7 +61,16 @@ const Avatar: React.FC<{ src?: string, text: string, color?: string }> = ({ text
   const colorData = color || getColorFromInitials(initials);
 
   return (
-    <div className={styles.avatar} style={{ backgroundColor: colorData }}>
+    <div
+      className={styles.avatar}
+      style={{
+        backgroundColor: colorData,
+        fontSize: `${size && size * 0.45}px`,
+        height: size,
+        lineHeight: `${size}px`,
+        width: size,
+      }}
+    >
       {initials}
     </div>
   );

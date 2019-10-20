@@ -1,7 +1,8 @@
 @import './assets/css/normalize.css';
 @import './assets/scss/variables.scss';
 @import './assets/scss/forms.scss';
-@import './assets/scss/grids.scss';
+
+@import 'flexboxgrid';
 
 * {
   box-sizing: border-box;

@@ -34,8 +34,8 @@ const FormInput: React.FC<IFormInputProps> = ({
   if (type === 'horizontal') {
     return (
       <label className="pt-large pt-label pt-fill pt-inline">
-        <div className="grid">
-          <span className="column">
+        <div className="row">
+          <span className="col-xs-4">
             {label && (
               <>
                 {label}
@@ -43,7 +43,7 @@ const FormInput: React.FC<IFormInputProps> = ({
               </>
             )}
           </span>
-          <span className="column bigger">
+          <span className="col-xs-8">
             {component({ name, touched, error, hasError: !!errorBlock })}
             {errorBlock}
           </span>

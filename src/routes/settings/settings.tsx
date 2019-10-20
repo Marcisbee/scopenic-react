@@ -10,7 +10,7 @@ import { ReactComponent as ShieldCheckIcon } from '../../assets/svg/icons/shield
 import FormInput from '../../components/form-input';
 import SettingsBlock from '../../components/settings-block';
 import { useAuth } from '../../hooks/use-auth';
-import styles from '../../shared.module.scss';
+import sharedStyles from '../../shared.module.scss';
 import { formatErrorMessage } from '../../utils/format-error-message';
 
 const UpdateUserDataSchema = Yup.object().shape({
@@ -38,8 +38,8 @@ const Settings: React.FC = () => {
   const { user, updateUser, updatePassword } = useAuth();
 
   return (
-    <div>
-      <div className={styles.heading}>
+    <div className={sharedStyles.wrapper}>
+      <div className={sharedStyles.heading}>
         <h1>Settings</h1>
       </div>
 

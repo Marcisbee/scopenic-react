@@ -9,6 +9,18 @@
   }
 }
 
+.wrapper {
+  width: 750px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+
+.wrapperLarge {
+  width: 950px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+
 // Dark theme
 :global(.pt-dark) {
   .heading {
