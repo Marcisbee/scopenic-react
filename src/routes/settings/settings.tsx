@@ -1,11 +1,15 @@
 import cc from 'classcat';
-import { Field, Form, Formik, FormikErrors, FormikTouched } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
+import { ReactComponent as PersonIcon } from '../../assets/svg/icons/person.icon.svg';
+import { ReactComponent as ShieldCheckIcon } from '../../assets/svg/icons/shield-check.icon.svg';
+import FormInput from '../../components/form-input';
 import SettingsBlock from '../../components/settings-block';
 import { useAuth } from '../../hooks/use-auth';
 import styles from '../../shared.module.scss';
+import { formatErrorMessage } from '../../utils/format-error-message';
 
 const UpdateUserDataSchema = Yup.object().shape({
   email: Yup.string()
@@ -28,85 +32,6 @@ const UpdateUserPasswordSchema = Yup.object().shape({
     .required('Required'),
 });
 
-interface IFormInputProps {
-  name: string;
-  type?: 'vertical' | 'horizontal';
-  label?: string;
-  required?: boolean;
-  input?: React.InputHTMLAttributes<HTMLInputElement>;
-  touched?: FormikTouched<any>;
-  error?: FormikErrors<any>;
-  component: (props: { name: string, touched: boolean, error: boolean, hasError: boolean }) => React.ReactNode;
-}
-
-const FormInput: React.FC<IFormInputProps> = ({
-  name,
-  type,
-  label,
-  required,
-  error: errorRecord,
-  touched: touchedRecord,
-  component,
-}: any) => {
-  const touched = touchedRecord && touchedRecord[name];
-  const error = errorRecord && errorRecord[name];
-
-  const errorBlock = touched && error && (
-    <div className="inline-error">{error}</div>
-  );
-  const requiredBlock = required && (
-    <span className="pt-text-muted">(required)</span>
-  );
-
-  if (type === 'horizontal') {
-    return (
-      <label className="pt-large pt-label pt-fill pt-inline">
-        <div className="grid">
-          <span className="column">
-            {label && (
-              <>
-                {label}
-                {requiredBlock}
-              </>
-            )}
-          </span>
-          <span className="column bigger">
-            {component({ name, touched, error, hasError: !!errorBlock })}
-            {errorBlock}
-          </span>
-        </div>
-      </label>
-    );
-  }
-
-  return (
-    <label className="pt-large pt-label">
-      {label && (
-        <div>
-          {label}
-          {requiredBlock}
-          {errorBlock}
-        </div>
-      )}
-      {component({ name, touched, error, hasError: !!errorBlock })}
-    </label>
-  );
-};
-
-function formatErrorMessage(error: any, setErrors: any): string | undefined {
-  const firstError = error.graphQLErrors
-    && error.graphQLErrors[0];
-
-  if (firstError && firstError.extensions
-    && firstError.extensions.code === 'BAD_USER_INPUT'
-    && firstError.extensions.validation) {
-    setErrors(firstError.extensions.validation);
-    return;
-  }
-
-  return (firstError && firstError.message) || error.message;
-}
-
 const Settings: React.FC = () => {
   const { user, updateUser, updatePassword } = useAuth();
 
@@ -117,7 +42,9 @@ const Settings: React.FC = () => {
       </div>
 
       <SettingsBlock
-        icon="id-card"
+        icon={
+          <PersonIcon className="sc-settings-icon-fg" />
+        }
         color="#0a8ffb"
         title="Profile details"
         description="General profile information"
@@ -311,11 +238,12 @@ const Settings: React.FC = () => {
             </Form>
           )}
         </Formik>
-
       </SettingsBlock>
 
       <SettingsBlock
-        icon="shield"
+        icon={
+          <ShieldCheckIcon className="sc-settings-icon-fg" />
+        }
         color="#d62828"
         title="Security settings"
         description="Change current password, enable two-factor authentification"

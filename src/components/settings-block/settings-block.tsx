@@ -6,7 +6,7 @@ import ScopeShape from '../decorations/scope-shape';
 import styles from './settings-block.module.scss';
 
 export interface ISettingsBlock {
-  icon: string;
+  icon: React.ReactNode;
   color: string;
   title: string;
   description: string;
@@ -31,8 +31,8 @@ const SettingsBlock: React.FC<ISettingsBlock> = ({
     <div className={styles.container}>
       <div className={styles.header} onClick={onClick}>
         <div className={styles.icon}>
-          <ScopeShape color={color} />
-          <i className={`im im-${icon}`} />
+          <ScopeShape className={styles.iconBg} color={color} />
+          {icon}
         </div>
 
         <div className={styles.description}>
