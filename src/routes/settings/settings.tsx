@@ -185,6 +185,7 @@ const Settings: React.FC = () => {
                       <>
                         <AvatarUpload
                           current={values.avatar}
+                          userName={`${values.first_name} ${values.last_name}`}
                           onSetAvatar={(avatarUrl) => {
                             setFieldValue(name, avatarUrl);
                           }}

@@ -9,10 +9,11 @@ import styles from './avatar-upload.module.scss';
 
 interface IAvatarUploadProps {
   current: string;
+  userName: string;
   onSetAvatar: (avatarUrl: string) => void;
 }
 
-const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, onSetAvatar }) => {
+const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, userName, onSetAvatar }) => {
   const [image, setImage] = useState();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -51,7 +52,7 @@ const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, onSetAvatar }) =>
   return (
     <div>
       <div className={styles.avatar}>
-        <Avatar size={80} src={current} text="Avatar" />
+        <Avatar size={80} src={current} text={userName} />
         <input type="file" onChange={onFileChange} />
         <strong>
           Upload
