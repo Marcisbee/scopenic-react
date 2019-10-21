@@ -1,5 +1,7 @@
 @import '../assets/scss/variables.scss';
 
+$sidebar-size: 60px;
+
 .panel {
   min-height: 100vh;
   background-color: #f1f7fb;
@@ -12,7 +14,7 @@
   left: 0;
   top: 0;
   height: 100%;
-  width: 60px;
+  width: $sidebar-size;
   z-index: 100;
 }
 
@@ -154,7 +156,7 @@
 }
 
 .main {
-  padding: 20px 0 20px 80px;
+  padding: 20px 0 20px $sidebar-size;
 }
 
 // Dark theme

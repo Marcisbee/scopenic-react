@@ -11,7 +11,7 @@ const Projects: React.FC = () => {
       </div>
 
       <div className="row">
-        <div className="col-xs-4">
+        <div className="col-xs-12 col-sm-6 col-md-4">
           <ProjectPreview
             image="https://cdn.dribbble.com/users/180062/screenshots/7442135/shot-cropped-1570784692945.png"
             name="My blog"
@@ -35,7 +35,7 @@ const Projects: React.FC = () => {
             isPrivate={true}
           />
         </div>
-        <div className="col-xs-4">
+        <div className="col-xs-12 col-sm-6 col-md-4">
           <ProjectPreview
             image="https://cdn.dribbble.com/users/180062/screenshots/7442135/shot-cropped-1570784692945.png"
             name="Strike.lv blogs"

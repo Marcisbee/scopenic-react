@@ -7,6 +7,8 @@ import { ReactComponent as AlertIcon } from '../../assets/svg/icons/alert.icon.s
 import { ReactComponent as CheckIcon } from '../../assets/svg/icons/check.icon.svg';
 import { ReactComponent as PersonIcon } from '../../assets/svg/icons/person.icon.svg';
 import { ReactComponent as ShieldCheckIcon } from '../../assets/svg/icons/shield-check.icon.svg';
+import Avatar from '../../components/avatar';
+import AvatarUpload from '../../components/avatar-upload';
 import FormInput from '../../components/form-input';
 import SettingsBlock from '../../components/settings-block';
 import { useAuth } from '../../hooks/use-auth';
@@ -81,7 +83,7 @@ const Settings: React.FC = () => {
               });
           }}
         >
-          {({ touched, dirty, isValidating, isSubmitting, status = {}, errors }) => (
+          {({ submitForm, values, touched, dirty, isValidating, isSubmitting, status = {}, errors, setFieldValue }) => (
             <Form className="pure-form pure-form-stacked">
               <fieldset>
                 {status.error && (
@@ -179,15 +181,15 @@ const Settings: React.FC = () => {
                     name="avatar"
                     touched={touched}
                     error={errors}
-                    component={({ hasError, name }) => (
-                      <Field
-                        name={name}
-                        className={cc([
-                          'pt-large pt-input',
-                          hasError && 'pt-intent-danger',
-                        ])}
-                        type="text"
-                      />
+                    component={({ name }) => (
+                      <>
+                        <AvatarUpload
+                          current={values.avatar}
+                          onSetAvatar={(avatarUrl) => {
+                            setFieldValue(name, avatarUrl);
+                          }}
+                        />
+                      </>
                     )}
                   />
                 </div>
@@ -223,7 +225,9 @@ const Settings: React.FC = () => {
 
                 <div className="text-right">
                   {dirty && (
-                    <span className="pt-text-small pt-text-muted m-r-20">You have unsaved changes</span>
+                    <span className="pt-text-small pt-text-muted m-r-20 text-color-warning">
+                      You have unsaved changes
+                    </span>
                   )}
                   <button
                     type="submit"
@@ -390,7 +394,9 @@ const Settings: React.FC = () => {
 
                 <div className="text-right">
                   {dirty && (
-                    <span className="pt-text-small pt-text-muted m-r-20">You have unsaved changes</span>
+                    <span className="pt-text-small pt-text-muted m-r-20 text-color-warning">
+                      You have unsaved changes
+                    </span>
                   )}
                   <button
                     type="submit"

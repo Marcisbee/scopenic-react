@@ -51,7 +51,13 @@ interface IAvatarProps {
 const Avatar: React.FC<IAvatarProps> = ({ text, src, color, size }) => {
   if (src) {
     return (
-      <div className={styles.avatar}>
+      <div
+        className={styles.avatar}
+        style={{
+          height: size,
+          width: size,
+        }}
+      >
         <img src={src} alt={text}/>
       </div>
     );
