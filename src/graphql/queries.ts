@@ -28,6 +28,8 @@ export const GET_PROJECTS_BY_VIEWER = gql`
       isArchived
       url
       views
+      type
+      responsive
       contributors {
         id
         first_name

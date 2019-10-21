@@ -5,6 +5,7 @@ import Store from 'statux';
 
 import GraphqlProvider from '../graphql';
 import { ProvideAuth, useAuth } from '../hooks/use-auth';
+import { Suspend } from '../utils/suspend';
 
 import Spinner from './spinner';
 
@@ -31,10 +32,6 @@ const Routes = {
 //       return ({ ...obj, [key]: value })
 //     }, {});
 // }
-
-const Suspend: React.FC = () => {
-  throw new Promise((r) => r());
-};
 
 const PrivateRoute: React.FC<any> = (props) => {
   const { children } = props;

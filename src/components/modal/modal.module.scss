@@ -25,16 +25,21 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  @media screen and (max-width: 768px) {
+    -webkit-box-align: flex-end;
+    -ms-flex-align: flex-end;
+    align-items: flex-end;
+  }
 }
 
 .modal {
   background-color: #fff;
   box-shadow: 0 0 0 1px rgba(16,22,26,.1), 0 4px 8px rgba(16,22,26,.2), 0 18px 46px 6px rgba(16,22,26,.2);
   border-radius: 6px;
-  margin-bottom: 20px;
   width: 500px;
   max-width: 90%;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 .header {
