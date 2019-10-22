@@ -1,0 +1,29 @@
+.heading {
+  display: block;
+  border-bottom: 1px solid #e7edf1;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 28px;
+    margin: 10px 0 20px 0;
+  }
+}
+
+.wrapper {
+  width: 750px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+
+.wrapperLarge {
+  width: 950px;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+// Dark theme
+:global(.pt-dark) {
+  .heading {
+    border-color: #354552;
+  }
+}

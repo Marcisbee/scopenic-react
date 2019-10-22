@@ -1,26 +1,23 @@
+import cc from 'classcat';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import { Redirect } from 'react-router';
-import cc from 'classcat';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useMutation } from '@apollo/react-hooks';
 
-import { useAuth, useLoggedInGuard } from '../../context/auth';
 import FieldError from '../../components/field-error';
-import { LOGIN } from '../../graphql/mutations';
+import { useAuth, useLoggedInGuard } from '../../hooks/use-auth';
 
-const SignupSchema = Yup.object().shape({
+const SigninSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Field is required'),
   password: Yup.string()
-    .required('Required'),
+    .required('Field is required'),
 });
 
 const Login: React.FC<any> = () => {
-  const { setAuthToken } = useAuth();
-  const [login] = useMutation(LOGIN);
   const redirect = useLoggedInGuard();
+  const { signin } = useAuth();
 
   if (redirect) {
     return <Redirect to={redirect} />;
@@ -34,7 +31,8 @@ const Login: React.FC<any> = () => {
           email: '',
           password: '',
         }}
-        validationSchema={SignupSchema}
+        validateOnBlur={false}
+        validationSchema={SigninSchema}
         // validate={async (values) => {
         //   const errors: Record<string, any> = {};
         //   await sleep(1000);
@@ -48,17 +46,19 @@ const Login: React.FC<any> = () => {
         //   }
         // }}
         onSubmit={async (values, actions) => {
-          await login({ variables: values })
+          await signin(values.email, values.password)
             .then((response) => {
               if (!response.data || !response.data.login) {
-                throw new Error('Email or password was incorrect!');
+                throw new Error('Something went wrong');
               }
-
-              actions.setStatus({ success: response.data.login });
-              setAuthToken(response.data.login.id);
             })
             .catch((error) => {
-              actions.setStatus({ error: error.message });
+              const errorMessage = error.graphQLErrors
+                && error.graphQLErrors[0]
+                && error.graphQLErrors[0].message
+                || error.message;
+
+              actions.setStatus({ error: errorMessage });
             })
             .finally(() => {
               actions.setSubmitting(false);
@@ -96,6 +96,6 @@ const Login: React.FC<any> = () => {
       </Formik>
     </div>
   );
-}
+};
 
 export default Login;

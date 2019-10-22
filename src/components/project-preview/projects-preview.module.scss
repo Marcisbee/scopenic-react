@@ -1,0 +1,174 @@
+.project {
+  display: block;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(16, 22, 26, 0.05), 0 8px 24px rgba(16, 22, 26, 0.02);
+  border-radius: 6px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  color: #222 !important;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 14px rgba(16, 22, 26, 0.05), 0 8px 34px rgba(16, 22, 26, 0.02);
+  }
+}
+
+.header {
+  display: block;
+  background-color: #f0f0f0;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  position: relative;
+  height: 120px;
+
+  img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.content {
+  display: block;
+  padding: 14px;
+}
+
+.title {
+  display: block;
+  margin-top: 0;
+  line-height: 150%;
+  margin-bottom: 10px;
+
+  svg {
+    display: inline-block;
+    margin: -2px 6px -2px -2px;
+    opacity: 0.6;
+
+    :global(.primary) {
+      fill: #a8a8a8;
+    }
+
+    :global(.secondary) {
+      fill: #707070;
+    }
+  }
+}
+
+.paragraph {
+  font-size: 14px;
+  color: #5a5a5a;
+  margin-bottom: 0;
+}
+
+.footer {
+  margin-top: 16px;
+  border-top: 2px solid #eff4f7;
+  padding-top: 14px;
+}
+
+.metaItem {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 12px;
+  color: #8d8d8d;
+  line-height: 28px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: sub;
+    margin-right: 3px;
+    margin-bottom: -1px;
+
+    :global(.primary) {
+      fill: #a8a8a8;
+    }
+
+    :global(.secondary) {
+      fill: #8f8f8f;
+    }
+  }
+}
+
+.contributors {
+  > div {
+    margin-right: -10px;
+    box-shadow: 0 0 0 2px #fff;
+    position: relative;
+
+    &:nth-child(1) {
+      z-index: 10;
+    }
+
+    &:nth-child(2) {
+      z-index: 9;
+    }
+
+    &:nth-child(3) {
+      z-index: 8;
+    }
+
+    &:nth-child(4) {
+      z-index: 7;
+    }
+
+    &:nth-child(5) {
+      z-index: 6;
+    }
+  }
+}
+
+// Dark theme
+:global(.pt-dark) {
+  .project {
+    background-color: #30404d;
+  }
+  
+  .content {
+    color: #fff;
+  }
+
+  .title {
+    svg {
+      :global(.primary) {
+        fill: #888888;
+      }
+
+      :global(.secondary) {
+        fill: #a8a8a8;
+      }
+    }
+  }
+
+  .paragraph {
+    color: #bfccd6;
+  }
+
+  .footer {
+    border-color: #3a4a56;
+  }
+
+  .contributors {
+    > div {
+      box-shadow: 0 0 0 2px #30404d;
+    }
+  }
+
+  .metaItem {
+    color: #87939c;
+    
+    svg {
+    :global(.primary) {
+      fill: #6f7a83;
+    }
+
+    :global(.secondary) {
+      fill: #87939c;
+    }
+    }
+  }
+}

@@ -9,7 +9,7 @@ app.use(express.static(__dirname));
 
 // send the user to index html page inspite of the url
 app.get('*', (req, res) => {
-  const filePath = path.resolve(__dirname, `build/${req.url}`);
+  const filePath = path.resolve(__dirname, `dist/${req.url}`);
 
   try {
     if (req.url !== '/' && fs.existsSync(filePath)) {
@@ -18,7 +18,7 @@ app.get('*', (req, res) => {
     }
   } catch (e) {}
 
-  const indexPath = path.resolve(__dirname, 'build/index.html');
+  const indexPath = path.resolve(__dirname, 'dist/index.html');
   res.sendFile(indexPath);
 });
 

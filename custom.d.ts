@@ -1,16 +1,12 @@
-declare module "*.svg" {
-  const content: any;
-  export default content;
+declare module '*.icon.svg' {
+  const url: string;
+  export const ReactComponent: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  export default url;
+}
+
+declare module '*.svg' {
+  const url: string;
+  export default url;
 }
 
 declare module 'statux';
-
-declare module '*.module.css' {
-  const content: { [className: string]: string };
-  export default content;
-}
-
-declare module '*.css' {
-  const content: { [className: string]: string };
-  export default content;
-}
