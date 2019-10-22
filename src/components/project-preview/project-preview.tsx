@@ -48,7 +48,11 @@ const ProjectPreview: React.FC<IProjectPreviewProps> = ({
           {name}
         </strong>
 
-        <span className={styles.paragraph}>{description}</span>
+        <span className={styles.paragraph}>
+          {description || (
+            <i style={{ opacity: 0.5 }}>No description</i>
+          )}
+        </span>
 
         <span
           className={cc([
