@@ -82,8 +82,8 @@ const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, userName, onSetAv
           </div>
 
           <footer>
-            <button className="pt-button m-r-10" onClick={closeModal}>Cancel</button>
-            <button className="pt-button pt-intent-success" onClick={getImage}>Crop avatar</button>
+            <button type="button" className="pt-button m-r-10" onClick={closeModal}>Cancel</button>
+            <button type="submit" className="pt-button pt-intent-success" onClick={getImage}>Crop avatar</button>
           </footer>
         </Modal>
       )}

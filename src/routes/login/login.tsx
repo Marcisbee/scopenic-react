@@ -31,6 +31,7 @@ const Login: React.FC<any> = () => {
           email: '',
           password: '',
         }}
+        validateOnBlur={false}
         validationSchema={SigninSchema}
         // validate={async (values) => {
         //   const errors: Record<string, any> = {};

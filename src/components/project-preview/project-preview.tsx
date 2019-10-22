@@ -37,7 +37,7 @@ const ProjectPreview: React.FC<IProjectPreviewProps> = ({
   isPrivate,
 }) => {
   return (
-    <Link to={`/project/${id}`} className={styles.project}>
+    <Link to={`/editor/${id}`} className={styles.project}>
       <span className={styles.header}>
         <img src={image} alt={name}/>
       </span>

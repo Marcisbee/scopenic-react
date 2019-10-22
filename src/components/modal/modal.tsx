@@ -36,7 +36,7 @@ const Modal: React.FC<IModalProps> = ({ width, title, close, children }) => {
                   <h3>{title}</h3>
                 </div>
                 <div className="col-xs-2 text-right">
-                  <button className={styles.close} onClick={close}>
+                  <button type="button" className={styles.close} onClick={close}>
                     <CloseIcon />
                   </button>
                 </div>

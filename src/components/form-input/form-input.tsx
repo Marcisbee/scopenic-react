@@ -53,15 +53,15 @@ const FormInput: React.FC<IFormInputProps> = ({
   }
 
   return (
-    <label className="pt-large pt-label">
+    <label className="pt-large pt-label pt-fill">
       {label && (
-        <div>
+        <div className="m-b-10">
           {label}
           {requiredBlock}
-          {errorBlock}
         </div>
       )}
       {component({ name, touched, error, hasError: !!errorBlock })}
+      {errorBlock}
     </label>
   );
 };
