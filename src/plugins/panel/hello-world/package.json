@@ -1,0 +1,14 @@
+{
+  "id": "PLG123",
+  "name": "hello-world",
+  "version": "0.0.1",
+  "main": "plugin.ts",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  }
+}

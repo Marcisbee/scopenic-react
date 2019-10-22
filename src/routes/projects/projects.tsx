@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/react-hooks';
 import React, { Suspense, useState } from 'react';
 
+import Alert from '../../components/alert/alert';
 import Modal from '../../components/modal';
 import ProjectPreview from '../../components/project-preview';
 import Spinner from '../../components/spinner';
@@ -40,6 +41,7 @@ const Projects: React.FC = () => {
                 <div>
                   <p>Hello world</p>
                 </div>
+
                 <footer>
                   <button className="pt-button m-r-10" onClick={closeModal}>Cancel</button>
                   <button className="pt-button pt-intent-success">Create Project</button>
@@ -49,6 +51,12 @@ const Projects: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <Alert
+        show={!!error}
+        type="danger"
+        title={error && error.message}
+      />
 
       {/* @TODO: Create skeletons for loading projects */}
       <Suspense fallback={<Spinner type="full" />}>

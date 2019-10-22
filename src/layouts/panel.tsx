@@ -8,11 +8,17 @@ import { ReactComponent as SettingIcon } from '../assets/svg/icons/setting.icon.
 import { ReactComponent as SunIcon } from '../assets/svg/icons/sun.icon.svg';
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
+import Plugins from '../components/plugins';
 import Spinner from '../components/spinner';
 import { useAuth } from '../hooks/use-auth';
 import { useDarkMode } from '../hooks/use-dark-mode';
 
 import styles from './panel.module.scss';
+
+// Plugins
+const enabledPlugins = {
+  // 'hello-world': () => import('../plugins/panel/hello-world'),
+};
 
 const PanelLayout: React.FC = React.memo(({ children }) => {
   const { user, signout } = useAuth();
@@ -38,6 +44,15 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
               <SettingIcon className={styles.menuIcon} />
             </NavLink>
           </li>
+          <Plugins
+            scope="panelMenu"
+            src={enabledPlugins}
+            render={({ children: child }) => (
+              <li>
+                {child}
+              </li>
+            )}
+          />
         </ul>
 
         <ul className={styles.bottomMenu}>

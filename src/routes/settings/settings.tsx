@@ -3,11 +3,9 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { ReactComponent as AlertIcon } from '../../assets/svg/icons/alert.icon.svg';
-import { ReactComponent as CheckIcon } from '../../assets/svg/icons/check.icon.svg';
 import { ReactComponent as PersonIcon } from '../../assets/svg/icons/person.icon.svg';
 import { ReactComponent as ShieldCheckIcon } from '../../assets/svg/icons/shield-check.icon.svg';
-import Avatar from '../../components/avatar';
+import Alert from '../../components/alert/alert';
 import AvatarUpload from '../../components/avatar-upload';
 import FormInput from '../../components/form-input';
 import SettingsBlock from '../../components/settings-block';
@@ -83,23 +81,21 @@ const Settings: React.FC = () => {
               });
           }}
         >
-          {({ submitForm, values, touched, dirty, isValidating, isSubmitting, status = {}, errors, setFieldValue }) => (
+          {({ values, touched, dirty, isValidating, isSubmitting, status = {}, errors, setFieldValue }) => (
             <Form className="pure-form pure-form-stacked">
               <fieldset>
-                {status.error && (
-                  <div className="m-b-30 pt-callout pt-callout-icon pt-intent-danger">
-                    <AlertIcon className="im" />
-                    <h4 className="pt-callout-title">Error ocurred</h4>
-                    {status.error}
-                  </div>
-                )}
+                <Alert
+                  show={!!status.error}
+                  type="danger"
+                  title="Error ocurred"
+                  description={status.error}
+                />
 
-                {status.success && (
-                  <div className="m-b-30 pt-callout pt-callout-icon pt-intent-success">
-                    <CheckIcon className="im" />
-                    <h4 className="pt-callout-title">{status.success}</h4>
-                  </div>
-                )}
+                <Alert
+                  show={!!status.success}
+                  type="success"
+                  title={status.success}
+                />
 
                 <div className="field">
                   <FormInput
@@ -300,20 +296,18 @@ const Settings: React.FC = () => {
           {({ touched, dirty, isValidating, isSubmitting, status = {}, errors }) => (
             <Form className="pure-form pure-form-stacked">
               <fieldset>
-                {status.error && (
-                  <div className="m-b-30 pt-callout pt-callout-icon pt-intent-danger">
-                    <AlertIcon className="im" />
-                    <h4 className="pt-callout-title">Error ocurred</h4>
-                    {status.error}
-                  </div>
-                )}
+                <Alert
+                  show={!!status.error}
+                  type="danger"
+                  title="Error ocurred"
+                  description={status.error}
+                />
 
-                {status.success && (
-                  <div className="m-b-30 pt-callout pt-callout-icon pt-intent-success">
-                    <CheckIcon className="im" />
-                    <h4 className="pt-callout-title">{status.success}</h4>
-                  </div>
-                )}
+                <Alert
+                  show={!!status.success}
+                  type="success"
+                  title={status.success}
+                />
 
                 <input
                   hidden={true}

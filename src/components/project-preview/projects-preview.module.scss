@@ -45,6 +45,7 @@
   svg {
     display: inline-block;
     margin: -2px 6px -2px -2px;
+    opacity: 0.6;
 
     :global(.primary) {
       fill: #a8a8a8;
@@ -144,7 +145,7 @@
   }
 
   .paragraph {
-    color: #ccc;
+    color: #bfccd6;
   }
 
   .footer {
@@ -154,6 +155,20 @@
   .contributors {
     > div {
       box-shadow: 0 0 0 2px #30404d;
+    }
+  }
+
+  .metaItem {
+    color: #87939c;
+    
+    svg {
+    :global(.primary) {
+      fill: #6f7a83;
+    }
+
+    :global(.secondary) {
+      fill: #87939c;
+    }
     }
   }
 }
