@@ -42,7 +42,7 @@ const Projects: React.FC = () => {
   const [newProject, setNewProject] = useState(false);
   const client = useApolloClient();
   const { loading, error, data } = useQuery(GET_PROJECTS_BY_VIEWER, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
   });
 
   const projects = data && data.projectsByViewer || [];
