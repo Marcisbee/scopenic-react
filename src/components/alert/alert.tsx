@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as AlertIcon } from '../../assets/svg/icons/alert.icon.svg';
-import { ReactComponent as CheckIcon } from '../../assets/svg/icons/check.icon.svg';
+import { AlertIcon, CheckIcon } from '../../components/icons';
 
 export interface IAlertProps {
   title: string | undefined;

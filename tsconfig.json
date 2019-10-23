@@ -1,32 +1,47 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
     "target": "es5",
     "lib": [
-      "es6",
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "es2015",
+      "es2017",
+      "dom"
     ],
+    "baseUrl": "./src",
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "pretty": true,
+    "removeComments": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
     "incremental": true,
     "noEmit": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
     "jsx": "react",
-    "rootDir": "src"
+    "rootDir": "src",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "include": [
     "./custom.d.ts",
     "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "fuse.ts",
+    "dist",
+    ".fusebox"
   ]
 }
