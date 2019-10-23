@@ -1,6 +1,6 @@
 {
   "extends": [
-    "tslint:recommended",
+    "tslint:latest",
     "tslint-react"
   ],
   "linterOptions": {
@@ -17,6 +17,26 @@
     "jsx-wrap-multiline": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
-    "no-empty": false
+    "no-empty": false,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "no-var-requires": false,
+    "ordered-imports": true,
+    "object-literal-key-quotes": [
+      false
+    ],
+    "member-ordering": [
+      false
+    ],
+    "object-literal-sort-keys": false,
+    "jsx-alignment": [
+      false
+    ],
+    "max-line-length": [
+      false
+    ],
+    "no-submodule-imports": false
   }
 }

@@ -1,3 +1,4 @@
+// tslint:disable-next-line: no-implicit-dependencies
 import React from 'react';
 
 export function panelMenu(): React.ReactNode {
