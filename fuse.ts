@@ -1,5 +1,6 @@
 // tslint:disable-next-line: no-implicit-dependencies
 import { fusebox, pluginSass, sparky } from 'fuse-box';
+import { pluginTypeChecker } from 'fuse-box-typechecker';
 
 // tslint:disable-next-line: no-implicit-dependencies
 const DOT_ENV = require('dotenv').config({
@@ -21,6 +22,13 @@ class Context {
       },
       turboMode: true,
       plugins: [
+        pluginTypeChecker({
+          name: 'App',
+          throwOnSyntactic: true,
+          throwOnSemantic: true,
+          throwOnGlobal: true,
+          throwOnOptions: true,
+        }),
         pluginSass('*.module.scss', {
           asModule: {
             scopeBehaviour: 'local',

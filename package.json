@@ -26,6 +26,7 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.4.0",
     "fuse-box": "^4.0.0-next.144",
+    "fuse-box-typechecker": "^3.0.0-next.13",
     "jest": "^24.9.0",
     "jsdom": "^15.2.0",
     "node-sass": "^4.12.0",
