@@ -1,12 +1,12 @@
-declare module '*.icon.svg' {
-  const url: string;
-  export const ReactComponent: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-  export default url;
+declare module '*.module.scss' {
+  const styles: Record<string, string>;
+  export default styles;
 }
 
-declare module '*.svg' {
-  const url: string;
-  export default url;
-}
+declare module "*.jpeg";
+declare module "*.jpg";
+declare module "*.gif";
+declare module "*.png";
+declare module "*.svg";
 
 declare module 'statux';

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { hot } from 'react-hot-loader/root';
+// import { hot } from 'react-hot-ts';
 import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import Store from 'statux';
 
@@ -10,14 +10,14 @@ import { Suspend } from '../utils/suspend';
 import Spinner from './spinner';
 
 const Layouts = {
-  panel: lazy(() => import(/* webpackChunkName: "panel" */ '../layouts/panel')),
+  panel: lazy(() => import('../layouts/panel')),
 };
 
 const Routes = {
-  login: lazy(() => import(/* webpackChunkName: "login" */ '../routes/login')),
+  login: lazy(() => import('../routes/login')),
 
-  projects: lazy(() => import(/* webpackChunkName: "projects" */ '../routes/projects')),
-  settings: lazy(() => import(/* webpackChunkName: "settings" */ '../routes/settings')),
+  projects: lazy(() => import('../routes/projects')),
+  settings: lazy(() => import('../routes/settings')),
 };
 
 // function queryString(value: string): Record<string, string> {
@@ -126,4 +126,5 @@ const App: React.FC = () => {
   );
 };
 
-export default hot(App);
+// export default hot(module)(App);
+export default App;

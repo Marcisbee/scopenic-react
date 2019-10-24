@@ -1,13 +1,15 @@
 import React, { Suspense } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { ReactComponent as HomeIcon } from '../assets/svg/icons/home.icon.svg';
-import { ReactComponent as MoonIcon } from '../assets/svg/icons/moon.icon.svg';
-import { ReactComponent as NotificationIcon } from '../assets/svg/icons/notification.icon.svg';
-import { ReactComponent as SettingIcon } from '../assets/svg/icons/setting.icon.svg';
-import { ReactComponent as SunIcon } from '../assets/svg/icons/sun.icon.svg';
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
+import {
+  HomeIcon,
+  MoonIcon,
+  NotificationIcon,
+  SettingIcon,
+  SunIcon,
+} from '../components/icons';
 import Plugins from '../components/plugins';
 import Spinner from '../components/spinner';
 import { useAuth } from '../hooks/use-auth';
