@@ -2,9 +2,7 @@ import cc from 'classcat';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ReactComponent as CommentsIcon } from '../../assets/svg/icons/comments.icon.svg';
-import { ReactComponent as FlagIcon } from '../../assets/svg/icons/flag.icon.svg';
-import { ReactComponent as LockIcon } from '../../assets/svg/icons/lock.icon.svg';
+import { CommentsIcon, FlagIcon, LockIcon } from '../../components/icons';
 import Avatar from '../avatar';
 
 import styles from './projects-preview.module.scss';
@@ -48,7 +46,11 @@ const ProjectPreview: React.FC<IProjectPreviewProps> = ({
           {name}
         </strong>
 
-        <span className={styles.paragraph}>{description}</span>
+        <span className={styles.paragraph}>
+          {description || (
+            <i style={{ opacity: 0.5 }}>No description</i>
+          )}
+        </span>
 
         <span
           className={cc([

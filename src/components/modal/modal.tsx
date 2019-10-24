@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ReactComponent as CloseIcon } from '../../assets/svg/icons/close.icon.svg';
+import { CloseIcon } from '../../components/icons';
 import { useLockBodyScroll } from '../../hooks/use-lock-body-scroll';
 
 import styles from './modal.module.scss';

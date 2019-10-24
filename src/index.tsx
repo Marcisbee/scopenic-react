@@ -1,12 +1,16 @@
-import 'regenerator-runtime/runtime';
+// import 'regenerator-runtime/runtime';
+// import 'core-js/es6';
+// import 'tslib';
 
 import * as React from 'react';
 import { render } from 'react-dom';
-import './index.scss';
+// import { hot } from 'react-hot-ts';
 
 import App from './components/app';
+import './index.scss';
 // import * as serviceWorker from './serviceWorker';
 
+// hot(module)(render(<App />, document.getElementById('root')));
 render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

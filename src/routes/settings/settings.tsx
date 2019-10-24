@@ -3,11 +3,10 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 
-import { ReactComponent as PersonIcon } from '../../assets/svg/icons/person.icon.svg';
-import { ReactComponent as ShieldCheckIcon } from '../../assets/svg/icons/shield-check.icon.svg';
 import Alert from '../../components/alert/alert';
 import AvatarUpload from '../../components/avatar-upload';
 import FormInput from '../../components/form-input';
+import { PersonIcon, ShieldCheckIcon } from '../../components/icons';
 import SettingsBlock from '../../components/settings-block';
 import { useAuth } from '../../hooks/use-auth';
 import sharedStyles from '../../shared.module.scss';
