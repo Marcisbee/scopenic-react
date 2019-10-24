@@ -1,5 +1,6 @@
 // tslint:disable-next-line: no-implicit-dependencies
 import { fusebox, pluginSass, sparky } from 'fuse-box';
+// tslint:disable-next-line: no-implicit-dependencies
 import { pluginTypeChecker } from 'fuse-box-typechecker';
 
 // tslint:disable-next-line: no-implicit-dependencies
@@ -23,11 +24,10 @@ class Context {
       turboMode: true,
       plugins: [
         pluginTypeChecker({
-          name: 'App',
-          throwOnSyntactic: true,
-          throwOnSemantic: true,
-          throwOnGlobal: true,
-          throwOnOptions: true,
+          name: 'typecheck',
+          throwOnSyntactic: this.isProduction,
+          throwOnSemantic: this.isProduction,
+          throwOnGlobal: this.isProduction,
         }),
         pluginSass('*.module.scss', {
           asModule: {
@@ -82,7 +82,21 @@ class Context {
   }
 }
 
-const { task, exec } = sparky<Context>(Context);
+function runTypeChecker() {
+  // tslint:disable-next-line: no-implicit-dependencies
+  const typeChecker = require('fuse-box-typechecker').TypeChecker({
+    name: 'typecheck',
+    throwOnSyntactic: true,
+    throwOnSemantic: true,
+    throwOnGlobal: true,
+  });
+  // to run it right away
+  typeChecker.printSettings();
+
+  return typeChecker.inspectAndPrint();
+}
+
+const { task } = sparky<Context>(Context);
 
 task('default', async (ctx) => {
   process.env.NODE_ENV = 'development';
@@ -103,15 +117,31 @@ task('default', async (ctx) => {
 task('preview', async (ctx) => {
   process.env.NODE_ENV = 'production';
 
-  ctx.runServer = true;
+  ctx.runServer = {
+    enabled: true,
+    open: true,
+    httpServer: {
+      enabled: true,
+      port: 3000,
+    },
+    hmrServer: false,
+  };
   ctx.isProduction = true;
   const fuse = ctx.getConfig();
   await fuse.runProd({
     target: 'ES5',
     screwIE: false,
     uglify: false,
-    cleanCSS: false,
+    cleanCSS: {
+      compatibility: {
+        properties: { urlQuotes: true },
+      },
+    },
   });
+});
+
+task('typecheck', () => {
+  runTypeChecker();
 });
 
 task('dist', async (ctx) => {
@@ -120,5 +150,14 @@ task('dist', async (ctx) => {
   ctx.runServer = false;
   ctx.isProduction = true;
   const fuse = ctx.getConfig();
-  await fuse.runProd({ uglify: false });
+  await fuse.runProd({
+    target: 'ES5',
+    screwIE: false,
+    uglify: false,
+    cleanCSS: {
+      compatibility: {
+        properties: { urlQuotes: true },
+      },
+    },
+  });
 });

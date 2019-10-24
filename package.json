@@ -7,7 +7,7 @@
     "start": "ts-node fuse",
     "build": "ts-node fuse dist",
     "preview": "ts-node fuse preview",
-    "test": "jest --coverage",
+    "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
