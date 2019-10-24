@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node fuse",
     "build": "ts-node fuse dist",
+    "preview": "ts-node fuse preview",
     "test": "jest --coverage",
     "lint": "tslint 'src/**/*.{ts,tsx}'"
   },
@@ -24,6 +25,7 @@
     "dotenv": "^8.2.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.4.0",
+    "fuse-box": "^4.0.0-next.144",
     "jest": "^24.9.0",
     "jsdom": "^15.2.0",
     "node-sass": "^4.12.0",
@@ -44,7 +46,6 @@
     "enzyme": "^3.10.0",
     "express": "^4.17.1",
     "formik": "^1.5.8",
-    "fuse-box": "^3.7.1",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "jwt-decode": "^2.2.0",

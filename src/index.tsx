@@ -5,9 +5,9 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 // import { hot } from 'react-hot-ts';
-import './index.scss';
 
 import App from './components/app';
+import './index.scss';
 // import * as serviceWorker from './serviceWorker';
 
 // hot(module)(render(<App />, document.getElementById('root')));

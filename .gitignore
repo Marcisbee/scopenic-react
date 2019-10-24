@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/.fusebox
+/.cache
 /.pnp
 .pnp.js
 

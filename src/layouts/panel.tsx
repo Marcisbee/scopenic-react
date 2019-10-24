@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import LogoImage from '../assets/images/logo.png';
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
 import {
@@ -31,7 +30,7 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
     <div className={styles.panel}>
       <div className={styles.sidebar}>
         <div className={styles.logo}>
-          <img src={LogoImage} alt="Scopenic"/>
+          <img src={require('../assets/images/logo.png')} alt="Scopenic"/>
         </div>
 
         <ul className={styles.menu}>

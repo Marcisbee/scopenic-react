@@ -15,7 +15,6 @@
     "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "suppressImplicitAnyIndexErrors": true,
     "pretty": true,
