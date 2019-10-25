@@ -7,14 +7,14 @@
   float: left;
   width: 20%;
   height: 100vh;
-  border: 1px solid red;
+  background-color: #f5f8fa;
 }
 
 .right {
   float: right;
   height: 100vh;
   width: 20%;
-  border: 1px solid red;
+  background-color: #f5f8fa;
 }
 
 .main {
@@ -22,4 +22,16 @@
   height: 100vh;
   margin-left: 20%;
   margin-right: 20%;
+  background-color: #E1E8ED;
+}
+
+:global(.pt-dark) {
+  .main {
+    background-color: #202B33
+  }
+
+  .left,
+  .right {
+    background-color: #293742
+  }
 }

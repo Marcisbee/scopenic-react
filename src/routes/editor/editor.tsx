@@ -27,7 +27,7 @@ const Editor: React.FC = () => {
         />
       </div>
       <div className={styles.right}>RIGHT</div>
-      <div>MIDDLE</div>
+      <div className={styles.main}>MIDDLE</div>
     </div>
   );
 };
