@@ -36,7 +36,8 @@
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
     "tslint-react": "^4.1.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "typescript-plugin-css-modules": "^2.0.1"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.2",
