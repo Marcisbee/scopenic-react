@@ -1,12 +1,6 @@
 module.exports = {
-  globals: {
-    'ts-jest': {
-      diagnostics: false,
-      tsConfig: '<rootDir>/config/tsconfig.jest.json',
-    },
-  },
   transform: {
-    '^.+\\.(t|j)sx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': '<rootDir>/config/jest-preprocessor.js',
   },
 
   testRegex: '\\.test\\.tsx?$',
