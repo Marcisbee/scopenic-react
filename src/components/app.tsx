@@ -18,6 +18,8 @@ const Routes = {
 
   projects: lazy(() => import('../routes/projects')),
   settings: lazy(() => import('../routes/settings')),
+
+  editor: lazy(() => import('../routes/editor')),
 };
 
 // function queryString(value: string): Record<string, string> {
@@ -34,7 +36,6 @@ const Routes = {
 // }
 
 const PrivateRoute: React.FC<any> = (props) => {
-  const { children } = props;
   const { token, user, error, signout } = useAuth();
   const location = useLocation();
 
@@ -53,7 +54,7 @@ const PrivateRoute: React.FC<any> = (props) => {
   }
 
   if (user) {
-    return <>{children}</>;
+    return <Route {...props}/>;
   }
 
   return (
@@ -81,6 +82,7 @@ const App: React.FC = () => {
                     <Redirect to="/login" />
                   )}
                 />
+
                 <Route
                   exact={true}
                   path="/login"
@@ -89,28 +91,27 @@ const App: React.FC = () => {
                   )}
                 />
 
+                <PrivateRoute path="/editor/:id">
+                  <Layouts.panel type="editor">
+                    <Routes.editor />
+                  </Layouts.panel>
+                </PrivateRoute>
+
                 <PrivateRoute
-                  exact={true}
                   path={[
                     '/projects',
                     '/settings',
                   ]}
                 >
-                  <Layouts.panel>
-                    <Route
-                      exact={true}
-                      path="/projects"
-                      component={() => (
+                  <Layouts.panel type="dashboard">
+                    <Switch>
+                      <Route exact={true} path="/projects">
                         <Routes.projects />
-                      )}
-                    />
-                    <Route
-                      exact={true}
-                      path="/settings"
-                      component={() => (
+                      </Route>
+                      <Route exact={true} path="/settings">
                         <Routes.settings />
-                      )}
-                    />
+                      </Route>
+                    </Switch>
                   </Layouts.panel>
                 </PrivateRoute>
 

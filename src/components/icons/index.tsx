@@ -337,3 +337,29 @@ export const SunIcon: React.FC<{ className?: string }> = ({ className }) => {
     </svg>
   );
 };
+
+export const LayersIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path
+          fill="#594BC8"
+          d="M5 11v8h14v-8H5zm0-2h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2z"
+          className="primary"
+        />
+        <path
+          fill="#B0A8FF"
+          d="M5 6h14a1 1 0 010 2H5a1 1 0 110-2zm1-3h12a1 1 0 010 2H6a1 1 0 110-2z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};

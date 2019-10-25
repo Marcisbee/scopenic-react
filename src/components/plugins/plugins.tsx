@@ -3,16 +3,19 @@ import React from 'react';
 import { usePromise } from '../../hooks/use-promise';
 import { Suspend } from '../../utils/suspend';
 
+type IPluginScopeTypes = 'dashboard.panel.menu' | 'editor.panel.menu';
+
 interface IPluginContext {
   services: Record<string, any>;
 }
 
-interface IPluginInterface {
-  panelMenu: (ctx: IPluginContext) => React.ReactNode;
-}
+type IPluginInterface = Record<
+  IPluginScopeTypes,
+  (ctx: IPluginContext) => React.ReactNode
+>;
 
 interface IPluginProps {
-  scope: 'panelMenu';
+  scope: IPluginScopeTypes;
   src: () => Promise<any>;
 }
 
@@ -39,13 +42,13 @@ const Plugin: React.FC<IPluginProps> = React.memo(({ scope, src }) => {
   const context = {
     services: {},
   };
-  const element = result[scope](context);
+  const PluginComponent = result[scope] as any;
 
-  return <>{element}</>;
+  return <PluginComponent {...context} />;
 }, () => false);
 
 export interface IPluginsProps {
-  scope: 'panelMenu';
+  scope: IPluginScopeTypes;
   render?: React.FC;
   src: Record<string, () => Promise<any>>;
 }
@@ -55,10 +58,10 @@ const Plugins: React.FC<IPluginsProps> = ({ scope, render: Render, src }) => {
 
   return (
     <>
-      {pluginList.map((plugin) => (
+      {pluginList.map((plugin, index) => (
         Render
-          ? <Render key={plugin.toString()}><Plugin scope={scope} src={plugin} /></Render>
-          : <Plugin scope={scope} src={plugin} />
+          ? <Render key={`wrapper-${plugin.toString()}-${index}`}><Plugin scope={scope} src={plugin} /></Render>
+          : <Plugin key={`plugin-${plugin.toString()}-${index}`} scope={scope} src={plugin} />
       ))}
     </>
   );

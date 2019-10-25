@@ -37,7 +37,7 @@ const Settings: React.FC = () => {
   const { user, updateUser, updatePassword } = useAuth();
 
   return (
-    <div className={sharedStyles.wrapper}>
+    <div className={cc([sharedStyles.wrapper, 'p-b-20', 'p-t-20'])}>
       <div className={sharedStyles.heading}>
         <h1>Settings</h1>
       </div>

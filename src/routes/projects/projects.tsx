@@ -52,7 +52,7 @@ const Projects: React.FC = () => {
   }
 
   return (
-    <div className={sharedStyles.wrapperLarge}>
+    <div className={cc([sharedStyles.wrapperLarge, 'p-t-20', 'p-b-20'])}>
       <div className={sharedStyles.heading}>
         <div className="row">
           <h1 className="col-xs-6">Projects</h1>
