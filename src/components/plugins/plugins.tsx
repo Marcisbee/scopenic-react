@@ -2,8 +2,13 @@ import React from 'react';
 
 import { usePromise } from '../../hooks/use-promise';
 import { Suspend } from '../../utils/suspend';
+import ErrorBoundary from '../error-boundary';
 
-type IPluginScopeTypes = 'dashboard.panel.menu' | 'editor.panel.menu';
+type IPluginScopeTypes = 'dashboard.panel.menu'
+  | 'editor.panel.menu'
+  | 'editor.panel.left'
+  | 'editor.panel.main'
+  | 'editor.panel.right';
 
 interface IPluginContext {
   services: Record<string, any>;
@@ -57,13 +62,13 @@ const Plugins: React.FC<IPluginsProps> = ({ scope, render: Render, src }) => {
   const pluginList = Object.values(src);
 
   return (
-    <>
+    <ErrorBoundary silent={true}>
       {pluginList.map((plugin, index) => (
         Render
           ? <Render key={`wrapper-${plugin.toString()}-${index}`}><Plugin scope={scope} src={plugin} /></Render>
           : <Plugin key={`plugin-${plugin.toString()}-${index}`} scope={scope} src={plugin} />
       ))}
-    </>
+    </ErrorBoundary>
   );
 };
 

@@ -18,6 +18,17 @@ const Menu: React.FC = () => {
   );
 };
 
+const LeftPanel: React.FC = () => {
+  // const params = useParams<{ id: string }>();
+
+  return (
+    <div>
+      Hello left side
+    </div>
+  );
+};
+
 export = {
   'editor.panel.menu': Menu,
+  'editor.panel.left': LeftPanel,
 };
