@@ -5,6 +5,8 @@ import Store from 'statux';
 
 import GraphqlProvider from '../graphql';
 import { ProvideAuth, useAuth } from '../hooks/use-auth';
+import Store from '../utils/store';
+import StoreDevtools from '../utils/store-devtools';
 import { Suspend } from '../utils/suspend';
 
 import Spinner from './spinner';
@@ -67,10 +69,17 @@ const PrivateRoute: React.FC<any> = (props) => {
   );
 };
 
+// Enable devtools in development mode
+const GlobalStore = (process.env.NODE_ENV === 'production') ? Store : StoreDevtools(Store);
+
+const initialStore = {
+  user: null,
+};
+
 const App: React.FC = () => {
   return (
     <GraphqlProvider>
-      <Store user={null}>
+      <GlobalStore {...initialStore}>
         <Router>
           <ProvideAuth>
             <Suspense fallback={<Spinner type="full" />}>
@@ -122,7 +131,7 @@ const App: React.FC = () => {
             </Suspense>
           </ProvideAuth>
         </Router>
-      </Store>
+      </GlobalStore>
     </GraphqlProvider>
   );
 };
