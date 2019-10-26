@@ -5,15 +5,16 @@ import ScopeShape from '../../../components/decorations/scope-shape';
 import { LayersIcon } from '../../../components/icons';
 import CustomLink from '../../../components/link';
 
-import styles from '../../../layouts/panel.module.scss';
+import panelStyles from '../../../layouts/panel.module.scss';
+import styles from './layers.module.scss';
 
 const Menu: React.FC = () => {
   const params = useParams<{ id: string }>();
 
   return (
-    <CustomLink activeClassName={styles.menuActive} to={`/editor/${params.id}`}>
-      <ScopeShape className={styles.menuIconBg} />
-      <LayersIcon className={styles.menuIcon} />
+    <CustomLink activeClassName={panelStyles.menuActive} to={`/editor/${params.id}`}>
+      <ScopeShape className={panelStyles.menuIconBg} />
+      <LayersIcon className={panelStyles.menuIcon} />
     </CustomLink>
   );
 };
@@ -22,7 +23,7 @@ const LeftPanel: React.FC = () => {
   // const params = useParams<{ id: string }>();
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       Hello left side
     </div>
   );

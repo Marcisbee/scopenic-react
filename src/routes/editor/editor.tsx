@@ -15,19 +15,30 @@ const Editor: React.FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
-        LEFT
+        <div className={styles.details}>
+          Project name
+        </div>
+        <div className={styles.leftPlugins}>
+          <Plugins
+            scope="editor.panel.left"
+            src={enabledPlugins}
+          />
+        </div>
+      </div>
+      <div className={styles.right}>
+        RIGHT
         <Plugins
-          scope="editor.panel.left"
+          scope="editor.panel.right"
           src={enabledPlugins}
-          render={({ children: child }) => (
-            <div>
-              {child}
-            </div>
-          )}
         />
       </div>
-      <div className={styles.right}>RIGHT</div>
-      <div className={styles.main}>MIDDLE</div>
+      <div className={styles.main}>
+        MAIN
+        <Plugins
+          scope="editor.panel.main"
+          src={enabledPlugins}
+        />
+      </div>
     </div>
   );
 };
