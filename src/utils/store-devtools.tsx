@@ -54,7 +54,7 @@ const PropInspector: React.FC<{ initial: Record<string, any> }> = React.memo(({ 
       }
 
       devtoolsConnection.send({
-        type: `[UPDATE] ${type}`,
+        type: `[UPDATE] ${type || 'ROOT'}`,
         payload,
       }, newState);
     });

@@ -172,7 +172,7 @@ export const useActions = (sel: ((s: any) => any) | undefined) => {
   return useCallback(callback, dependencies);
 };
 
-export const useStore = (name: string | ((s: any) => any) | undefined) => [useSelector((name as any)), useActions((name as any))];
+export const useStore = (name?: string | ((s: any) => any)) => [useSelector((name as any)), useActions((name as any))];
 
 export const StoreContext = Context;
 

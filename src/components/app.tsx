@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 // import { hot } from 'react-hot-ts';
 import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom';
-import Store from 'statux';
 
 import GraphqlProvider from '../graphql';
 import { ProvideAuth, useAuth } from '../hooks/use-auth';
