@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'r
 
 import GraphqlProvider from '../graphql';
 import { ProvideAuth, useAuth } from '../hooks/use-auth';
+import * as initialStore from '../store/store';
 import Store from '../utils/store';
 import StoreDevtools from '../utils/store-devtools';
 import { Suspend } from '../utils/suspend';
@@ -70,10 +71,6 @@ const PrivateRoute: React.FC<any> = (props) => {
 
 // Enable devtools in development mode
 const GlobalStore = (process.env.NODE_ENV === 'production') ? Store : StoreDevtools(Store);
-
-const initialStore = {
-  user: null,
-};
 
 const App: React.FC = () => {
   return (

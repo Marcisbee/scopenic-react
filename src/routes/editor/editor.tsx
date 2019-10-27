@@ -2,6 +2,7 @@
 import React from 'react';
 
 import Plugins from '../../components/plugins';
+import { useStore } from '../../utils/store';
 
 import styles from './editor.module.scss';
 
@@ -12,6 +13,9 @@ const enabledPlugins = {
 };
 
 const Editor: React.FC = () => {
+  // @TODO: Move LEFT, Middle and right side to seperate components
+  const [panelLeftActive] = useStore<string>('editor.panel.left.active');
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
@@ -19,10 +23,21 @@ const Editor: React.FC = () => {
           Project name
         </div>
         <div className={styles.leftPlugins}>
-          <Plugins
-            scope="editor.panel.left"
-            src={enabledPlugins}
-          />
+          {panelLeftActive === 'layers' && (
+            <Plugins
+              scope="editor.panel.left"
+              src={enabledPlugins}
+              render={({ config: pluginConfig, children }) => (
+                <>
+                  {
+                    panelLeftActive === pluginConfig.action && (
+                      children
+                    )
+                  }
+                </>
+              )}
+            />
+          )}
         </div>
       </div>
       <div className={styles.right}>

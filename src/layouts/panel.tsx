@@ -1,3 +1,4 @@
+import cc from 'classcat';
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ import Plugins from '../components/plugins';
 import Spinner from '../components/spinner';
 import { useAuth } from '../hooks/use-auth';
 import { useDarkMode } from '../hooks/use-dark-mode';
+import { useStore } from '../utils/store';
 
 import styles from './panel.module.scss';
 
@@ -28,6 +30,7 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
   type,
   children,
 }) => {
+  const [panelLeftActive, setPanelLeftActive] = useStore<string>('editor.panel.left.active');
   const { user, signout } = useAuth();
   const [darkMode, setDarkMode] = useDarkMode();
 
@@ -71,12 +74,32 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
             <Plugins
               scope="editor.panel.menu"
               src={enabledPlugins}
-              render={({ children: child }) => (
+              render={({ config: pluginConfig, children: child }) => (
                 <li>
-                  {child}
+                  <span
+                    className={cc([
+                      panelLeftActive === pluginConfig.action && styles.menuActive,
+                    ])}
+                    onClick={() => setPanelLeftActive(pluginConfig.action)}
+                  >
+                    <ScopeShape className={styles.menuIconBg} />
+                    {child}
+                  </span>
                 </li>
               )}
             />
+
+            <li>
+              <span
+                className={cc([
+                  panelLeftActive === 'custom' && styles.menuActive,
+                ])}
+                onClick={() => setPanelLeftActive('custom')}
+              >
+                <ScopeShape className={styles.menuIconBg} />
+                <SettingIcon className={styles.menuIcon} />
+              </span>
+            </li>
           </ul>
         )}
 

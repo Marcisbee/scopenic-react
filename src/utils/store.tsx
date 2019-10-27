@@ -172,7 +172,17 @@ export const useActions = (sel: ((s: any) => any) | undefined) => {
   return useCallback(callback, dependencies);
 };
 
-export const useStore = (name?: string | ((s: any) => any)) => [useSelector((name as any)), useActions((name as any))];
+// Unlike the class component setState, the updates are not allowed to be partial
+type SetStateAction<S> = S | ((prevState: S) => S);
+// this technically does accept a second argument, but it's already under a deprecation warning
+// and it's not even released so probably better to not define it.
+type Dispatch<A> = (value: A) => void;
+
+export function useStore<S>(
+  name?: string | ((data: Record<string, any>) => S),
+): [S, Dispatch<SetStateAction<S>>] {
+  return [useSelector(name as any) as any, useActions(name as any)];
+}
 
 export const StoreContext = Context;
 
