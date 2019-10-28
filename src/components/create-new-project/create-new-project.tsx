@@ -1,6 +1,6 @@
 import { useApolloClient } from '@apollo/react-hooks';
 import cc from 'classcat';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm, { FormContext } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import * as Yup from 'yup';
@@ -55,12 +55,13 @@ const CreateNewProject: React.FC = () => {
     handleSubmit,
     formState: { dirty, isSubmitting },
     reset,
-    errors,
     setError,
     triggerValidation,
   } = formMethods;
 
-  register({ name: 'responsive' });
+  useEffect(() => {
+    register({ name: 'responsive' });
+  }, []);
 
   const onSubmit = async (values: ICreateNewProjectValues) => {
     setStatus({});
@@ -114,7 +115,6 @@ const CreateNewProject: React.FC = () => {
           <FormContext {...formMethods}>
             <form onSubmit={handleSubmit(onSubmit)} className="pure-form pure-form-stacked">
               <fieldset>
-                {JSON.stringify(errors)}
                 <Alert
                   show={!!status.error}
                   type="danger"
