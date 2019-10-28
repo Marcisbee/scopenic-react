@@ -1,15 +1,22 @@
-import { FormikErrors, FormikTouched } from 'formik';
+import cc from 'classcat';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
+import FieldError from '../field-error';
 
 interface IFormInputProps {
   name: string;
   type?: 'vertical' | 'horizontal';
   label?: string;
   required?: boolean;
-  input?: React.InputHTMLAttributes<HTMLInputElement>;
-  touched?: FormikTouched<any>;
-  error?: FormikErrors<any>;
-  component: (props: { name: string, touched: boolean, error: boolean, hasError: boolean }) => React.ReactNode;
+  className?: string;
+  errorClassName?: string;
+  component: (
+    props: {
+      name: string,
+      className: string,
+      ref: any,
+    },
+  ) => React.ReactNode;
 }
 
 const FormInput: React.FC<IFormInputProps> = ({
@@ -17,16 +24,14 @@ const FormInput: React.FC<IFormInputProps> = ({
   type,
   label,
   required,
-  error: errorRecord,
-  touched: touchedRecord,
+  className,
+  errorClassName,
   component,
-}: any) => {
-  const touched = touchedRecord && touchedRecord[name];
-  const error = errorRecord && errorRecord[name];
+}) => {
+  const { errors, register } = useFormContext();
 
-  const errorBlock = touched && error && (
-    <div className="inline-error">{error}</div>
-  );
+  const hasError = !!(errors && errors[name]);
+
   const requiredBlock = required && (
     <span className="pt-text-muted">(required)</span>
   );
@@ -44,8 +49,15 @@ const FormInput: React.FC<IFormInputProps> = ({
             )}
           </span>
           <span className="col-xs-8">
-            {component({ name, touched, error, hasError: !!errorBlock })}
-            {errorBlock}
+            {component({
+              name,
+              className: cc([
+                className,
+                hasError && errorClassName,
+              ]),
+              ref: register,
+            })}
+            <FieldError name={name} className="inline-error" />
           </span>
         </div>
       </label>
@@ -60,8 +72,15 @@ const FormInput: React.FC<IFormInputProps> = ({
           {requiredBlock}
         </div>
       )}
-      {component({ name, touched, error, hasError: !!errorBlock })}
-      {errorBlock}
+      {component({
+        name,
+        className: cc([
+          className,
+          hasError && errorClassName,
+        ]),
+        ref: register,
+      })}
+      <FieldError name={name} className="inline-error" />
     </label>
   );
 };

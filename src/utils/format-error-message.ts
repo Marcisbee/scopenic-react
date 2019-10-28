@@ -1,11 +1,18 @@
-export function formatErrorMessage(error: any, setErrors: any): string | undefined {
+export function formatErrorMessage(error: any, setError: any): string | undefined {
   const firstError = error.graphQLErrors
     && error.graphQLErrors[0];
 
   if (firstError && firstError.extensions
     && firstError.extensions.code === 'BAD_USER_INPUT'
     && firstError.extensions.validation) {
-    setErrors(firstError.extensions.validation);
+    const keys = Object.keys(firstError.extensions.validation);
+    keys.forEach((key) => {
+      setError(
+        key,
+        'apiValidation',
+        firstError.extensions.validation[key],
+      );
+    });
     return;
   }
 

@@ -43,7 +43,6 @@ class Context {
         //   'react-dom',
         //   'react-router',
         //   'react-router-dom',
-        //   'formik',
         //   'apollo-boost',
         //   '@apollo/react-hooks',
         //   'graphql',
