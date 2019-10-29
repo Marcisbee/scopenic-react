@@ -74,7 +74,7 @@ const Editor: React.FC = () => {
           {/* https://github.com/ryanseddon/react-frame-component */}
           <Frame>
             <h1>Hello world</h1>
-            <p>Project data: {JSON.stringify(project.data)}</p>
+            <pre>{JSON.stringify(JSON.parse(project.data), null, '  ')}</pre>
           </Frame>
         </div>
         <Plugins
