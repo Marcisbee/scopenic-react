@@ -12,9 +12,10 @@
   display: block;
   margin: 0;
   padding: 0;
+  position: relative;
 
   .layers {
-    padding-left: 10px;
+    margin-left: 10px;
   }
 }
 
@@ -22,7 +23,8 @@
   display: block;
   margin: 0;
   padding: 0;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: bold;
 
   .layerWrapper > div {
     padding-right: 0;
@@ -36,11 +38,44 @@
 .layer {
   display: block;
   cursor: pointer;
+  width: 100%;
 
   &:global(.isActive) {
     > .layerHandler {
-      background-color: $primary-color;
+      background-color: $primary-color !important;
       color: #fff;
+
+      .icon {
+        :global(.primary) {
+          fill: #51ccff;
+        }
+
+        :global(.secondary) {
+          fill: #51ccff;
+        }
+      }
+
+      .displayIcon {
+        opacity: 1;
+
+        :global(.primary) {
+          fill: #51ccff;
+        }
+
+        :global(.secondary) {
+          fill: #51ccff;
+        }
+
+        &:hover {
+          :global(.primary) {
+            fill: #fff;
+          }
+
+          :global(.secondary) {
+            fill: #fff;
+          }
+        }
+      }
     }
   }
 
@@ -54,9 +89,62 @@
 .layerHandler {
   padding: 0.38rem;
   border-radius: 3px;
+  position: relative;
+
+  > span {
+    display: block;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  &:hover .displayIcon {
+    opacity: 0.2;
+  }
 
   &:hover {
-    background-color: #e8eff3;
+    background-color: #EBF1F5;
+  }
+}
+
+.icon {
+  margin-right: 5px;
+  vertical-align: bottom;
+  margin-top: -1px;
+  height: 15px;
+  width: 15px;
+  position: relative;
+  float: left;
+
+  :global(.primary) {
+    fill: $primary-color;
+  }
+
+  :global(.secondary) {
+    fill: $primary-color;
+  }
+}
+
+.displayIcon {
+  margin-right: 5px;
+  vertical-align: bottom;
+  margin-top: -10px;
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  opacity: 0;
+
+  &:hover {
+    opacity: 1 !important;
+  }
+
+  :global(.primary) {
+    fill: #333;
+  }
+
+  :global(.secondary) {
+    fill: #333;
   }
 }
 
@@ -74,9 +162,9 @@
     content: '';
     top: 50%;
     left: 4px;
-    width: calc(100% - 8px);
-    height: 4px;
-    border-radius: 4px;
+    width: calc(100% - 6px);
+    height: 3px;
+    border-radius: 5px;
     margin-top: -2px;
     background-color: transparent;
   }
@@ -84,6 +172,24 @@
   &:global(.active) {
     &::before {
       background-color: $primary-active-color;
+    }
+  }
+}
+
+:global(.pt-dark) {
+  .layerHandler {
+    &:hover {
+      background-color: #30404D;
+    }
+  }
+
+  .displayIcon {
+    :global(.primary) {
+      fill: #ccc;
+    }
+
+    :global(.secondary) {
+      fill: #ccc;
     }
   }
 }

@@ -10,6 +10,7 @@
   width: 260px;
   height: 100vh;
   background-color: #f5f8fa;
+  color: #333;
 }
 
 .right {
@@ -18,6 +19,7 @@
   height: 100vh;
   width: 260px;
   background-color: #f5f8fa;
+  color: #333;
 }
 
 .main {
@@ -47,11 +49,12 @@
   }
 
   .main {
-    background-color: #202B33
+    background-color: #202B33;
   }
 
   .left,
   .right {
-    background-color: #293742
+    background-color: #293742;
+    color: #ccc;
   }
 }

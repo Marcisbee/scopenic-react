@@ -363,3 +363,150 @@ export const LayersIcon: React.FC<{ className?: string }> = ({ className }) => {
     </svg>
   );
 };
+
+export const TypefaceIcon: React.FC <{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path
+          fill="#B0A8FF"
+          d="M5.97139599 12L9.02544433 12 9.27994836 14 5.71689197 14z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M20.998 12v7.8a.2.2 0 01-.2.2h-.627a.2.2 0 01-.198-.171l-.146-1A3.987 3.987 0 0116.998 20h-.5a3.5 3.5 0 01-3.5-3.5V16a3 3 0 013-3h2.6a.4.4 0 00.4-.4V12a2 2 0 00-3.887-.665c-.183.521-2.07-.143-1.886-.664A4 4 0 0120.998 12zm-5 3a1 1 0 00-1 1v.5a1.5 1.5 0 001.5 1.5h.5a2 2 0 002-2v-.6a.4.4 0 00-.4-.4h-2.6zm-7.69-8.644A.407.407 0 007.902 6h-.81a.407.407 0 00-.403.356L5.02 19.466a.61.61 0 01-.606.534h-.804a.61.61 0 01-.606-.688L4.73 5.748A2 2 0 016.715 4h1.567a2 2 0 011.984 1.748l1.726 13.564a.61.61 0 01-.606.688h-.805a.61.61 0 01-.605-.534L8.307 6.356z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const TextIcon: React.FC <{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path
+          fill="#594BC8"
+          d="M9 14.6v-4.117a.2.2 0 00-.341-.142L8.5 10.5c-.32.32-.754.5-1.207.5H6a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2h-1.293c-.453 0-.887-.18-1.207-.5l-.159-.159a.2.2 0 00-.341.142V14.6c0 .22.18.4.4.4h1.1a1.5 1.5 0 011.5 1.5V19a2 2 0 01-2 2H8a2 2 0 01-2-2v-2.5A1.5 1.5 0 017.5 15h1.1a.4.4 0 00.4-.4zm1 2.4H8.4a.4.4 0 00-.4.4v1.2c0 .22.18.4.4.4h7.2a.4.4 0 00.4-.4v-1.2a.4.4 0 00-.4-.4H14a1 1 0 01-1-1V7.6a.6.6 0 01.6-.6h.782a1 1 0 01.894.553l.613 1.226a.4.4 0 00.358.221H17.6a.4.4 0 00.4-.4V5.4a.4.4 0 00-.4-.4H6.4a.4.4 0 00-.4.4v3.2c0 .22.18.4.4.4h1.353a.4.4 0 00.358-.221l.613-1.226A1 1 0 019.618 7h.782a.6.6 0 01.6.6V16a1 1 0 01-1 1z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const ContainerIcon: React.FC <{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M17 7.4v9.2a.4.4 0 01-.4.4H7.4a.4.4 0 01-.4-.4V7.4c0-.22.18-.4.4-.4h9.2c.22 0 .4.18.4.4zm-8 2v5.2c0 .22.18.4.4.4h5.2a.4.4 0 00.4-.4V9.4a.4.4 0 00-.4-.4H9.4a.4.4 0 00-.4.4z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M21 4v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h16a1 1 0 011 1zM5 5.4v13.2c0 .22.18.4.4.4h13.2a.4.4 0 00.4-.4V5.4a.4.4 0 00-.4-.4H5.4a.4.4 0 00-.4.4z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const ViewIcon: React.FC <{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M10.962 15.863a1 1 0 01.517-1.931 1.999 1.999 0 002.453-2.453 1 1 0 011.931-.518 3.998 3.998 0 01-1.035 3.867 3.998 3.998 0 01-3.866 1.035z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M12 4c4.937 0 9.055 3.436 10 8-.945 4.564-5.063 8-10 8s-9.055-3.436-10-8c.945-4.564 5.063-8 10-8zm0 14c3.783 0 7.028-2.515 7.946-6-.918-3.485-4.163-6-7.946-6-3.783 0-7.028 2.515-7.946 6 .918 3.485 4.163 6 7.946 6zm1.039-9.863a1 1 0 01-.518 1.931 1.999 1.999 0 00-2.453 2.452 1 1 0 01-1.932.517 3.998 3.998 0 011.036-3.865 3.998 3.998 0 013.867-1.035z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const HideIcon: React.FC <{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M8.558 14.04a4 4 0 015.481-5.481l-1.511 1.511a2.002 2.002 0 00-2.458 2.458L8.558 14.04zm3.078 1.944l4.348-4.348a4 4 0 01-4.347 4.347z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M18.308 4.29a.991.991 0 011.402 1.402L5.692 19.71a.991.991 0 01-1.402-1.402l.88-.879A9.944 9.944 0 012 12c.945-4.564 5.063-8 10-8 1.9 0 3.68.51 5.203 1.396l1.105-1.106zm-2.582 2.582A8.349 8.349 0 0012 6c-3.783 0-7.028 2.515-7.946 6a7.95 7.95 0 002.533 4.012l9.14-9.14zm4.197.825A9.876 9.876 0 0122 12c-.945 4.564-5.063 8-10 8-1.306 0-2.554-.24-3.702-.678l1.59-1.59A8.401 8.401 0 0012 18c3.783 0 7.028-2.515 7.946-6a7.872 7.872 0 00-1.444-2.882l1.42-1.42z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const ImageIcon: React.FC <{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M16 11a2 2 0 110-4 2 2 0 010 4z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M5 3h14a3 3 0 013 3v12a3 3 0 01-3 3H5a3 3 0 01-3-3V6a3 3 0 013-3zm15 14.343l-2.222-2.222a2 2 0 00-2.828 0l-.629.629 3.25 3.25H19a1 1 0 001-1v-.657zm0-2.828V6a1 1 0 00-1-1H5a1 1 0 00-1 1v5.45l.182-.182a4 4 0 015.657 0l3.068 3.068.629-.629a4 4 0 015.656 0l.808.808zM14.743 19l-6.318-6.318a2 2 0 00-2.829 0L4 14.278V18a1 1 0 001 1h9.743z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};

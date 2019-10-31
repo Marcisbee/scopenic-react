@@ -5,10 +5,17 @@ import styles from '../layers.module.scss';
 import DropInBetween from './drop-in-between';
 import Layer from './layer';
 
-const LayerContainer: React.FC<{ data: Array<Record<string, any>>, moveLayer: any, path?: number[] }> = ({ moveLayer, data: layers, path = [] }) => {
+export interface ILayerData {
+  id: number;
+  text: string;
+  type: string;
+  children?: ILayerData[];
+}
+
+const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: number[] }> = ({ moveLayer, data: layers, path = [] }) => {
   const isRoot = path.length === 0;
 
-  const renderLayer = (layer: { id: number; text: string; children: Array<Record<string, any>> }, index: number) => {
+  const renderLayer = (layer: ILayerData, index: number) => {
     const newPath = path.concat(index);
 
     if (isRoot) {
@@ -16,12 +23,13 @@ const LayerContainer: React.FC<{ data: Array<Record<string, any>>, moveLayer: an
         <li key={layer.id} className={styles.layerWrapper}>
           <Layer
             index={index}
-            id={layer.id}
             path={newPath}
-            text={layer.text}
             moveLayer={moveLayer}
-            childData={layer.children}
             isRoot={isRoot}
+            id={layer.id}
+            text={layer.text}
+            childData={layer.children}
+            type={layer.type}
           />
         </li>
       );
@@ -38,12 +46,13 @@ const LayerContainer: React.FC<{ data: Array<Record<string, any>>, moveLayer: an
         />
         <Layer
           index={index}
-          id={layer.id}
-          path={newPath}
-          text={layer.text}
-          moveLayer={moveLayer}
-          childData={layer.children}
           isRoot={isRoot}
+          path={newPath}
+          moveLayer={moveLayer}
+          id={layer.id}
+          text={layer.text}
+          childData={layer.children}
+          type={layer.type}
         />
         <DropInBetween
           index={index + 1}

@@ -7,7 +7,7 @@ import { LayersIcon } from '../../../components/icons';
 import { IPluginInterface } from '../../../components/plugins/plugins';
 import panelStyles from '../../../layouts/panel.module.scss';
 
-import LayerContainer from './components/layer-container';
+import LayerContainer, { ILayerData } from './components/layer-container';
 import { LayerContext, layerContextInitial } from './context/layer';
 import styles from './layers.module.scss';
 
@@ -18,33 +18,38 @@ const Menu: React.FC = () => {
 };
 
 const LeftPanel: React.FC = () => {
-  const [layers, setLayers] = useState([
+  const [layers, setLayers] = useState<ILayerData[]>([
     {
       id: 0,
       text: 'body',
+      type: 'container',
       children: [
         {
           id: 1,
           text: 'div .sidebar',
-          children: [],
+          type: 'text',
         },
         {
           id: 2,
           text: 'header',
+          type: 'container',
           children: [
             {
               id: 8,
               text: 'a .panel-title',
+              type: 'container',
               children: [],
             },
             {
               id: 9,
-              text: 'Hey another one',
+              text: 'img .cool',
+              type: 'image',
               children: [],
             },
             {
               id: 10,
               text: '!!!!!',
+              type: 'container',
               children: [],
             },
           ],
@@ -52,27 +57,32 @@ const LeftPanel: React.FC = () => {
         {
           id: 3,
           text: 'Write README',
+          type: 'container',
           children: [],
         },
         {
           id: 4,
           text: 'Create some examples',
+          type: 'container',
           children: [],
         },
         {
           id: 5,
           text:
             'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+          type: 'container',
           children: [],
         },
         {
           id: 6,
           text: '???',
+          type: 'container',
           children: [],
         },
         {
           id: 7,
           text: 'PROFIT',
+          type: 'container',
           children: [],
         },
       ],

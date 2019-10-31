@@ -102,7 +102,7 @@ task('default', async (ctx) => {
 
   ctx.runServer = {
     enabled: true,
-    open: true,
+    open: false,
     httpServer: {
       enabled: true,
       port: 3000,
@@ -118,7 +118,7 @@ task('preview', async (ctx) => {
 
   ctx.runServer = {
     enabled: true,
-    open: true,
+    open: false,
     httpServer: {
       enabled: true,
       port: 3000,
