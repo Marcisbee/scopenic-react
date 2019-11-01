@@ -6,6 +6,7 @@
   top: 0;
   width: 100%;
   height: 100%;
+  padding: 2px;
 }
 
 .layers {
@@ -13,10 +14,6 @@
   margin: 0;
   padding: 0;
   position: relative;
-
-  .layers {
-    margin-left: 10px;
-  }
 }
 
 .layerWrapper {
@@ -28,10 +25,6 @@
 
   .layerWrapper > div {
     padding-right: 0;
-  }
-
-  > div {
-    padding: 2px;
   }
 }
 
@@ -91,10 +84,34 @@
   border-radius: 3px;
   position: relative;
 
+  > :global(.im) {
+    position: absolute;
+    font-size: 10px;
+    margin-left: -6px;
+    top: 9px;
+    z-index: 10;
+    opacity: 0.4;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -50%;
+      top: -50%;
+      width: 200%;
+      height: 200%;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
   > span {
     display: block;
     margin-left: 20px;
     margin-right: 20px;
+    padding-left: 0.38rem;
   }
 
   &:hover .displayIcon {
@@ -114,6 +131,7 @@
   width: 15px;
   position: relative;
   float: left;
+  margin-left: 0.38rem;
 
   :global(.primary) {
     fill: $primary-color;

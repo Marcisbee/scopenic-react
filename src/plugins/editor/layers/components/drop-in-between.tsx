@@ -1,12 +1,13 @@
 import cc from 'classcat';
-import React from 'react';
-import { useDrop } from 'react-dnd';
+import React, { useContext } from 'react';
+import { DndContext, useDrop } from 'react-dnd';
 
 import styles from '../layers.module.scss';
 
 import { IDragItem } from './layer';
 
 const DropInBetween: React.FC<any> = ({ path, moveLayer }) => {
+  const { dragDropManager } = useContext(DndContext);
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'layer',
     drop(item: IDragItem) {
@@ -17,11 +18,28 @@ const DropInBetween: React.FC<any> = ({ path, moveLayer }) => {
 
       moveLayer(item.path, path);
     },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
+    collect: (m) => ({
+      isOver: m.isOver(),
+      canDrop: m.canDrop(),
     }),
   });
+
+  if (!dragDropManager) {
+    return null;
+  }
+
+  const monitor = (dragDropManager as any).monitor;
+
+  if (!monitor) {
+    return null;
+  }
+
+  const didDrop = monitor.didDrop();
+  const itemType = monitor.getItemType();
+
+  if (didDrop || !itemType) {
+    return null;
+  }
 
   return (
     <div

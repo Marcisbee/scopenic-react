@@ -1,5 +1,5 @@
 import cc from 'classcat';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
@@ -28,6 +28,7 @@ export interface ILayerProps {
 }
 
 const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, childData, id, text, type }) => {
+  const [showChildren, setShowChildren] = useState(true);
   const layerContext = useContext(LayerContext);
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -90,14 +91,17 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, childDat
 
   return (
     <div ref={ref} style={{ opacity }} className={cc([styles.layer, { isActive, isTarget }])}>
-      <div className={styles.layerHandler}>
+      <div className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}>
+        {!isRoot && childData && childData.length > 0 && (
+          <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={() => setShowChildren((s) => !s)} />
+        )}
         <Icon className={styles.icon} />
         <span>
           {text}
         </span>
         <ViewIcon className={styles.displayIcon} />
       </div>
-      {childData && (
+      {showChildren && childData && (
         <div>
           <LayerContainer path={path} moveLayer={moveLayer} data={childData} />
         </div>
