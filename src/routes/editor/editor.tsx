@@ -1,10 +1,10 @@
 // import cc from 'classcat';
 import { useQuery } from '@apollo/react-hooks';
 import React from 'react';
-import Frame from 'react-frame-component';
 import { useParams } from 'react-router';
 
 import Plugins from '../../components/plugins';
+import Workspace from '../../components/workspace';
 import { GET_PROJECT_BY_ID } from '../../graphql/queries';
 import { useStore } from '../../utils/store';
 import { Suspend } from '../../utils/suspend';
@@ -70,13 +70,7 @@ const Editor: React.FC = () => {
       </div>
       <div className={styles.main}>
         MAIN
-        <div>
-          {/* https://github.com/ryanseddon/react-frame-component */}
-          <Frame>
-            <h1>Hello world</h1>
-            <pre>{JSON.stringify(JSON.parse(project.data), null, '  ')}</pre>
-          </Frame>
-        </div>
+        <Workspace />
         <Plugins
           scope="editor.panel.main"
           src={enabledPlugins}

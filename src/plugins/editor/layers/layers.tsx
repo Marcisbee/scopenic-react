@@ -32,23 +32,22 @@ const LeftPanel: React.FC = () => {
         {
           id: 2,
           text: 'header',
-          type: 'container',
+          type: 'component',
           children: [
             {
               id: 8,
-              text: 'a .panel-title',
-              type: 'container',
-              children: [],
+              text: 'Hello world',
+              type: 'text',
             },
             {
               id: 9,
-              text: 'img .cool',
+              text: 'img .logo',
               type: 'image',
               children: [],
             },
             {
               id: 10,
-              text: '!!!!!',
+              text: 'div',
               type: 'container',
               children: [],
             },
@@ -56,32 +55,13 @@ const LeftPanel: React.FC = () => {
         },
         {
           id: 3,
-          text: 'Write README',
+          text: 'div .container',
           type: 'container',
           children: [],
         },
         {
           id: 4,
-          text: 'Create some examples',
-          type: 'container',
-          children: [],
-        },
-        {
-          id: 5,
-          text:
-            'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-          type: 'container',
-          children: [],
-        },
-        {
-          id: 6,
-          text: '???',
-          type: 'container',
-          children: [],
-        },
-        {
-          id: 7,
-          text: 'PROFIT',
+          text: 'footer',
           type: 'container',
           children: [],
         },

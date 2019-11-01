@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
+import { ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon, ComponentIcon } from '../../../../components/icons';
 import { LayerContext } from '../context/layer';
 import styles from '../layers.module.scss';
 
@@ -82,6 +82,10 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, childDat
     }
     case 'image': {
       Icon = ImageIcon;
+      break;
+    }
+    case 'component': {
+      Icon = ComponentIcon;
       break;
     }
     default: {
