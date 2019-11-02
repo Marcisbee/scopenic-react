@@ -1,5 +1,5 @@
 import dlv from 'dlv';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
@@ -7,7 +7,7 @@ import { LayersIcon } from '../../../components/icons';
 import { IPluginInterface } from '../../../components/plugins/plugins';
 import panelStyles from '../../../layouts/panel.module.scss';
 import { projectContext } from '../../../routes/editor/editor';
-import { createVNode, ILayerData } from '../../../utils/create-vnode';
+import { createVNode } from '../../../utils/create-vnode';
 
 import LayerContainer from './components/layer-container';
 import { LayerContext, layerContextInitial } from './context/layer';

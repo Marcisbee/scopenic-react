@@ -118,7 +118,6 @@ const Editor: React.FC = () => {
           />
         </div>
         <div className={styles.main}>
-          MAIN
           <Workspace />
           <Plugins
             scope="editor.panel.main"
