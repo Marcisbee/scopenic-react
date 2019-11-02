@@ -1,13 +1,15 @@
 import dlv from 'dlv';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import { LayersIcon } from '../../../components/icons';
 import { IPluginInterface } from '../../../components/plugins/plugins';
 import panelStyles from '../../../layouts/panel.module.scss';
+import { projectContext } from '../../../routes/editor/editor';
+import { createVNode, ILayerData } from '../../../utils/create-vnode';
 
-import LayerContainer, { ILayerData } from './components/layer-container';
+import LayerContainer from './components/layer-container';
 import { LayerContext, layerContextInitial } from './context/layer';
 import styles from './layers.module.scss';
 
@@ -18,56 +20,12 @@ const Menu: React.FC = () => {
 };
 
 const LeftPanel: React.FC = () => {
-  const [layers, setLayers] = useState<ILayerData[]>([
-    {
-      id: 0,
-      text: 'body',
-      type: 'container',
-      children: [
-        {
-          id: 1,
-          text: 'div .sidebar',
-          type: 'text',
-        },
-        {
-          id: 2,
-          text: 'header',
-          type: 'component',
-          children: [
-            {
-              id: 8,
-              text: 'Hello world',
-              type: 'text',
-            },
-            {
-              id: 9,
-              text: 'img .logo',
-              type: 'image',
-              children: [],
-            },
-            {
-              id: 10,
-              text: 'div',
-              type: 'container',
-              children: [],
-            },
-          ],
-        },
-        {
-          id: 3,
-          text: 'div .container',
-          type: 'container',
-          children: [],
-        },
-        {
-          id: 4,
-          text: 'footer',
-          type: 'container',
-          children: [],
-        },
-      ],
-    },
-  ]);
+  const { state, setState } = useContext(projectContext as any);
+
+  const activePage = state.data[state.activePage];
+  const layers = [
+    createVNode('node', 'body', 'body', activePage.children),
+  ];
 
   const moveLayer = useCallback(
     (dragPath: number[], hoverPath: number[]) => {
@@ -89,7 +47,7 @@ const LeftPanel: React.FC = () => {
         hoverParent.splice(hoverIndex, 0, dragLayer);
       }
 
-      setLayers(layers.slice());
+      setState({ ...state });
     },
     [layers],
   );
@@ -97,6 +55,7 @@ const LeftPanel: React.FC = () => {
   return (
     <LayerContext.Provider value={layerContextInitial}>
       <div className={styles.wrapper}>
+        {activePage.name}
         <div>
           <DndProvider backend={HTML5Backend}>
             <LayerContainer data={layers} moveLayer={moveLayer} />

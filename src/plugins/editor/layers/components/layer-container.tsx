@@ -1,16 +1,10 @@
 import React from 'react';
 
+import { ILayerData } from '../../../../utils/create-vnode';
 import styles from '../layers.module.scss';
 
 import DropInBetween from './drop-in-between';
 import Layer from './layer';
-
-export interface ILayerData {
-  id: number;
-  text: string;
-  type: string;
-  children?: ILayerData[];
-}
 
 const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: number[] }> = ({ moveLayer, data: layers, path = [] }) => {
   const isRoot = path.length === 0;
@@ -26,10 +20,7 @@ const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: numb
             path={newPath}
             moveLayer={moveLayer}
             isRoot={isRoot}
-            id={layer.id}
-            text={layer.text}
-            childData={layer.children}
-            type={layer.type}
+            layer={layer}
           />
         </li>
       );
@@ -41,7 +32,6 @@ const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: numb
           index={index}
           id={layer.id}
           path={newPath}
-          text={layer.text}
           moveLayer={moveLayer}
         />
         <Layer
@@ -49,16 +39,12 @@ const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: numb
           isRoot={isRoot}
           path={newPath}
           moveLayer={moveLayer}
-          id={layer.id}
-          text={layer.text}
-          childData={layer.children}
-          type={layer.type}
+          layer={layer}
         />
         <DropInBetween
           index={index + 1}
           id={layer.id}
           path={path.concat(index + 1)}
-          text={layer.text}
           moveLayer={moveLayer}
         />
       </li>

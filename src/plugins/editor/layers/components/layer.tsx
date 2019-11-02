@@ -3,11 +3,12 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon, ComponentIcon } from '../../../../components/icons';
+import { ComponentIcon, ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
+import { ILayerData } from '../../../../utils/create-vnode';
 import { LayerContext } from '../context/layer';
 import styles from '../layers.module.scss';
 
-import LayerContainer, { ILayerData } from './layer-container';
+import LayerContainer from './layer-container';
 
 export interface IDragItem {
   index: number;
@@ -17,24 +18,22 @@ export interface IDragItem {
 }
 
 export interface ILayerProps {
-  id: any;
-  text: string;
   index: number;
-  childData?: ILayerData[];
+  layer: ILayerData;
   path: number[];
   moveLayer: (dragIndex: number[], hoverIndex: number[]) => void;
   isRoot: boolean;
-  type: string;
 }
 
-const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, childData, id, text, type }) => {
+const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer }) => {
+  const layerData: any = layer;
   const [showChildren, setShowChildren] = useState(true);
   const layerContext = useContext(LayerContext);
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'layer',
     drop(item: IDragItem, monitor: DropTargetMonitor) {
-      const shouldBeAbleToDrop = monitor.isOver({ shallow: true }) && canDrop && childData;
+      const shouldBeAbleToDrop = monitor.isOver({ shallow: true }) && canDrop && layerData.children;
       if (!shouldBeAbleToDrop || !ref.current) {
         return;
       }
@@ -48,12 +47,12 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, childDat
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
-      canDrop: monitor.canDrop() && type !== 'text',
+      canDrop: monitor.canDrop() && !layerData.var && !layerData.img && !layerData.text,
     }),
   });
 
   const [{ isDragging }, drag, preview] = useDrag({
-    item: { type: 'layer', path, id, index },
+    item: { type: 'layer', path, id: layerData.id, index },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -74,40 +73,39 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, childDat
     drag(drop(ref));
   }
 
-  let Icon;
-  switch (type) {
-    case 'text': {
-      Icon = TypefaceIcon;
-      break;
-    }
-    case 'image': {
-      Icon = ImageIcon;
-      break;
-    }
-    case 'component': {
-      Icon = ComponentIcon;
-      break;
-    }
-    default: {
-      Icon = ContainerIcon;
-    }
+  let Icon = ContainerIcon;
+
+  if (layerData.text) {
+    Icon = TypefaceIcon;
+  }
+
+  if (layerData.var) {
+    Icon = TypefaceIcon;
+  }
+
+  if (layerData.component) {
+    Icon = ComponentIcon;
+  }
+
+  if (layerData.node === 'img') {
+    Icon = ImageIcon;
   }
 
   return (
     <div ref={ref} style={{ opacity }} className={cc([styles.layer, { isActive, isTarget }])}>
       <div className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}>
-        {!isRoot && childData && childData.length > 0 && (
+        {!isRoot && layerData.children && layerData.children.length > 0 && (
           <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={() => setShowChildren((s) => !s)} />
         )}
         <Icon className={styles.icon} />
         <span>
-          {text}
+          {layerData.name || layerData.text || layerData.var || layerData.component || layerData.node}
         </span>
         <ViewIcon className={styles.displayIcon} />
       </div>
-      {showChildren && childData && (
+      {showChildren && layerData.children && (
         <div>
-          <LayerContainer path={path} moveLayer={moveLayer} data={childData} />
+          <LayerContainer path={path} moveLayer={moveLayer} data={layerData.children} />
         </div>
       )}
     </div>
