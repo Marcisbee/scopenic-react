@@ -131,8 +131,22 @@ const Editor: React.FC = () => {
         <div className={styles.right}>
           <div>
             Selected element: {JSON.stringify(projectState.activeElement)}
+            <h2>Element:</h2>
+            <pre>{JSON.stringify(
+              dlv(projectState.data[projectState.activePage], 'children.' + projectState.activeElement.path.slice(1).join('.children.')),
+              // Don't care about children data here
+              (key, value) => key === 'children' ? undefined : value,
+              '  ',
+            )}</pre>
+            <h2>Styles:</h2>
+            {projectState.activeElement.id && (
+              <pre>{JSON.stringify(
+                dlv(projectState.css, projectState.activeElement.id),
+                null,
+                '  ',
+              )}</pre>
+            )}
           </div>
-          RIGHT
           <Plugins
             scope="editor.panel.right"
             src={enabledPlugins}
