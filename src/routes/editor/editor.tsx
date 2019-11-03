@@ -1,5 +1,6 @@
 // import cc from 'classcat';
 import { useQuery } from '@apollo/react-hooks';
+import dlv from 'dlv';
 import React, { useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -74,7 +75,10 @@ const Editor: React.FC = () => {
     setProject(tempProjectState);
     setProjectState({
       activePage: settings.page,
-      activeElement: null,
+      activeElement: {
+        id: null,
+        path: [0],
+      },
       data: tempProjectState.data,
       css: tempProjectState.css,
     });
@@ -126,7 +130,7 @@ const Editor: React.FC = () => {
         </div>
         <div className={styles.right}>
           <div>
-            Selected element: {projectState.activeElement || 'BODY'}
+            Selected element: {JSON.stringify(projectState.activeElement)}
           </div>
           RIGHT
           <Plugins

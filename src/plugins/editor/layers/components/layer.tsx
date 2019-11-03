@@ -63,7 +63,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   }, []);
 
   const isTarget = !isDragging && canDrop && isOver;
-  const isActive = !state.activeElement && isRoot || state.activeElement === layer.id;
+  const isActive = !state.activeElement.id && isRoot || state.activeElement.id === layer.id;
   const opacity = isDragging ? 0.5 : 1;
 
   // Do not drag this layer here
@@ -94,7 +94,10 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   function setActiveElement() {
     setState({
       ...state,
-      activeElement: isRoot ? null : layer.id,
+      activeElement: {
+        id: isRoot ? null : layer.id,
+        path,
+      },
     });
   }
 
