@@ -10,7 +10,6 @@ import { projectContext } from '../../../routes/editor/editor';
 import { createVNode } from '../../../utils/create-vnode';
 
 import LayerContainer from './components/layer-container';
-import { LayerContext, layerContextInitial } from './context/layer';
 import styles from './layers.module.scss';
 
 const Menu: React.FC = () => {
@@ -53,16 +52,14 @@ const LeftPanel: React.FC = () => {
   );
 
   return (
-    <LayerContext.Provider value={layerContextInitial}>
-      <div className={styles.wrapper}>
-        {activePage.name}
-        <div>
-          <DndProvider backend={HTML5Backend}>
-            <LayerContainer data={layers} moveLayer={moveLayer} />
-          </DndProvider>
-        </div>
+    <div className={styles.wrapper}>
+      {activePage.name}
+      <div>
+        <DndProvider backend={HTML5Backend}>
+          <LayerContainer data={layers} moveLayer={moveLayer} />
+        </DndProvider>
       </div>
-    </LayerContext.Provider>
+    </div>
   );
 };
 

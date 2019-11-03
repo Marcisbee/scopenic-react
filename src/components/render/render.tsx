@@ -40,7 +40,7 @@ const Render: React.FC<IRenderProps> = ({ data }) => {
       return <>Image: {data.node}</>;
     }
 
-    return <>Node: {data.node}{data.children && data.children.map(renderChild)}</>;
+    return React.createElement(data.node, { className: data.id }, data.children && data.children.map(renderChild));
   }
 
   return null;

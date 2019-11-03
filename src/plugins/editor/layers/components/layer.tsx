@@ -4,8 +4,8 @@ import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ComponentIcon, ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
+import { projectContext } from '../../../../routes/editor/editor';
 import { ILayerData } from '../../../../utils/create-vnode';
-import { LayerContext } from '../context/layer';
 import styles from '../layers.module.scss';
 
 import LayerContainer from './layer-container';
@@ -28,7 +28,7 @@ export interface ILayerProps {
 const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer }) => {
   const layerData: any = layer;
   const [showChildren, setShowChildren] = useState(true);
-  const layerContext = useContext(LayerContext);
+  const { state, setState } = useContext(projectContext);
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'layer',
@@ -63,7 +63,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   }, []);
 
   const isTarget = !isDragging && canDrop && isOver;
-  const isActive = layerContext.active.join('.') === path.join('.');
+  const isActive = !state.activeElement && isRoot || state.activeElement === layer.id;
   const opacity = isDragging ? 0.5 : 1;
 
   // Do not drag this layer here
@@ -91,11 +91,24 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
     Icon = ImageIcon;
   }
 
+  function setActiveElement() {
+    setState({
+      ...state,
+      activeElement: isRoot ? null : layer.id,
+    });
+  }
+
   return (
     <div ref={ref} style={{ opacity }} className={cc([styles.layer, { isActive, isTarget }])}>
-      <div className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}>
+      <div
+        className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}
+        onClick={setActiveElement}
+      >
         {!isRoot && layerData.children && layerData.children.length > 0 && (
-          <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={() => setShowChildren((s) => !s)} />
+          <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={(e) => {
+            e.stopPropagation();
+            setShowChildren((s) => !s);
+          }} />
         )}
         <Icon className={styles.icon} />
         <span>

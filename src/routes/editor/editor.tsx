@@ -22,15 +22,21 @@ export const projectContext = React.createContext<{
   project: Record<string, any>,
   settings: Record<string, any>,
   state: Record<string, any>,
-  setState: React.SetStateAction<Record<string, any>>,
+  setProject: React.Dispatch<Record<string, any>>,
+  setState: React.Dispatch<Record<string, any>>,
 }>({} as any);
 
 const Editor: React.FC = () => {
   // @TODO: Move LEFT, Middle and right side to seperate components
   const params = useParams<{ id: string }>();
   const { data, loading, error } = useQuery(GET_PROJECT_BY_ID, { variables: { id: params.id }});
-  const [projectState, setProjectState] = useState(data);
+  const [project, setProject] = useState(data);
+  const [projectState, setProjectState] = useState<any>(null);
   const [panelLeftActive] = useStore<string>('editor.panel.left.active');
+
+  const settings = {
+    page: '/',
+  };
 
   useLayoutEffect(() => {
     if (!data) {
@@ -55,9 +61,22 @@ const Editor: React.FC = () => {
         ],
       },
     };
-    setProjectState({
+    const tempProjectState = {
       ...data.project,
       data: projectStructure,
+      css: {
+        [projectStructure['/'].children[1].id]: {
+          backgroundColor: 'orange',
+          color: 'white',
+        },
+      },
+    };
+    setProject(tempProjectState);
+    setProjectState({
+      activePage: settings.page,
+      activeElement: null,
+      data: tempProjectState.data,
+      css: tempProjectState.css,
     });
   }, [data]);
 
@@ -75,24 +94,19 @@ const Editor: React.FC = () => {
     return <>No project found</>;
   }
 
-  const settings = {
-    page: '/',
-  };
-
   return (
     <projectContext.Provider value={{
       settings,
-      project: projectState,
-      state: {
-        activePage: settings.page,
-        data: projectState.data,
-      },
+      project,
+      state: projectState,
+      // @TODO: create reducers
+      setProject,
       setState: setProjectState,
     }}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
           <div className={styles.details}>
-            Project name: {projectState.name}
+            Project name: {project.name}
           </div>
           <div className={styles.leftPlugins}>
             <Plugins
@@ -111,6 +125,9 @@ const Editor: React.FC = () => {
           </div>
         </div>
         <div className={styles.right}>
+          <div>
+            Selected element: {projectState.activeElement || 'BODY'}
+          </div>
           RIGHT
           <Plugins
             scope="editor.panel.right"
