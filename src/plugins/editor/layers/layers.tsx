@@ -23,7 +23,7 @@ const LeftPanel: React.FC = () => {
 
   const activePage = state.data[state.activePage];
   const layers = [
-    createVNode('node', 'body', 'body', activePage.children),
+    createVNode('node', 'body', 'body', undefined, activePage.children),
   ];
 
   const moveLayer = useCallback(
@@ -58,6 +58,26 @@ const LeftPanel: React.FC = () => {
         <DndProvider backend={HTML5Backend}>
           <LayerContainer data={layers} moveLayer={moveLayer} />
         </DndProvider>
+      </div>
+      <div style={{ position: 'absolute', bottom: 0 }} className="pt-button-group">
+        <a className="pt-button" onClick={() => {
+          const lastIndex = state.activeElement.path.slice(-1)[0];
+          const childList = dlv(state.data[state.activePage], ['children', ...state.activeElement.path.slice(1, -1)].join('.children.'));
+          const newNode = createVNode('node', 'div', 'Container');
+
+          // Insert new node
+          childList.splice(lastIndex, 0, newNode);
+
+          // Select newly created node
+          if (state.activeElement.id === null) {
+            state.activeElement.id = newNode.id;
+            state.activeElement.path = state.activeElement.path.concat(0);
+          }
+          setState({ ...state });
+        }}>Create node</a>
+        <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
+        <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
+        <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
       </div>
     </div>
   );

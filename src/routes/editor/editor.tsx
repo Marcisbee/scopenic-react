@@ -1,7 +1,7 @@
 // import cc from 'classcat';
 import { useQuery } from '@apollo/react-hooks';
-import dlv from 'dlv';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import Frame from 'react-frame-component';
 import { useParams } from 'react-router';
 
 import Plugins from '../../components/plugins';
@@ -11,6 +11,7 @@ import { createVNode } from '../../utils/create-vnode';
 import { useStore } from '../../utils/store';
 import { Suspend } from '../../utils/suspend';
 
+import EditorRight from './components/editor-right';
 import styles from './editor.module.scss';
 
 // Plugins
@@ -25,6 +26,7 @@ export const projectContext = React.createContext<{
   state: Record<string, any>,
   setProject: React.Dispatch<Record<string, any>>,
   setState: React.Dispatch<Record<string, any>>,
+  workspaceRef: React.RefObject<Frame>,
 }>({} as any);
 
 const Editor: React.FC = () => {
@@ -33,6 +35,7 @@ const Editor: React.FC = () => {
   const { data, loading, error } = useQuery(GET_PROJECT_BY_ID, { variables: { id: params.id }});
   const [project, setProject] = useState(data);
   const [projectState, setProjectState] = useState<any>(null);
+  const workspaceRef = useRef<Frame>(null);
   const [panelLeftActive] = useStore<string>('editor.panel.left.active');
 
   const settings = {
@@ -48,14 +51,19 @@ const Editor: React.FC = () => {
       '/': {
         name: 'Home',
         children: [
-          createVNode('component', 'header', undefined, [
+          createVNode('component', 'header', undefined, undefined, [
             // @TODO: Figure out if variable should be used like this or inside text node
             // YES in text nodes!!
             createVNode('text', 'Hello '),
             createVNode('var', 'name'),
             createVNode('text', '!'),
           ]),
-          createVNode('node', 'div', undefined, [
+          createVNode('node', 'button', undefined, {
+            className: 'btn',
+          }, [
+            createVNode('text', 'Click here'),
+          ]),
+          createVNode('node', 'div', undefined, undefined, [
             createVNode('node', 'div'),
             createVNode('img', 'img'),
           ]),
@@ -106,6 +114,7 @@ const Editor: React.FC = () => {
       // @TODO: create reducers
       setProject,
       setState: setProjectState,
+      workspaceRef,
     }}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
@@ -129,24 +138,7 @@ const Editor: React.FC = () => {
           </div>
         </div>
         <div className={styles.right}>
-          <div>
-            Selected element: {JSON.stringify(projectState.activeElement)}
-            <h2>Element:</h2>
-            <pre>{JSON.stringify(
-              dlv(projectState.data[projectState.activePage], 'children.' + projectState.activeElement.path.slice(1).join('.children.')),
-              // Don't care about children data here
-              (key, value) => key === 'children' ? undefined : value,
-              '  ',
-            )}</pre>
-            <h2>Styles:</h2>
-            {projectState.activeElement.id && (
-              <pre>{JSON.stringify(
-                dlv(projectState.css, projectState.activeElement.id),
-                null,
-                '  ',
-              )}</pre>
-            )}
-          </div>
+          <EditorRight />
           <Plugins
             scope="editor.panel.right"
             src={enabledPlugins}

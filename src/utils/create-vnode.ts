@@ -4,24 +4,28 @@ export interface ILayerText {
   id: string;
   name?: string;
   text: string;
+  props: Record<string, any>;
 }
 
 export interface ILayerVar {
   id: string;
   name?: string;
   var: string;
+  props: Record<string, any>;
 }
 
 export interface ILayerImg {
   id: string;
   name?: string;
   node: string;
+  props: Record<string, any>;
 }
 
 export interface ILayerComponent {
   id: string;
   name?: string;
   component: string;
+  props: Record<string, any>;
   children?: ILayerData[];
 }
 
@@ -29,21 +33,22 @@ export interface ILayerNode {
   id: string;
   name?: string;
   node: string;
+  props: Record<string, any>;
   children?: ILayerData[];
 }
 
 export type ILayerData = ILayerText | ILayerVar | ILayerImg | ILayerComponent | ILayerNode;
 
-export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img', node: string, name?: string, children: any[] = []): ILayerData {
-  const id = shortid.generate();
+export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img', node: string, name?: string, props: Record<string, any> = {}, children: any[] = []): ILayerData {
+  const id = `sc-${shortid.generate()}`;
 
   if (type === 'text') {
-    const data: ILayerText = {
+    return {
       id,
       name,
       text: node,
+      props,
     };
-    return data;
   }
 
   if (type === 'var') {
@@ -51,6 +56,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img',
       id,
       name,
       var: node,
+      props,
     };
   }
 
@@ -59,6 +65,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img',
       id,
       name,
       node,
+      props,
     };
   }
 
@@ -67,6 +74,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img',
       id,
       name,
       component: node,
+      props,
       children,
     };
   }
@@ -75,6 +83,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img',
     id,
     name,
     node,
+    props,
     children,
   };
 }

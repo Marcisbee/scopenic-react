@@ -31,7 +31,7 @@ function buildCss(css: Record<string, CSSProperties>): string {
 // [ ] 2. build parser, generate html, css
 // [x] 3. add context of project to plugins and here
 const Workspace = React.memo<any>(() => {
-  const { state } = useContext(projectContext);
+  const { state, workspaceRef } = useContext(projectContext);
 
   const css = buildCss(state.css);
 
@@ -39,7 +39,12 @@ const Workspace = React.memo<any>(() => {
     <div>
       <div className={styles.container}>
         {/* https://github.com/ryanseddon/react-frame-component */}
-        <Frame>
+        <Frame ref={workspaceRef}>
+          <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          />
+
           <style>{css}</style>
           <h1>Hello world</h1>
           <div>

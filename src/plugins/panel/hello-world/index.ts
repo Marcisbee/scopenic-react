@@ -3,7 +3,7 @@ import React from 'react';
 
 export = {
   'dashboard.panel.menu': (): React.ReactNode => {
-    console.log('got loaded');
+    // console.log('got loaded');
     // "translate" was a service this plugin consumes
     // const { translate } = ctx.services;
     // const { menu } = ctx;
