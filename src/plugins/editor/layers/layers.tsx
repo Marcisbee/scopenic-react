@@ -1,12 +1,11 @@
-import dlv from 'dlv';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import { LayersIcon } from '../../../components/icons';
 import { IPluginInterface } from '../../../components/plugins/plugins';
 import panelStyles from '../../../layouts/panel.module.scss';
-import { projectContext } from '../../../routes/editor/editor';
+import { useEditorDispatch, useEditorState } from '../../../routes/editor/context/editor-context';
 import { createVNode } from '../../../utils/create-vnode';
 
 import LayerContainer from './components/layer-container';
@@ -19,7 +18,8 @@ const Menu: React.FC = () => {
 };
 
 const LeftPanel: React.FC = () => {
-  const { state, setState } = useContext(projectContext as any);
+  const { state } = useEditorState();
+  const editorDispatch = useEditorDispatch();
 
   const activePage = state.data[state.activePage];
   const layers = [
@@ -27,26 +27,12 @@ const LeftPanel: React.FC = () => {
   ];
 
   const moveLayer = useCallback(
-    (dragPath: number[], hoverPath: number[]) => {
-      const dragLayer = dlv(layers, dragPath.join('.children.'));
-
-      const dragIndex = dragPath.slice(-1)[0];
-      const dragParentPath = dragPath.slice(0, -1);
-      const dragParent = dlv(layers, dragParentPath.join('.children.') + '.children') || layers;
-
-      const hoverIndex = hoverPath.slice(-1)[0];
-      const hoverParentPath = hoverPath.slice(0, -1);
-      const hoverParent = dlv(layers, hoverParentPath.join('.children.') + '.children') || layers;
-
-      dragParent.splice(dragIndex, 1);
-
-      if (dragParent === hoverParent) {
-        hoverParent.splice(dragIndex < hoverIndex ? hoverIndex - 1 : hoverIndex, 0, dragLayer);
-      } else {
-        hoverParent.splice(hoverIndex, 0, dragLayer);
-      }
-
-      setState({ ...state });
+    (dragPath: string[], hoverPath: string[]) => {
+      editorDispatch({
+        type: 'MOVE_ELEMENT',
+        from: dragPath,
+        to: hoverPath,
+      });
     },
     [layers],
   );
@@ -61,19 +47,12 @@ const LeftPanel: React.FC = () => {
       </div>
       <div style={{ position: 'absolute', bottom: 0 }} className="pt-button-group">
         <a className="pt-button" onClick={() => {
-          const lastIndex = state.activeElement.path.slice(-1)[0];
-          const childList = dlv(state.data[state.activePage], ['children', ...state.activeElement.path.slice(1, -1)].join('.children.'));
           const newNode = createVNode('node', 'div', 'Container');
 
-          // Insert new node
-          childList.splice(lastIndex, 0, newNode);
-
-          // Select newly created node
-          if (state.activeElement.id === null) {
-            state.activeElement.id = newNode.id;
-            state.activeElement.path = state.activeElement.path.concat(0);
-          }
-          setState({ ...state });
+          editorDispatch({
+            type: 'ADD_ELEMENT',
+            payload: newNode,
+          });
         }}>Create node</a>
         <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
         <a className="pt-button" onClick={() => {  }}>&nbsp;</a>

@@ -1,10 +1,11 @@
 import dlv from 'dlv';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { projectContext } from '../../editor';
+import { useEditorDispatch, useEditorState } from '../../context/editor-context';
 
 const EditorRight: React.FC = () => {
-  const { state, setState, workspaceRef } = useContext(projectContext);
+  const { state, workspaceRef } = useEditorState();
+  const editorDispatch = useEditorDispatch();
   const [cssDeclarations, setCssDeclarations] = useState<CSSStyleDeclaration>();
 
   useEffect(() => {
@@ -42,9 +43,13 @@ const EditorRight: React.FC = () => {
         style={{ fontSize: 12 }}
         contentEditable={true}
         onBlur={(e) => {
-          const value = e.target.innerText;
-          Object.assign(element, JSON.parse(value));
-          setState({ ...state });
+          const value = JSON.parse(e.target.innerText);
+
+          editorDispatch({
+            type: 'UPDATE_ELEMENT',
+            path: state.activeElement.path.slice(1),
+            payload: value,
+          });
         }}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
@@ -62,9 +67,13 @@ const EditorRight: React.FC = () => {
           contentEditable={true}
           onBlur={(e) => {
             const key = state.activeElement.id;
-            const value = e.target.innerText;
-            state.css[key] = JSON.parse(value);
-            setState({ ...state });
+            const value = JSON.parse(e.target.innerText);
+
+            editorDispatch({
+              type: 'UPDATE_STYLE',
+              id: key,
+              payload: value,
+            });
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(

@@ -12,6 +12,7 @@ import { useStore } from '../../utils/store';
 import { Suspend } from '../../utils/suspend';
 
 import EditorRight from './components/editor-right';
+import { EditorProvider } from './context/editor-context';
 import styles from './editor.module.scss';
 
 // Plugins
@@ -19,15 +20,6 @@ const enabledPlugins = {
   // 'hello-world': () => import('../plugins/panel/hello-world'),
   'layers-menu-button': () => import('../../plugins/editor/layers'),
 };
-
-export const projectContext = React.createContext<{
-  project: Record<string, any>,
-  settings: Record<string, any>,
-  state: Record<string, any>,
-  setProject: React.Dispatch<Record<string, any>>,
-  setState: React.Dispatch<Record<string, any>>,
-  workspaceRef: React.RefObject<Frame>,
-}>({} as any);
 
 const Editor: React.FC = () => {
   // @TODO: Move LEFT, Middle and right side to seperate components
@@ -52,11 +44,7 @@ const Editor: React.FC = () => {
         name: 'Home',
         children: [
           createVNode('component', 'header', undefined, undefined, [
-            // @TODO: Figure out if variable should be used like this or inside text node
-            // YES in text nodes!!
-            createVNode('text', 'Hello '),
-            createVNode('var', 'name'),
-            createVNode('text', '!'),
+            createVNode('text', 'Hello {name} !'),
           ]),
           createVNode('node', 'button', undefined, {
             className: 'btn',
@@ -106,16 +94,15 @@ const Editor: React.FC = () => {
     return <>No project found</>;
   }
 
+  const initialEditorState = {
+    settings,
+    project,
+    state: projectState,
+    workspaceRef,
+  };
+
   return (
-    <projectContext.Provider value={{
-      settings,
-      project,
-      state: projectState,
-      // @TODO: create reducers
-      setProject,
-      setState: setProjectState,
-      workspaceRef,
-    }}>
+    <EditorProvider initialState={initialEditorState}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
           <div className={styles.details}>
@@ -152,7 +139,7 @@ const Editor: React.FC = () => {
           />
         </div>
       </div>
-    </projectContext.Provider>
+    </EditorProvider>
   );
 };
 

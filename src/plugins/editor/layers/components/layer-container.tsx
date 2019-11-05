@@ -6,11 +6,11 @@ import styles from '../layers.module.scss';
 import DropInBetween from './drop-in-between';
 import Layer from './layer';
 
-const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: number[] }> = ({ moveLayer, data: layers, path = [] }) => {
+const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: string[] }> = ({ moveLayer, data: layers, path = [] }) => {
   const isRoot = path.length === 0;
 
   const renderLayer = (layer: ILayerData, index: number) => {
-    const newPath = path.concat(index);
+    const newPath = path.concat(String(index));
 
     if (isRoot) {
       return (
@@ -44,7 +44,7 @@ const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: numb
         <DropInBetween
           index={index + 1}
           id={layer.id}
-          path={path.concat(index + 1)}
+          path={path.concat(String(index + 1))}
           moveLayer={moveLayer}
         />
       </li>

@@ -1,10 +1,10 @@
 import cc from 'classcat';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ComponentIcon, ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
-import { projectContext } from '../../../../routes/editor/editor';
+import { useEditorDispatch, useEditorState } from '../../../../routes/editor/context/editor-context';
 import { ILayerData } from '../../../../utils/create-vnode';
 import styles from '../layers.module.scss';
 
@@ -14,21 +14,22 @@ export interface IDragItem {
   index: number;
   id: string;
   type: string;
-  path: number[];
+  path: string[];
 }
 
 export interface ILayerProps {
   index: number;
   layer: ILayerData;
-  path: number[];
-  moveLayer: (dragIndex: number[], hoverIndex: number[]) => void;
+  path: string[];
+  moveLayer: (dragIndex: string[], hoverIndex: string[]) => void;
   isRoot: boolean;
 }
 
 const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer }) => {
   const layerData: any = layer;
   const [showChildren, setShowChildren] = useState(true);
-  const { state, setState } = useContext(projectContext);
+  const { state } = useEditorState();
+  const editorDispatch = useEditorDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'layer',
@@ -43,7 +44,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
         return;
       }
 
-      moveLayer(item.path, path.concat(0));
+      moveLayer(item.path, path.concat('0'));
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
@@ -92,9 +93,9 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   }
 
   function setActiveElement() {
-    setState({
-      ...state,
-      activeElement: {
+    editorDispatch({
+      type: 'SET_ACTIVE_ELEMENT',
+      payload: {
         id: isRoot ? null : layer.id,
         path,
       },
