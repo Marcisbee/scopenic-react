@@ -1,4 +1,5 @@
 import dlv from 'dlv';
+import immutableUpdate from 'immutability-helper';
 import React, { createContext } from 'react';
 import Frame from 'react-frame-component';
 
@@ -20,6 +21,20 @@ interface IEditorProviderProps {
   initialState: IEditorState;
   children: React.ReactNode;
 }
+
+const createPath = (obj: Record<string, any>, path: string[], value: any = null): Record<string, any> => {
+  let current = obj;
+  while (path.length > 1) {
+    const [head, ...tail] = path;
+    path = tail;
+    if (current[head] === undefined) {
+      current[head] = {};
+    }
+    current = current[head];
+  }
+  current[path[0]] = value;
+  return obj;
+};
 
 const EditorStateContext = createContext<IEditorState | undefined>(undefined);
 const EditorDispatchContext = createContext<Dispatch | undefined>(undefined);
@@ -52,72 +67,112 @@ function editorReducer(state: IEditorState, action: Action) {
     }
     case 'ADD_ELEMENT': {
       const addPath = action.path || state.state.activeElement.path.slice(1);
-      const lastIndex = addPath.slice(-1)[0];
+      const lastIndex = addPath.slice(-1)[0] || 0;
       const childPath = addPath.slice(0, -1).join('.children.');
-      const childPathFull = childPath ? `children.${childPath}.children` : 'children';
-      const childList = dlv(state.state.data[state.state.activePage], childPathFull);
+      const childPathFull = childPath
+        ? `children.${childPath}.children`.split('.')
+        : ['children'];
 
-      // Insert new node
-      childList.splice(lastIndex, 0, action.payload);
+      const updateData = createPath(
+        {
+          state: {
+            activeElement: {
+              id: {
+                $set: action.payload.id,
+              },
+              path: {
+                $set: ['0'].concat(addPath),
+              },
+            },
+          },
+        },
+        ['state', 'data', state.state.activePage, ...childPathFull],
+        { $splice: [[lastIndex, 0, action.payload]] },
+      );
+      const newState = immutableUpdate(state, updateData);
 
-      // Select newly created node
-      state.state.activeElement.id = action.payload.id;
-      state.state.activeElement.path = ['0'].concat(addPath);
-
-      return {
-        ...state,
-      };
+      return newState;
     }
     case 'UPDATE_ELEMENT': {
-      const newState = state.state.data[state.state.activePage];
-      const nestedValue = dlv(newState, ['children'].concat(action.path.join('.children.')), null);
+      const childPathFull = ['children'].concat(action.path.join('.children.').split('.'));
 
-      if (nestedValue) {
-        Object.assign(nestedValue, action.payload);
-      }
+      const updateData = createPath(
+        {},
+        ['state', 'data', state.state.activePage, ...childPathFull],
+        { $merge: action.payload },
+      );
+      const newState = immutableUpdate(state, updateData);
 
-      return {
-        ...state,
-      };
+      return newState;
     }
     case 'MOVE_ELEMENT': {
       const layers = state.state.data[state.state.activePage].children;
 
-      const dragPath = action.from.slice(1);
-      const hoverPath = action.to.slice(1);
+      const dragPath = action.from;
+      const hoverPath = action.to;
 
-      const dragLayer = dlv(layers, dragPath.join('.children.'));
+      const dragLayer = dlv(layers, dragPath.slice(1).join('.children.'));
 
       const dragIndex = parseInt(dragPath.slice(-1)[0], 10);
-      const dragParentPath = dragPath.slice(0, -1);
-      const dragParent = dlv(layers, dragParentPath.join('.children.') + '.children') || layers;
+      const dragParentPath = (dragPath.slice(0, -1).join('.children.') + '.children').split('.').slice(1);
 
       const hoverIndex = parseInt(hoverPath.slice(-1)[0], 10);
-      const hoverParentPath = hoverPath.slice(0, -1);
-      const hoverParent = dlv(layers, hoverParentPath.join('.children.') + '.children') || layers;
+      const hoverParentPath = (hoverPath.slice(0, -1).join('.children.') + '.children').split('.').slice(1);
 
-      dragParent.splice(dragIndex, 1);
+      let newState;
+      if (dragParentPath.join('.') === hoverParentPath.join('.')) {
+        // Both values are in the same array
+        const hoverIndexAdjusted = dragIndex < hoverIndex ? hoverIndex - 1 : hoverIndex;
+        const updateData = createPath(
+          {},
+          ['state', 'data', state.state.activePage, ...dragParentPath],
+          { $splice: [[dragIndex, 1], [hoverIndexAdjusted, 0, dragLayer]] },
+        );
 
-      if (dragParent === hoverParent) {
-        hoverParent.splice(dragIndex < hoverIndex ? hoverIndex - 1 : hoverIndex, 0, dragLayer);
+        newState = immutableUpdate(state, updateData);
       } else {
-        hoverParent.splice(hoverIndex, 0, dragLayer);
+        // Different arrays
+        const updateSequenceConfig = [
+          [
+            ['state', 'data', state.state.activePage, ...dragParentPath],
+            { $splice: [[dragIndex, 1]] },
+          ],
+          [
+            ['state', 'data', state.state.activePage, ...hoverParentPath],
+            { $splice: [[hoverIndex, 0, dragLayer]] },
+          ],
+        ];
+        const updateSequence = dragParentPath.length > hoverParentPath.length
+          ? [1, 0]
+          : [0, 1];
+        const updateDataPre = createPath(
+          {},
+          // @ts-ignore - we have valid input (ts just doesn't accept spread)
+          ...updateSequenceConfig[updateSequence[0]],
+        );
+        const updateData = createPath(
+          updateDataPre,
+          // @ts-ignore - we have valid input (ts just doesn't accept spread)
+          ...updateSequenceConfig[updateSequence[1]],
+        );
+
+        newState = immutableUpdate(state, updateData);
       }
 
-      return {
-        ...state,
-      };
+      return newState;
     }
     case 'UPDATE_STYLE': {
-      const nestedValue = state.state.css[action.id];
+      const newState = immutableUpdate(state, {
+        state: {
+          css: {
+            [action.id]: {
+              $set: action.payload,
+            },
+          },
+        },
+      });
 
-      if (nestedValue) {
-        Object.assign(nestedValue, action.payload);
-      }
-
-      return {
-        ...state,
-      };
+      return newState;
     }
     default: {
       throw new Error(`Unhandled action type: ${(action as any).type}`);
