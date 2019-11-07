@@ -84,34 +84,38 @@
   border-radius: 3px;
   position: relative;
 
-  > :global(.im) {
-    position: absolute;
-    font-size: 10px;
-    margin-left: -6px;
-    top: 9px;
-    z-index: 10;
-    opacity: 0.4;
+  > div {
+    position: relative;
 
-    &::after {
-      content: '';
-      display: block;
+    > :global(.im) {
       position: absolute;
-      left: -50%;
-      top: -50%;
-      width: 200%;
-      height: 200%;
+      font-size: 10px;
+      left: -6px;
+      top: 3px;
+      z-index: 10;
+      opacity: 0.4;
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: -50%;
+        top: -50%;
+        width: 200%;
+        height: 200%;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
     }
 
-    &:hover {
-      opacity: 1;
+    > span {
+      display: block;
+      margin-left: 20px;
+      margin-right: 20px;
+      padding-left: 0.38rem;
     }
-  }
-
-  > span {
-    display: block;
-    margin-left: 20px;
-    margin-right: 20px;
-    padding-left: 0.38rem;
   }
 
   &:hover .displayIcon {

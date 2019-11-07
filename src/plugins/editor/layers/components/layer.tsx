@@ -108,17 +108,19 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
         className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}
         onClick={setActiveElement}
       >
-        {!isRoot && layerData.children && layerData.children.length > 0 && (
-          <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={(e) => {
-            e.stopPropagation();
-            setShowChildren((s) => !s);
-          }} />
-        )}
-        <Icon className={styles.icon} />
-        <span>
-          {layerData.name || layerData.text || layerData.var || layerData.component || layerData.node}
-        </span>
-        <ViewIcon className={styles.displayIcon} />
+        <div>
+          {!isRoot && layerData.children && layerData.children.length > 0 && (
+            <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={(e) => {
+              e.stopPropagation();
+              setShowChildren((s) => !s);
+            }} />
+          )}
+          <Icon className={styles.icon} />
+          <span>
+            {layerData.name || layerData.text || layerData.var || layerData.component || layerData.node}
+          </span>
+          <ViewIcon className={styles.displayIcon} />
+        </div>
       </div>
       {showChildren && layerData.children && (
         <div>
