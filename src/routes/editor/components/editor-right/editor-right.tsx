@@ -5,7 +5,7 @@ import { useEditorDispatch, useEditorState } from '../../context/editor-context'
 
 const EditorRight: React.FC = () => {
   const { state, workspaceRef } = useEditorState();
-  const editorDispatch = useEditorDispatch();
+  const { updateElement, updateStyle } = useEditorDispatch();
   const [cssDeclarations, setCssDeclarations] = useState<CSSStyleDeclaration>();
 
   useEffect(() => {
@@ -45,11 +45,7 @@ const EditorRight: React.FC = () => {
         onBlur={(e) => {
           const value = JSON.parse(e.target.innerText);
 
-          editorDispatch({
-            type: 'UPDATE_ELEMENT',
-            path: state.activeElement.path.slice(1),
-            payload: value,
-          });
+          updateElement(state.activeElement.path.slice(1), value);
         }}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
@@ -69,11 +65,7 @@ const EditorRight: React.FC = () => {
             const key = state.activeElement.id;
             const value = JSON.parse(e.target.innerText);
 
-            editorDispatch({
-              type: 'UPDATE_STYLE',
-              id: key,
-              payload: value,
-            });
+            updateStyle(key, value);
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(

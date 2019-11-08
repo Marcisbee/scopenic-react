@@ -10,13 +10,16 @@ type Action = { type: 'SET_PROJECT', payload: any }
   | { type: 'UPDATE_ELEMENT', payload: any, path: string[] }
   | { type: 'MOVE_ELEMENT', from: string[], to: string[] }
   | { type: 'UPDATE_STYLE', payload: any, id: string };
+
 type Dispatch = (action: Action) => void;
+
 interface IEditorState {
   project: Record<string, any>;
   settings: Record<string, any>;
   state: Record<string, any>;
   workspaceRef: React.RefObject<Frame>;
 }
+
 interface IEditorProviderProps {
   initialState: IEditorState;
   children: React.ReactNode;
@@ -47,12 +50,14 @@ function editorReducer(state: IEditorState, action: Action) {
         project: action.payload,
       };
     }
+
     case 'SET_STATE': {
       return {
         ...state,
         state: action.payload,
       };
     }
+
     case 'SET_ACTIVE_ELEMENT': {
       return {
         ...state,
@@ -65,6 +70,7 @@ function editorReducer(state: IEditorState, action: Action) {
         },
       };
     }
+
     case 'ADD_ELEMENT': {
       const addPath = action.path || state.state.activeElement.path.slice(1);
       const lastIndex = addPath.slice(-1)[0] || 0;
@@ -93,6 +99,7 @@ function editorReducer(state: IEditorState, action: Action) {
 
       return newState;
     }
+
     case 'UPDATE_ELEMENT': {
       const childPathFull = ['children'].concat(action.path.join('.children.').split('.'));
 
@@ -105,6 +112,7 @@ function editorReducer(state: IEditorState, action: Action) {
 
       return newState;
     }
+
     case 'MOVE_ELEMENT': {
       const layers = state.state.data[state.state.activePage].children;
 
@@ -161,6 +169,7 @@ function editorReducer(state: IEditorState, action: Action) {
 
       return newState;
     }
+
     case 'UPDATE_STYLE': {
       const newState = immutableUpdate(state, {
         state: {
@@ -174,6 +183,7 @@ function editorReducer(state: IEditorState, action: Action) {
 
       return newState;
     }
+
     default: {
       throw new Error(`Unhandled action type: ${(action as any).type}`);
     }
@@ -194,18 +204,85 @@ function EditorProvider({ initialState, children }: IEditorProviderProps) {
 
 function useEditorState() {
   const context = React.useContext(EditorStateContext);
+
   if (context === undefined) {
     throw new Error('useEditorState must be used within a EditorProvider');
   }
+
   return context;
 }
 
 function useEditorDispatch() {
   const context = React.useContext(EditorDispatchContext);
+
   if (context === undefined) {
     throw new Error('useEditorDispatch must be used within a EditorProvider');
   }
-  return context;
+
+  return {
+    setProject(payload: any) {
+      const action: Action = {
+        type: 'SET_PROJECT',
+        payload,
+      };
+      return context(action);
+    },
+
+    setState(payload: any) {
+      const action: Action = {
+        type: 'SET_STATE',
+        payload,
+      };
+      return context(action);
+    },
+
+    setActiveElement(id: string | null, path: string[]) {
+      const action: Action = {
+        type: 'SET_ACTIVE_ELEMENT',
+        payload: {
+          id,
+          path,
+        },
+      };
+      return context(action);
+    },
+
+    addElement(payload: any, path?: string[]) {
+      const action: Action = {
+        type: 'ADD_ELEMENT',
+        payload,
+        path,
+      };
+      return context(action);
+    },
+
+    updateElement(path: string[], payload: any) {
+      const action: Action = {
+        type: 'UPDATE_ELEMENT',
+        payload,
+        path,
+      };
+      return context(action);
+    },
+
+    moveElement(from: string[], to: string[]) {
+      const action: Action = {
+        type: 'MOVE_ELEMENT',
+        from,
+        to,
+      };
+      return context(action);
+    },
+
+    updateStyle(id: string, payload: any) {
+      const action: Action = {
+        type: 'UPDATE_STYLE',
+        payload,
+        id,
+      };
+      return context(action);
+    },
+  };
 }
 
 export { EditorProvider, useEditorState, useEditorDispatch };

@@ -29,7 +29,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   const layerData: any = layer;
   const [showChildren, setShowChildren] = useState(true);
   const { state } = useEditorState();
-  const editorDispatch = useEditorDispatch();
+  const { setActiveElement } = useEditorDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'layer',
@@ -92,21 +92,15 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
     Icon = ImageIcon;
   }
 
-  function setActiveElement() {
-    editorDispatch({
-      type: 'SET_ACTIVE_ELEMENT',
-      payload: {
-        id: isRoot ? null : layer.id,
-        path,
-      },
-    });
+  function setActiveElementMethod() {
+    setActiveElement(isRoot ? null : layer.id, path);
   }
 
   return (
     <div ref={ref} style={{ opacity }} className={cc([styles.layer, { isActive, isTarget }])}>
       <div
         className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}
-        onClick={setActiveElement}
+        onClick={setActiveElementMethod}
       >
         <div>
           {!isRoot && layerData.children && layerData.children.length > 0 && (

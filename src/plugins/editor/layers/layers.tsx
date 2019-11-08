@@ -19,7 +19,7 @@ const Menu: React.FC = () => {
 
 const LeftPanel: React.FC = () => {
   const { state } = useEditorState();
-  const editorDispatch = useEditorDispatch();
+  const { moveElement, addElement } = useEditorDispatch();
 
   const activePage = state.data[state.activePage];
   const layers = [
@@ -28,11 +28,7 @@ const LeftPanel: React.FC = () => {
 
   const moveLayer = useCallback(
     (dragPath: string[], hoverPath: string[]) => {
-      editorDispatch({
-        type: 'MOVE_ELEMENT',
-        from: dragPath,
-        to: hoverPath,
-      });
+      moveElement(dragPath, hoverPath);
     },
     [layers],
   );
@@ -49,14 +45,11 @@ const LeftPanel: React.FC = () => {
         <a className="pt-button" onClick={() => {
           const newNode = createVNode('node', 'div', 'Container');
 
-          editorDispatch({
-            type: 'ADD_ELEMENT',
-            payload: newNode,
-          });
+          addElement(newNode);
         }}>Create node</a>
-        <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
-        <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
-        <a className="pt-button" onClick={() => {  }}>&nbsp;</a>
+        <a className="pt-button" onClick={() => { }}>&nbsp;</a>
+        <a className="pt-button" onClick={() => { }}>&nbsp;</a>
+        <a className="pt-button" onClick={() => { }}>&nbsp;</a>
       </div>
     </div>
   );
