@@ -27,7 +27,7 @@ const Render: React.FC<IRenderProps> = ({ data }) => {
       data.node,
       {
         ...data.props,
-        className: [data.props.className, data.id].filter((a) => !!a).join(' '),
+        className: [data.props.className, data.className].filter((a) => !!a).join(' '),
       },
       data.children && data.children.map(renderChild),
     );

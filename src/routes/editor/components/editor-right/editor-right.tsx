@@ -8,6 +8,9 @@ const EditorRight: React.FC = () => {
   const { updateElement, updateStyle } = useEditorDispatch();
   const [cssDeclarations, setCssDeclarations] = useState<CSSStyleDeclaration>();
 
+  const element = dlv(state.data.pages[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
+  const currentClassName = (element && element.className) || state.activeElement.id;
+
   useEffect(() => {
     if (!workspaceRef || !workspaceRef.current) {
       setCssDeclarations(undefined);
@@ -17,7 +20,7 @@ const EditorRight: React.FC = () => {
     const node: HTMLIFrameElement = (workspaceRef.current as any).node;
 
     if (state.activeElement.id && node && node.contentDocument) {
-      const el = node.contentDocument.querySelector(`.${state.activeElement.id}`);
+      const el = node.contentDocument.querySelector(`.${currentClassName}`);
 
       if (el) {
         setCssDeclarations(window.getComputedStyle(el));
@@ -33,11 +36,11 @@ const EditorRight: React.FC = () => {
     color: cssDeclarations.color,
   };
 
-  const element = dlv(state.data.pages[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
-
   return (
     <div>
       Selected element: {JSON.stringify(state.activeElement)}
+      <br />
+      ClassName: {currentClassName || <i>NONE</i>}
       <h2>Element:</h2>
       <pre
         style={{ fontSize: 12 }}
@@ -63,13 +66,14 @@ const EditorRight: React.FC = () => {
           contentEditable={true}
           onBlur={(e) => {
             const key = state.activeElement.id;
+            const className = element.className;
             const value = JSON.parse(e.target.innerText);
 
-            updateStyle(key, value);
+            updateStyle(key, className, value);
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              dlv(state.data.css, state.activeElement.id),
+              dlv(state.data.css, currentClassName),
               null,
               ' ',
             ),

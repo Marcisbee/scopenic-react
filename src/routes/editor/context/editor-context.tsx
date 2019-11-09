@@ -15,7 +15,7 @@ type Action = { type: 'SET_PROJECT', payload: any }
   | { type: 'UPDATE_ELEMENT', payload: any, path: string[] }
   | { type: 'MOVE_ELEMENT', from: string[], to: string[] }
 
-  | { type: 'UPDATE_STYLE', payload: any, id: string };
+  | { type: 'UPDATE_STYLE', payload: any, className?: string, id: string };
 
 type Dispatch = (action: Action) => void;
 
@@ -282,17 +282,32 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
     }
 
     case 'UPDATE_STYLE': {
-      const newState = immutableUpdate(state, {
+      const query = {
         state: {
           data: {
             css: {
-              [action.id]: {
+              [action.className || action.id]: {
                 $set: action.payload,
               },
             },
           },
         },
-      });
+      };
+
+      if (action.className) {
+        return immutableUpdate(state, query);
+      }
+
+      const path = state.state.activeElement.path.slice(1);
+      const fullPath = 'children.' + path.join('.children.');
+
+      const updateData = createPath(
+        query,
+        ['state', 'data', 'pages', state.state.activePage, ...fullPath.split('.'), 'className'],
+        { $set: action.id },
+      );
+
+      const newState = immutableUpdate(state, updateData);
 
       return newState;
     }
@@ -411,10 +426,11 @@ function useEditorDispatch() {
       return context(action);
     },
 
-    updateStyle(id: string, payload: any) {
+    updateStyle(id: string, className: string | undefined, payload: any) {
       const action: Action = {
         type: 'UPDATE_STYLE',
         payload,
+        className,
         id,
       };
       return context(action);
