@@ -24,7 +24,7 @@ const enabledPlugins = {
 const Editor: React.FC = () => {
   // @TODO: Move LEFT, Middle and right side to seperate components
   const params = useParams<{ id: string }>();
-  const { data, loading, error } = useQuery(GET_PROJECT_BY_ID, { variables: { id: params.id }});
+  const { data, loading, error } = useQuery(GET_PROJECT_BY_ID, { variables: { id: params.id } });
   const [project, setProject] = useState(data);
   const [projectState, setProjectState] = useState<any>(null);
   const workspaceRef = useRef<Frame>(null);
@@ -53,7 +53,7 @@ const Editor: React.FC = () => {
           ]),
           createVNode('node', 'div', undefined, undefined, [
             createVNode('node', 'div'),
-            createVNode('img', 'img'),
+            createVNode('node', 'img'),
           ]),
         ],
       },

@@ -8,6 +8,7 @@ import panelStyles from '../../../layouts/panel.module.scss';
 import { useEditorDispatch, useEditorState } from '../../../routes/editor/context/editor-context';
 import { createVNode } from '../../../utils/create-vnode';
 
+import AddElement from './components/add-element';
 import LayerContainer from './components/layer-container';
 import styles from './layers.module.scss';
 
@@ -19,7 +20,7 @@ const Menu: React.FC = () => {
 
 const LeftPanel: React.FC = () => {
   const { state } = useEditorState();
-  const { moveElement, addElement } = useEditorDispatch();
+  const { moveElement } = useEditorDispatch();
 
   const activePage = state.data[state.activePage];
   const layers = [
@@ -35,18 +36,22 @@ const LeftPanel: React.FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      {activePage.name}
+      <div>
+        {activePage.name}
+      </div>
+
       <div>
         <DndProvider backend={HTML5Backend}>
           <LayerContainer data={layers} moveLayer={moveLayer} />
         </DndProvider>
       </div>
-      <div style={{ position: 'absolute', bottom: 0 }} className="pt-button-group">
-        <a className="pt-button" onClick={() => {
-          const newNode = createVNode('node', 'div', 'Container');
 
-          addElement(newNode);
-        }}>Create node</a>
+      <div style={{ position: 'absolute', bottom: 0 }} className="pt-button-group">
+        <AddElement showOnClick={true}>
+          {(props) => (
+            <button className="pt-button" {...props}>Create node</button>
+          )}
+        </AddElement>
         <a className="pt-button" onClick={() => { }}>&nbsp;</a>
         <a className="pt-button" onClick={() => { }}>&nbsp;</a>
         <a className="pt-button" onClick={() => { }}>&nbsp;</a>

@@ -14,19 +14,12 @@ export interface ILayerVar {
   props: Record<string, any>;
 }
 
-export interface ILayerImg {
-  id: string;
-  name?: string;
-  node: string;
-  props: Record<string, any>;
-}
-
 export interface ILayerComponent {
   id: string;
   name?: string;
   component: string;
   props: Record<string, any>;
-  children?: ILayerData[];
+  children?: null | ILayerData[];
 }
 
 export interface ILayerNode {
@@ -34,12 +27,12 @@ export interface ILayerNode {
   name?: string;
   node: string;
   props: Record<string, any>;
-  children?: ILayerData[];
+  children?: null | ILayerData[];
 }
 
-export type ILayerData = ILayerText | ILayerVar | ILayerImg | ILayerComponent | ILayerNode;
+export type ILayerData = ILayerText | ILayerVar | ILayerComponent | ILayerNode;
 
-export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img', node: string, name?: string, props: Record<string, any> = {}, children: any[] = []): ILayerData {
+export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: string, name?: string, props: Record<string, any> = {}, children: null | any[] = []): ILayerData {
   const id = `sc-${shortid.generate()}`;
 
   if (type === 'text') {
@@ -60,7 +53,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var' | 'img',
     };
   }
 
-  if (type === 'img') {
+  if (node === 'img') {
     return {
       id,
       name,

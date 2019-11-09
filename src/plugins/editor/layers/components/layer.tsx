@@ -48,7 +48,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
-      canDrop: monitor.canDrop() && !layerData.var && !layerData.img && !layerData.text,
+      canDrop: monitor.canDrop() && !layerData.var && !layerData.img && !layerData.text && layerData.children,
     }),
   });
 

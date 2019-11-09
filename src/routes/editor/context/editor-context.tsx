@@ -5,10 +5,12 @@ import Frame from 'react-frame-component';
 
 type Action = { type: 'SET_PROJECT', payload: any }
   | { type: 'SET_STATE', payload: any }
+
   | { type: 'SET_ACTIVE_ELEMENT', payload: { id: string | null, path: string[] } }
   | { type: 'ADD_ELEMENT', payload: any, path?: string[] }
   | { type: 'UPDATE_ELEMENT', payload: any, path: string[] }
   | { type: 'MOVE_ELEMENT', from: string[], to: string[] }
+
   | { type: 'UPDATE_STYLE', payload: any, id: string };
 
 type Dispatch = (action: Action) => void;
@@ -126,6 +128,8 @@ function editorReducer(state: IEditorState, action: Action) {
 
       const hoverIndex = parseInt(hoverPath.slice(-1)[0], 10);
       const hoverParentPath = (hoverPath.slice(0, -1).join('.children.') + '.children').split('.').slice(1);
+
+      // @TODO: Reselect active element if current element is active
 
       let newState;
       if (dragParentPath.join('.') === hoverParentPath.join('.')) {

@@ -10,8 +10,8 @@ export const AlertIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
-        <path fill="#B0A8FF" d="M9 19H15V21H9z" className="primary"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
+        <path fill="#B0A8FF" d="M9 19H15V21H9z" className="primary" />
         <path
           fill="#594BC8"
           d="M16 20.4v-.8a.6.6 0 01.6-.6h2.365a.4.4 0 00.349-.596L12.348 6.048a.4.4 0 00-.697 0L4.686 18.404a.4.4 0 00.349.596H7.4a.6.6 0 01.6.6v.8a.6.6 0 01-.6.6H3.671A1.664 1.664 0 012 19.343c0-.285.074-.565.215-.813l8.328-14.685a1.679 1.679 0 012.913 0l8.33 14.685a1.65 1.65 0 01-.638 2.257c-.25.14-.532.213-.82.213H16.6a.6.6 0 01-.6-.6zM11.4 16h1.2c.22 0 .4.18.4.4v1.2a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4v-1.2c0-.22.18-.4.4-.4zm0-7h1.2c.22 0 .4.18.4.4v5.2a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4V9.4c0-.22.18-.4.4-.4z"
@@ -32,7 +32,7 @@ export const CheckIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M19.38 5.278a.948.948 0 011.342 0c.37.372.37.974 0 1.345L18.7 8.649a.949.949 0 01-1.342 0 .95.95 0 010-1.343l2.023-2.028z"
@@ -58,7 +58,7 @@ export const CloseIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M14.834 13.422l3.874 3.873a.999.999 0 01-1.413 1.413l-3.873-3.874a.999.999 0 011.412-1.412z"
@@ -84,7 +84,7 @@ export const CommentsIcon: React.FC<{ className?: string }> = ({ className }) =>
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M10 8a1 1 0 110 2 1 1 0 010-2z"
@@ -110,7 +110,7 @@ export const FlagIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <rect
           width="2"
           height="4"
@@ -140,7 +140,7 @@ export const HomeIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M10 12h4a1 1 0 010 2h-4a1 1 0 010-2z"
@@ -166,7 +166,7 @@ export const LockIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M12 17.5a2 2 0 100-4 2 2 0 000 4z"
@@ -192,7 +192,7 @@ export const MoonIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M2.791 15.828a1.01 1.01 0 111.86-.785 8.109 8.109 0 004.305 4.305 1.01 1.01 0 11-.786 1.86 10.128 10.128 0 01-5.379-5.38z"
@@ -218,7 +218,7 @@ export const NotificationIcon: React.FC<{ className?: string }> = ({ className }
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M9.188 19h5.627a.18.18 0 01.179.191 3 3 0 01-5.988.003.182.182 0 01.182-.194z"
@@ -244,8 +244,8 @@ export const PersonIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
-        <path fill="#B0A8FF" d="M10 19H14V21H10z" className="primary"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
+        <path fill="#B0A8FF" d="M10 19H14V21H10z" className="primary" />
         <path
           fill="#594BC8"
           d="M15 20.4v-.8a.6.6 0 01.6-.6h1.2a.2.2 0 00.2-.2V17a4 4 0 00-4-4h-2a4 4 0 00-4 4v1.8c0 .11.09.2.2.2h1.2a.6.6 0 01.6.6v.8a.6.6 0 01-.6.6H5.6a.6.6 0 01-.6-.6V17a6 6 0 013.482-5.447 5 5 0 117.037 0A6 6 0 0119 17v3.4a.6.6 0 01-.6.6h-2.8a.6.6 0 01-.6-.6zM12 11a3 3 0 100-6 3 3 0 000 6z"
@@ -266,7 +266,7 @@ export const SettingIcon: React.FC<{ className?: string }> = ({ className }) => 
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M16 12a1 1 0 01-2 0 2 2 0 10-2 2 1 1 0 010 2 4 4 0 114-4z"
@@ -292,7 +292,7 @@ export const ShieldCheckIcon: React.FC<{ className?: string }> = ({ className })
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <rect
           width="2"
           height="2"
@@ -322,7 +322,7 @@ export const SunIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M18.647 4.505l.848.848a.4.4 0 010 .566l-.848.848a.4.4 0 01-.566 0l-.848-.848a.4.4 0 010-.566l.848-.848a.4.4 0 01.566 0zM5.919 17.233l.848.848a.4.4 0 010 .566l-.848.848a.4.4 0 01-.566 0l-.848-.848a.4.4 0 010-.566l.848-.848a.4.4 0 01.566 0zM5.353 4.505a.4.4 0 01.566 0l.848.848a.4.4 0 010 .566l-.848.848a.4.4 0 01-.566 0l-.848-.848a.4.4 0 010-.566l.848-.848zm12.728 12.728a.4.4 0 01.566 0l.848.848a.4.4 0 010 .566l-.848.848a.4.4 0 01-.566 0l-.848-.848a.4.4 0 010-.566l.848-.848z"
@@ -348,7 +348,7 @@ export const LayersIcon: React.FC<{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#594BC8"
           d="M5 11v8h14v-8H5zm0-2h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2z"
@@ -364,7 +364,7 @@ export const LayersIcon: React.FC<{ className?: string }> = ({ className }) => {
   );
 };
 
-export const TypefaceIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const TypefaceIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -374,7 +374,7 @@ export const TypefaceIcon: React.FC <{ className?: string }> = ({ className }) =
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#B0A8FF"
           d="M5.97139599 12L9.02544433 12 9.27994836 14 5.71689197 14z"
@@ -390,7 +390,7 @@ export const TypefaceIcon: React.FC <{ className?: string }> = ({ className }) =
   );
 };
 
-export const TextIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const TextIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -400,7 +400,7 @@ export const TextIcon: React.FC <{ className?: string }> = ({ className }) => {
       className={className}
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-        <path d="M0 0L24 0 24 24 0 24z"/>
+        <path d="M0 0L24 0 24 24 0 24z" />
         <path
           fill="#594BC8"
           d="M9 14.6v-4.117a.2.2 0 00-.341-.142L8.5 10.5c-.32.32-.754.5-1.207.5H6a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2h-1.293c-.453 0-.887-.18-1.207-.5l-.159-.159a.2.2 0 00-.341.142V14.6c0 .22.18.4.4.4h1.1a1.5 1.5 0 011.5 1.5V19a2 2 0 01-2 2H8a2 2 0 01-2-2v-2.5A1.5 1.5 0 017.5 15h1.1a.4.4 0 00.4-.4zm1 2.4H8.4a.4.4 0 00-.4.4v1.2c0 .22.18.4.4.4h7.2a.4.4 0 00.4-.4v-1.2a.4.4 0 00-.4-.4H14a1 1 0 01-1-1V7.6a.6.6 0 01.6-.6h.782a1 1 0 01.894.553l.613 1.226a.4.4 0 00.358.221H17.6a.4.4 0 00.4-.4V5.4a.4.4 0 00-.4-.4H6.4a.4.4 0 00-.4.4v3.2c0 .22.18.4.4.4h1.353a.4.4 0 00.358-.221l.613-1.226A1 1 0 019.618 7h.782a.6.6 0 01.6.6V16a1 1 0 01-1 1z"
@@ -411,7 +411,7 @@ export const TextIcon: React.FC <{ className?: string }> = ({ className }) => {
   );
 };
 
-export const ContainerIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const ContainerIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -436,7 +436,7 @@ export const ContainerIcon: React.FC <{ className?: string }> = ({ className }) 
   );
 };
 
-export const ViewIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const ViewIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -461,7 +461,7 @@ export const ViewIcon: React.FC <{ className?: string }> = ({ className }) => {
   );
 };
 
-export const HideIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const HideIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -486,7 +486,7 @@ export const HideIcon: React.FC <{ className?: string }> = ({ className }) => {
   );
 };
 
-export const ImageIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const ImageIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -511,7 +511,7 @@ export const ImageIcon: React.FC <{ className?: string }> = ({ className }) => {
   );
 };
 
-export const ComponentIcon: React.FC <{ className?: string }> = ({ className }) => {
+export const ComponentIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -529,6 +529,31 @@ export const ComponentIcon: React.FC <{ className?: string }> = ({ className }) 
         <path
           fill="#594BC8"
           d="M20 13H10v7h5.6c.22 0 .4.18.4.4v1.2a.4.4 0 01-.4.4H2.4a.4.4 0 01-.4-.4V2.4c0-.22.18-.4.4-.4h19.2c.22 0 .4.18.4.4v13.2a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4V13zm0-2V4.4a.4.4 0 00-.4-.4H10v7h10zM8 20V4H4.4a.4.4 0 00-.4.4v15.2c0 .22.18.4.4.4H8z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const SearchIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M16.425 18.182a9.053 9.053 0 001.757-1.757l3.454 3.454a1.243 1.243 0 01-1.757 1.757l-3.454-3.454z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M11 20a9 9 0 110-18 9 9 0 010 18zm0-2a7 7 0 100-14 7 7 0 000 14z"
           className="secondary"
         />
       </g>
