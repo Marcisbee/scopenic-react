@@ -58,7 +58,6 @@ const LeftPanel: React.FC = () => {
         <a className="pt-button" onClick={() => {
           duplicateElement();
         }}>Duplicate</a>
-        <a className="pt-button" onClick={() => { }}>&nbsp;</a>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import Frame from 'react-frame-component';
 import { copyVNode } from '../../../utils/copy-vnode';
 
 type Action = { type: 'SET_PROJECT', payload: any }
+  | { type: 'SET_PROJECT_DATA', payload: any }
   | { type: 'SET_STATE', payload: any }
 
   | { type: 'SET_ACTIVE_ELEMENT', payload: { id: string | null, path: string[] } }
@@ -53,6 +54,16 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
       return {
         ...state,
         project: action.payload,
+      };
+    }
+
+    case 'SET_PROJECT_DATA': {
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          data: action.payload,
+        },
       };
     }
 
@@ -311,6 +322,14 @@ function useEditorDispatch() {
     setProject(payload: any) {
       const action: Action = {
         type: 'SET_PROJECT',
+        payload,
+      };
+      return context(action);
+    },
+
+    setProjectData(payload: any) {
+      const action: Action = {
+        type: 'SET_PROJECT_DATA',
         payload,
       };
       return context(action);

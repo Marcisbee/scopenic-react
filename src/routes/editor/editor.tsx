@@ -6,7 +6,6 @@ import { useParams } from 'react-router';
 
 import Plugins from '../../components/plugins';
 import { GET_PROJECT_BY_ID } from '../../graphql/queries';
-import { createVNode } from '../../utils/create-vnode';
 import { Suspend } from '../../utils/suspend';
 import Workspace from './components/workspace';
 
@@ -33,37 +32,14 @@ const Editor: React.FC = () => {
   };
 
   useLayoutEffect(() => {
-    if (!data) {
+    if (error || loading || !data) {
       return;
     }
 
-    const projectStructure = {
-      '/': {
-        name: 'Home',
-        children: [
-          createVNode('component', 'header', undefined, undefined, [
-            createVNode('text', 'Hello {name} !'),
-          ]),
-          createVNode('node', 'button', undefined, {
-            className: 'btn',
-          }, [
-            createVNode('text', 'Click here'),
-          ]),
-          createVNode('node', 'div', undefined, undefined, [
-            createVNode('node', 'div'),
-            createVNode('node', 'img'),
-          ]),
-        ],
-      },
-    };
     const tempProjectState = {
       ...data.project,
-      data: projectStructure,
+      data: JSON.parse(data.project.data),
       css: {
-        [projectStructure['/'].children[1].id]: {
-          backgroundColor: 'orange',
-          color: 'white',
-        },
       },
     };
     setProject(tempProjectState);
@@ -73,7 +49,7 @@ const Editor: React.FC = () => {
         id: null,
         path: [0],
       },
-      data: tempProjectState.data,
+      data: JSON.parse(data.project.data),
       css: tempProjectState.css,
     });
   }, [data]);
