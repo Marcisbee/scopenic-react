@@ -22,7 +22,7 @@ const LeftPanel: React.FC = () => {
   const { state } = useEditorState();
   const { moveElement, removeElement, duplicateElement } = useEditorDispatch();
 
-  const activePage = state.data[state.activePage];
+  const activePage = state.data.pages[state.activePage];
   const layers = [
     createVNode('node', 'body', 'body', undefined, activePage.children),
   ];

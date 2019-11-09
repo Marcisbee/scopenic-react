@@ -33,7 +33,7 @@ function buildCss(css: Record<string, CSSProperties>): string {
 const Workspace = React.memo<any>(() => {
   const { state, workspaceRef } = useEditorState();
 
-  const css = buildCss(state.css);
+  const css = buildCss(state.data.css);
 
   return (
     <div>
@@ -48,9 +48,9 @@ const Workspace = React.memo<any>(() => {
           <style>{css}</style>
           <h1>Hello world</h1>
           <div>
-            {state.data[state.activePage].children.map(renderChild)}
+            {state.data.pages[state.activePage].children.map(renderChild)}
           </div>
-          <pre>{JSON.stringify(state.data[state.activePage], null, '  ')}</pre>
+          <pre>{JSON.stringify(state.data.pages[state.activePage], null, '  ')}</pre>
         </Frame>
       </div>
     </div>

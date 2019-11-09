@@ -20,9 +20,21 @@ type Action = { type: 'SET_PROJECT', payload: any }
 type Dispatch = (action: Action) => void;
 
 interface IEditorState {
-  project: Record<string, any>;
+  project: {
+    data: {
+      pages: Record<string, any>;
+      css: Record<string, any>;
+    };
+    [key: string]: any;
+  };
   settings: Record<string, any>;
-  state: Record<string, any>;
+  state: {
+    data: {
+      pages: Record<string, any>;
+      css: Record<string, any>;
+    };
+    [key: string]: any;
+  };
   workspaceRef: React.RefObject<Frame>;
 }
 
@@ -108,7 +120,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
             },
           },
         },
-        ['state', 'data', state.state.activePage, ...childPathFull],
+        ['state', 'data', 'pages', state.state.activePage, ...childPathFull],
         { $splice: [[lastIndex, 0, action.payload]] },
       );
       const newState = immutableUpdate(state, updateData);
@@ -141,7 +153,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
         ),
       );
       const item = dlv(
-        state.state.data,
+        state.state.data.pages,
         [state.state.activePage, 'children'].concat(newActivePath.slice(1).join('.children.').split('.')),
       );
 
@@ -160,7 +172,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
             },
           }
           : {},
-        ['state', 'data', state.state.activePage, ...childPathFull],
+        ['state', 'data', 'pages', state.state.activePage, ...childPathFull],
         { $splice: [[index, 1]] },
       );
       const newState = immutableUpdate(state, updateData);
@@ -181,7 +193,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
       }
 
       const item = dlv(
-        state.state.data,
+        state.state.data.pages,
         [state.state.activePage].concat(childPathFull),
       );
 
@@ -202,7 +214,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
 
       const updateData = createPath(
         {},
-        ['state', 'data', state.state.activePage, ...childPathFull],
+        ['state', 'data', 'pages', state.state.activePage, ...childPathFull],
         { $merge: action.payload },
       );
       const newState = immutableUpdate(state, updateData);
@@ -211,7 +223,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
     }
 
     case 'MOVE_ELEMENT': {
-      const layers = state.state.data[state.state.activePage].children;
+      const layers = state.state.data.pages[state.state.activePage].children;
 
       const dragPath = action.from;
       const hoverPath = action.to;
@@ -232,7 +244,7 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
         const hoverIndexAdjusted = dragIndex < hoverIndex ? hoverIndex - 1 : hoverIndex;
         const updateData = createPath(
           {},
-          ['state', 'data', state.state.activePage, ...dragParentPath],
+          ['state', 'data', 'pages', state.state.activePage, ...dragParentPath],
           { $splice: [[dragIndex, 1], [hoverIndexAdjusted, 0, dragLayer]] },
         );
 
@@ -241,11 +253,11 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
         // Different arrays
         const updateSequenceConfig = [
           [
-            ['state', 'data', state.state.activePage, ...dragParentPath],
+            ['state', 'data', 'pages', state.state.activePage, ...dragParentPath],
             { $splice: [[dragIndex, 1]] },
           ],
           [
-            ['state', 'data', state.state.activePage, ...hoverParentPath],
+            ['state', 'data', 'pages', state.state.activePage, ...hoverParentPath],
             { $splice: [[hoverIndex, 0, dragLayer]] },
           ],
         ];
@@ -272,9 +284,11 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
     case 'UPDATE_STYLE': {
       const newState = immutableUpdate(state, {
         state: {
-          css: {
-            [action.id]: {
-              $set: action.payload,
+          data: {
+            css: {
+              [action.id]: {
+                $set: action.payload,
+              },
             },
           },
         },

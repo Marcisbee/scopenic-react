@@ -39,8 +39,6 @@ const Editor: React.FC = () => {
     const tempProjectState = {
       ...data.project,
       data: JSON.parse(data.project.data),
-      css: {
-      },
     };
     setProject(tempProjectState);
     setProjectState({
@@ -50,7 +48,6 @@ const Editor: React.FC = () => {
         path: [0],
       },
       data: JSON.parse(data.project.data),
-      css: tempProjectState.css,
     });
   }, [data]);
 
@@ -68,15 +65,13 @@ const Editor: React.FC = () => {
     return <>No project found</>;
   }
 
-  const initialEditorState = {
-    settings,
-    project,
-    state: projectState,
-    workspaceRef,
-  };
-
   return (
-    <EditorProvider initialState={initialEditorState}>
+    <EditorProvider initialState={{
+      settings,
+      project,
+      state: projectState,
+      workspaceRef,
+    }}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
           <EditorLeft />

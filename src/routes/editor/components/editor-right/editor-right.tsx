@@ -26,14 +26,14 @@ const EditorRight: React.FC = () => {
     }
 
     setCssDeclarations(undefined);
-  }, [state, state.activeElement.id && dlv(state.css, state.activeElement.id), workspaceRef.current]);
+  }, [state, 'pages', state.activeElement.id && dlv(state.data.css, state.activeElement.id), workspaceRef.current]);
 
   const defaultStyles = cssDeclarations && {
     backgroundColor: cssDeclarations.backgroundColor,
     color: cssDeclarations.color,
   };
 
-  const element = dlv(state.data[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
+  const element = dlv(state.data.pages[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
 
   return (
     <div>
@@ -69,7 +69,7 @@ const EditorRight: React.FC = () => {
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              dlv(state.css, state.activeElement.id),
+              dlv(state.data.css, state.activeElement.id),
               null,
               ' ',
             ),
