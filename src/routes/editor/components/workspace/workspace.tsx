@@ -1,8 +1,8 @@
 import React, { CSSProperties } from 'react';
 import Frame from 'react-frame-component';
 
-import { useEditorState } from '../../routes/editor/context/editor-context';
-import { renderChild } from '../render/render';
+import { renderChild } from '../../../../components/render/render';
+import { useEditorState } from '../../context/editor-context';
 
 import styles from './workspace.module.scss';
 

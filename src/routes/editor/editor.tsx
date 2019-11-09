@@ -5,12 +5,12 @@ import Frame from 'react-frame-component';
 import { useParams } from 'react-router';
 
 import Plugins from '../../components/plugins';
-import Workspace from '../../components/workspace';
 import { GET_PROJECT_BY_ID } from '../../graphql/queries';
 import { createVNode } from '../../utils/create-vnode';
-import { useStore } from '../../utils/store';
 import { Suspend } from '../../utils/suspend';
+import Workspace from './components/workspace';
 
+import EditorLeft from './components/editor-left';
 import EditorRight from './components/editor-right';
 import { EditorProvider } from './context/editor-context';
 import styles from './editor.module.scss';
@@ -18,17 +18,15 @@ import styles from './editor.module.scss';
 // Plugins
 const enabledPlugins = {
   // 'hello-world': () => import('../plugins/panel/hello-world'),
-  'layers-menu-button': () => import('../../plugins/editor/layers'),
+  // 'layers-menu-button': () => import('../../plugins/editor/layers'),
 };
 
 const Editor: React.FC = () => {
-  // @TODO: Move LEFT, Middle and right side to seperate components
   const params = useParams<{ id: string }>();
   const { data, loading, error } = useQuery(GET_PROJECT_BY_ID, { variables: { id: params.id } });
   const [project, setProject] = useState(data);
   const [projectState, setProjectState] = useState<any>(null);
   const workspaceRef = useRef<Frame>(null);
-  const [panelLeftActive] = useStore<string>('editor.panel.left.active');
 
   const settings = {
     page: '/',
@@ -105,25 +103,9 @@ const Editor: React.FC = () => {
     <EditorProvider initialState={initialEditorState}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
-          <div className={styles.details}>
-            Project name: {project.name}
-          </div>
-          <div className={styles.leftPlugins}>
-            <Plugins
-              scope="editor.panel.left"
-              src={enabledPlugins}
-              render={({ config: pluginConfig, children }) => (
-                <>
-                  {
-                    panelLeftActive === pluginConfig.action && (
-                      children
-                    )
-                  }
-                </>
-              )}
-            />
-          </div>
+          <EditorLeft />
         </div>
+
         <div className={styles.right}>
           <EditorRight />
           <Plugins
@@ -131,6 +113,7 @@ const Editor: React.FC = () => {
             src={enabledPlugins}
           />
         </div>
+
         <div className={styles.main}>
           <Workspace />
           <Plugins

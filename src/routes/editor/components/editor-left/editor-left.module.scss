@@ -1,0 +1,18 @@
+.details {
+  position: relative;
+  height: 80px;
+  background-color: #fff;
+  border-bottom: 1px solid #e7edf2;
+}
+
+.leftPlugins {
+  position: relative;
+  height: calc(100vh - 80px);
+}
+
+:global(.pt-dark) {
+  .details {
+    background-color: #30404d;
+    border-color: #27353e;
+  }
+}

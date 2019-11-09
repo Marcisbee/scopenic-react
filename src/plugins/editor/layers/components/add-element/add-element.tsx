@@ -280,56 +280,6 @@ const AddElement: React.FC<IAddElementProps> = ({
                         </div>
                       </div>
                     ))}
-                    {/* <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div>
-                    <div className={itemStyle}>
-                      <div>
-                        Container
-                      </div>
-                    </div> */}
                   </div>
                 )}
               </div>
