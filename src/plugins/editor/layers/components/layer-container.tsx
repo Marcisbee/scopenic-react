@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { ILayerData } from '../../../../utils/create-vnode';
 import styles from '../layers.module.scss';
+
+import { ILayerData } from '../../../../utils/vnode-helpers';
 
 import DropInBetween from './drop-in-between';
 import Layer from './layer';

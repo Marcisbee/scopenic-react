@@ -2,12 +2,15 @@ import dlv from 'dlv';
 import immutableUpdate from 'immutability-helper';
 import React, { createContext } from 'react';
 import Frame from 'react-frame-component';
+import { copyVNode } from '../../../utils/copy-vnode';
 
 type Action = { type: 'SET_PROJECT', payload: any }
   | { type: 'SET_STATE', payload: any }
 
   | { type: 'SET_ACTIVE_ELEMENT', payload: { id: string | null, path: string[] } }
   | { type: 'ADD_ELEMENT', payload: any, path?: string[] }
+  | { type: 'REMOVE_ELEMENT', path?: string[] }
+  | { type: 'DUPLICATE_ELEMENT', path?: string[] }
   | { type: 'UPDATE_ELEMENT', payload: any, path: string[] }
   | { type: 'MOVE_ELEMENT', from: string[], to: string[] }
 
@@ -44,7 +47,7 @@ const createPath = (obj: Record<string, any>, path: string[], value: any = null)
 const EditorStateContext = createContext<IEditorState | undefined>(undefined);
 const EditorDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-function editorReducer(state: IEditorState, action: Action) {
+function editorReducer(state: IEditorState, action: Action): IEditorState {
   switch (action.type) {
     case 'SET_PROJECT': {
       return {
@@ -100,6 +103,87 @@ function editorReducer(state: IEditorState, action: Action) {
       const newState = immutableUpdate(state, updateData);
 
       return newState;
+    }
+
+    case 'REMOVE_ELEMENT': {
+      const isSelf = !action.path;
+      const removePath = action.path || state.state.activeElement.path.slice(1);
+
+      const index = removePath.slice(-1)[0];
+      const childPathFull = ['children']
+        .concat(removePath.slice(0, -1).join('.children.').split('.'))
+        .filter((s) => !!s);
+
+      if (index === null || index === undefined) {
+        return state;
+      }
+
+      if (childPathFull.length > 1) {
+        childPathFull.push('children');
+      }
+
+      const newActivePath = ['0'].concat(
+        removePath.slice(0, -1).concat(
+          parseInt(index, 20) > 0
+            ? parseInt(index, 20) - 1
+            : [],
+        ),
+      );
+      const item = dlv(
+        state.state.data,
+        [state.state.activePage, 'children'].concat(newActivePath.slice(1).join('.children.').split('.')),
+      );
+
+      const updateData = createPath(
+        isSelf
+          ? {
+            state: {
+              activeElement: {
+                id: {
+                  $set: item && item.id,
+                },
+                path: {
+                  $set: newActivePath,
+                },
+              },
+            },
+          }
+          : {},
+        ['state', 'data', state.state.activePage, ...childPathFull],
+        { $splice: [[index, 1]] },
+      );
+      const newState = immutableUpdate(state, updateData);
+
+      return newState;
+    }
+
+    case 'DUPLICATE_ELEMENT': {
+      const duplicatePath = action.path || state.state.activeElement.path.slice(1);
+
+      const index = duplicatePath.slice(-1)[0];
+      const childPathFull = ['children']
+        .concat(duplicatePath.join('.children.').split('.'))
+        .filter((s) => !!s);
+
+      if (index === null || index === undefined) {
+        return state;
+      }
+
+      const item = dlv(
+        state.state.data,
+        [state.state.activePage].concat(childPathFull),
+      );
+
+      if (!item) {
+        return state;
+      }
+
+      const newItem = copyVNode(item);
+
+      return editorReducer(state, {
+        type: 'ADD_ELEMENT',
+        payload: newItem,
+      });
     }
 
     case 'UPDATE_ELEMENT': {
@@ -255,6 +339,22 @@ function useEditorDispatch() {
       const action: Action = {
         type: 'ADD_ELEMENT',
         payload,
+        path,
+      };
+      return context(action);
+    },
+
+    removeElement(path?: string[]) {
+      const action: Action = {
+        type: 'REMOVE_ELEMENT',
+        path,
+      };
+      return context(action);
+    },
+
+    duplicateElement(path?: string[]) {
+      const action: Action = {
+        type: 'DUPLICATE_ELEMENT',
         path,
       };
       return context(action);

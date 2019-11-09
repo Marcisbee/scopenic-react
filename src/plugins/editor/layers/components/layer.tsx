@@ -5,7 +5,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ComponentIcon, ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
 import { useEditorDispatch, useEditorState } from '../../../../routes/editor/context/editor-context';
-import { ILayerData } from '../../../../utils/create-vnode';
+import { ILayerData } from '../../../../utils/vnode-helpers';
 import styles from '../layers.module.scss';
 
 import LayerContainer from './layer-container';

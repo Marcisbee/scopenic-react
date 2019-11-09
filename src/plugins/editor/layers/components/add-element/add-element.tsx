@@ -5,7 +5,8 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import ModalPortal from '../../../../../components/modal-portal';
 import { useOnClickOutside } from '../../../../../hooks/use-on-click-outside';
 import { useEditorDispatch } from '../../../../../routes/editor/context/editor-context';
-import { createVNode, ILayerData } from '../../../../../utils/create-vnode';
+import { createVNode } from '../../../../../utils/create-vnode';
+import { ILayerData } from '../../../../../utils/vnode-helpers';
 
 import { CheckIcon, ComponentIcon, ContainerIcon, ImageIcon, LayersIcon, SearchIcon, TextIcon, TypefaceIcon } from '../../../../../components/icons';
 import styles from './add-element.module.scss';

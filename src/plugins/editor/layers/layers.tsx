@@ -20,7 +20,7 @@ const Menu: React.FC = () => {
 
 const LeftPanel: React.FC = () => {
   const { state } = useEditorState();
-  const { moveElement } = useEditorDispatch();
+  const { moveElement, removeElement, duplicateElement } = useEditorDispatch();
 
   const activePage = state.data[state.activePage];
   const layers = [
@@ -49,11 +49,15 @@ const LeftPanel: React.FC = () => {
       <div style={{ position: 'absolute', bottom: 0 }} className="pt-button-group">
         <AddElement showOnClick={true}>
           {(props) => (
-            <button className="pt-button" {...props}>Create node</button>
+            <button className="pt-button" {...props}>Add</button>
           )}
         </AddElement>
-        <a className="pt-button" onClick={() => { }}>&nbsp;</a>
-        <a className="pt-button" onClick={() => { }}>&nbsp;</a>
+        <a className="pt-button" onClick={() => {
+          removeElement();
+        }}>Remove</a>
+        <a className="pt-button" onClick={() => {
+          duplicateElement();
+        }}>Duplicate</a>
         <a className="pt-button" onClick={() => { }}>&nbsp;</a>
       </div>
     </div>

@@ -1,36 +1,6 @@
 import shortid from 'shortid';
 
-export interface ILayerText {
-  id: string;
-  name?: string;
-  text: string;
-  props: Record<string, any>;
-}
-
-export interface ILayerVar {
-  id: string;
-  name?: string;
-  var: string;
-  props: Record<string, any>;
-}
-
-export interface ILayerComponent {
-  id: string;
-  name?: string;
-  component: string;
-  props: Record<string, any>;
-  children?: null | ILayerData[];
-}
-
-export interface ILayerNode {
-  id: string;
-  name?: string;
-  node: string;
-  props: Record<string, any>;
-  children?: null | ILayerData[];
-}
-
-export type ILayerData = ILayerText | ILayerVar | ILayerComponent | ILayerNode;
+import { ILayerData } from './vnode-helpers';
 
 export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: string, name?: string, props: Record<string, any> = {}, children: null | any[] = []): ILayerData {
   const id = `sc-${shortid.generate()}`;

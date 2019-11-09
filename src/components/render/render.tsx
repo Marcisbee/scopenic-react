@@ -1,25 +1,8 @@
 import React from 'react';
-
-import { ILayerComponent, ILayerData, ILayerNode, ILayerText, ILayerVar } from '../../utils/create-vnode';
+import { ILayerData, isComponent, isNode, isText, isVar } from '../../utils/vnode-helpers';
 
 interface IRenderProps {
   data: ILayerData;
-}
-
-function isText(data: ILayerData): data is ILayerText {
-  return (data as ILayerText).text !== undefined;
-}
-
-function isVar(data: ILayerData): data is ILayerVar {
-  return (data as ILayerVar).var !== undefined;
-}
-
-function isComponent(data: ILayerData): data is ILayerComponent {
-  return (data as ILayerComponent).component !== undefined;
-}
-
-function isNode(data: ILayerData): data is ILayerNode {
-  return (data as ILayerNode).node !== undefined;
 }
 
 const Render: React.FC<IRenderProps> = ({ data }) => {
