@@ -1,5 +1,5 @@
 import cc from 'classcat';
-import React, { useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import ModalPortal from '../../../../../components/modal-portal';
@@ -120,6 +120,33 @@ const COMPONENTS_LIST: IElementNode[] = [
     },
   },
 ];
+
+const ComponentsList: React.FC<{
+  handleEnterKeyPress: any,
+  addElementToTree: any,
+}> = ({ handleEnterKeyPress, addElementToTree }) => {
+  // @TODO: Load `COMPONENTS_LIST` from API
+  return (
+    <div className="row">
+      {COMPONENTS_LIST.map(({ icon: Icon, text, config }) => (
+        <div
+          key={`add-layer-${text}`}
+          tabIndex={0}
+          className={itemStyle}
+          onClick={() => addElementToTree(config)}
+          onKeyPress={handleEnterKeyPress(() => addElementToTree(config))}
+        >
+          <div>
+            {React.createElement(Icon || ComponentIcon)}
+            <strong>
+              {text}
+            </strong>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const AddElement: React.FC<IAddElementProps> = ({
   children: Children,
@@ -322,24 +349,12 @@ const AddElement: React.FC<IAddElementProps> = ({
 
               <div className={styles.content}>
                 {showComponents && (
-                  <div className="row">
-                    {COMPONENTS_LIST.map(({ icon: Icon, text, config }) => (
-                      <div
-                        key={`add-layer-${text}`}
-                        tabIndex={0}
-                        className={itemStyle}
-                        onClick={() => addElementToTree(config)}
-                        onKeyPress={handleEnterKeyPress(() => addElementToTree(config))}
-                      >
-                        <div>
-                          {React.createElement(Icon || ComponentIcon)}
-                          <strong>
-                            {text}
-                          </strong>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <Suspense fallback={<h2>Loading...</h2>}>
+                    <ComponentsList
+                      addElementToTree={addElementToTree}
+                      handleEnterKeyPress={handleEnterKeyPress}
+                    />
+                  </Suspense>
                 )}
               </div>
             </div>
