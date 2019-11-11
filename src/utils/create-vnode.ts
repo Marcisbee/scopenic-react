@@ -1,14 +1,22 @@
 import shortid from 'shortid';
 
-import { ILayerData } from './vnode-helpers';
+import { ILayerData, ILayerDataset } from './vnode-helpers';
 
-export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: string, name?: string, props: Record<string, any> = {}, children: null | any[] = []): ILayerData {
+export function createVNode(
+  type: 'text' | 'node' | 'component' | 'var',
+  node: string,
+  name?: string,
+  props: Record<string, any> = {},
+  children: null | any[] = [],
+  dataset: ILayerDataset = null,
+): ILayerData {
   const id = `sc-${shortid.generate()}`;
 
   if (type === 'text') {
     return {
       id,
       name,
+      dataset,
       text: node,
       props,
     };
@@ -18,6 +26,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: s
     return {
       id,
       name,
+      dataset,
       var: node,
       props,
     };
@@ -27,6 +36,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: s
     return {
       id,
       name,
+      dataset,
       node,
       props,
     };
@@ -36,6 +46,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: s
     return {
       id,
       name,
+      dataset,
       component: node,
       props,
       children,
@@ -45,6 +56,7 @@ export function createVNode(type: 'text' | 'node' | 'component' | 'var', node: s
   return {
     id,
     name,
+    dataset,
     node,
     props,
     children,

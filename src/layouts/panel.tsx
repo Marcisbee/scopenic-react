@@ -23,7 +23,8 @@ import styles from './panel.module.scss';
 // Plugins
 const enabledPlugins = {
   // 'hello-world': () => import('../plugins/panel/hello-world'),
-  'layers-menu-button': () => import('../plugins/editor/layers'),
+  'layers': () => import('../plugins/editor/layers'),
+  'dataset': () => import('../plugins/editor/dataset'),
 };
 
 const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
@@ -39,7 +40,7 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
       <div className={styles.sidebar}>
         <div className={styles.logo}>
           <Link to="/projects">
-            <img src={require('../assets/images/logo.png')} alt="Scopenic"/>
+            <img src={require('../assets/images/logo.png')} alt="Scopenic" />
           </Link>
         </div>
 
@@ -88,18 +89,6 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
                 </li>
               )}
             />
-
-            <li>
-              <span
-                className={cc([
-                  panelLeftActive === 'custom' && styles.menuActive,
-                ])}
-                onClick={() => setPanelLeftActive('custom')}
-              >
-                <ScopeShape className={styles.menuIconBg} />
-                <SettingIcon className={styles.menuIcon} />
-              </span>
-            </li>
           </ul>
         )}
 
@@ -127,7 +116,7 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
             <ul>
               <li><a>Help</a></li>
               <li><Link to="/settings">Edit profile</Link></li>
-              <li className={styles.divider}/>
+              <li className={styles.divider} />
               <li><a onClick={signout}>Sign out</a></li>
             </ul>
           </li>

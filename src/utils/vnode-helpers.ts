@@ -1,7 +1,13 @@
+interface ILayerDatasetConfig {
+  path: string;
+}
+
+export type ILayerDataset = null | ILayerDatasetConfig;
 
 export interface ILayerText {
   id: string;
   name?: string;
+  dataset: ILayerDataset;
   className?: string;
   text: string;
   props: Record<string, any>;
@@ -10,6 +16,7 @@ export interface ILayerText {
 export interface ILayerVar {
   id: string;
   name?: string;
+  dataset: ILayerDataset;
   className?: string;
   var: string;
   props: Record<string, any>;
@@ -18,6 +25,7 @@ export interface ILayerVar {
 export interface ILayerComponent {
   id: string;
   name?: string;
+  dataset: ILayerDataset;
   className?: string;
   component: string;
   props: Record<string, any>;
@@ -27,6 +35,7 @@ export interface ILayerComponent {
 export interface ILayerNode {
   id: string;
   name?: string;
+  dataset: ILayerDataset;
   className?: string;
   node: string;
   props: Record<string, any>;

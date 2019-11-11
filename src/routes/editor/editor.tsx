@@ -65,11 +65,33 @@ const Editor: React.FC = () => {
     return <>No project found</>;
   }
 
+  // @TODO: Use dataset from API
+  const dataset = {
+    user: {
+      name: 'Fedja',
+    },
+    articles: [
+      {
+        title: 'Beyond the Rocks',
+        text: 'It Happened Tomorrow',
+      },
+      {
+        title: 'Ann Carver\'s Profession',
+        text: 'Class Action',
+      },
+      {
+        title: 'Is Paris Burning? (Paris brûle-t-il?)',
+        text: 'Witch Way Love (Un amour de sorcière)',
+      },
+    ],
+  };
+
   return (
     <EditorProvider initialState={{
       settings,
       project,
       state: projectState,
+      dataset,
       workspaceRef,
     }}>
       <div className={styles.wrapper}>

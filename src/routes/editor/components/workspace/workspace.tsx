@@ -26,10 +26,6 @@ function buildCss(css: Record<string, CSSProperties>): string {
   return Object.entries(css).reduce(buildSelectors, '');
 }
 
-// @TODO:
-// [x] 1. create node structure
-// [ ] 2. build parser, generate html, css
-// [x] 3. add context of project to plugins and here
 const Workspace = React.memo<any>(() => {
   const { state, workspaceRef } = useEditorState();
 
@@ -46,11 +42,10 @@ const Workspace = React.memo<any>(() => {
           />
 
           <style>{css}</style>
-          <h1>Hello world</h1>
+
           <div>
             {state.data.pages[state.activePage].children.map(renderChild)}
           </div>
-          <pre>{JSON.stringify(state.data.pages[state.activePage], null, '  ')}</pre>
         </Frame>
       </div>
     </div>

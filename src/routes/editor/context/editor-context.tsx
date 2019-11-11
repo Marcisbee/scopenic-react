@@ -15,7 +15,9 @@ type Action = { type: 'SET_PROJECT', payload: any }
   | { type: 'UPDATE_ELEMENT', payload: any, path: string[] }
   | { type: 'MOVE_ELEMENT', from: string[], to: string[] }
 
-  | { type: 'UPDATE_STYLE', payload: any, className?: string, id: string };
+  | { type: 'UPDATE_STYLE', payload: any, className?: string, id: string }
+
+  | { type: 'SET_DATASET', payload: any };
 
 type Dispatch = (action: Action) => void;
 
@@ -35,6 +37,7 @@ interface IEditorState {
     };
     [key: string]: any;
   };
+  dataset: Record<string, any>;
   workspaceRef: React.RefObject<Frame>;
 }
 
@@ -312,6 +315,16 @@ function editorReducer(state: IEditorState, action: Action): IEditorState {
       return newState;
     }
 
+    case 'SET_DATASET': {
+      return {
+        ...state,
+        dataset: {
+          ...state.dataset,
+          ...action.payload,
+        },
+      };
+    }
+
     default: {
       throw new Error(`Unhandled action type: ${(action as any).type}`);
     }
@@ -432,6 +445,14 @@ function useEditorDispatch() {
         payload,
         className,
         id,
+      };
+      return context(action);
+    },
+
+    setDataset(payload: any) {
+      const action: Action = {
+        type: 'SET_DATASET',
+        payload,
       };
       return context(action);
     },

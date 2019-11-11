@@ -12,7 +12,8 @@ import styles from './editor-left.module.scss';
 
 // Plugins
 const enabledPlugins = {
-  'layers-menu-button': () => import('../../../../plugins/editor/layers'),
+  'layers': () => import('../../../../plugins/editor/layers'),
+  'dataset': () => import('../../../../plugins/editor/dataset'),
 };
 
 const createJsonDiff = (jsondiffpatch as any).create({

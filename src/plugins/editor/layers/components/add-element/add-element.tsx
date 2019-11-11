@@ -116,8 +116,31 @@ const COMPONENTS_LIST: IElementNode[] = [
     text: 'Header',
     config: {
       type: 'component',
-      node: 'Header',
+      node: 'header',
       text: 'Header component',
+    },
+  },
+  {
+    icon: ComponentIcon,
+    text: 'Pagination',
+    config: {
+      type: 'component',
+      node: 'pagination',
+      text: 'Pagination component',
+    },
+  },
+  {
+    icon: ComponentIcon,
+    text: 'Card',
+    config: {
+      type: 'component',
+      node: 'card',
+      text: 'Card component',
+      props: {
+        title: 'Card title',
+        text: 'Lorem ipsum',
+        width: '15rem',
+      },
     },
   },
 ];
@@ -139,9 +162,9 @@ const ComponentsList: React.FC<{
         >
           <div>
             {React.createElement(Icon || ComponentIcon)}
-            <strong>
+            <span>
               {text}
-            </strong>
+            </span>
           </div>
         </div>
       ))}
@@ -275,9 +298,9 @@ const AddElement: React.FC<IAddElementProps> = ({
                       >
                         <div>
                           {React.createElement(Icon || LayersIcon)}
-                          <strong>
+                          <span>
                             {text}
-                          </strong>
+                          </span>
                         </div>
                       </div>
                     ))}

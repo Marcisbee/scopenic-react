@@ -560,3 +560,28 @@ export const SearchIcon: React.FC<{ className?: string }> = ({ className }) => {
     </svg>
   );
 };
+
+export const DatasetIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M10 4h2v3.6a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4V4z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M5.6 12H4.4a.4.4 0 01-.4-.4V3a1 1 0 011-1h10a1 1 0 01.707.293l4 4A1 1 0 0120 7v14a1 1 0 01-1 1H5a1 1 0 01-1-1v-7.6c0-.22.18-.4.4-.4h1.2a.4.4 0 00.4-.4v-.2a.4.4 0 00-.4-.4zM9 4v3.5c0 .276-.18.5-.4.5H7.4c-.22 0-.4-.224-.4-.5V4h-.6a.4.4 0 00-.4.4v5.2c0 .22.18.4.4.4H7a1 1 0 011 1v3a1 1 0 01-1 1h-.6a.4.4 0 00-.4.4v4.2c0 .22.18.4.4.4h11.2a.4.4 0 00.4-.4V7.663a.6.6 0 00-.176-.425L15 4.414V7.6a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4V4H9z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
