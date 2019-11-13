@@ -14,9 +14,9 @@ import {
 import CustomLink from '../components/link';
 import Plugins from '../components/plugins';
 import Spinner from '../components/spinner';
+import { UiStore } from '../context/ui-context';
 import { useAuth } from '../hooks/use-auth';
 import { useDarkMode } from '../hooks/use-dark-mode';
-import { useStore } from '../utils/store';
 
 import styles from './panel.module.scss';
 
@@ -31,7 +31,8 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
   type,
   children,
 }) => {
-  const [panelLeftActive, setPanelLeftActive] = useStore<string>('editor.panel.left.active');
+  const panelLeftActive = UiStore.useStoreState((s) => s.panel.left.active);
+  const { setPanelLeftActive } = UiStore.useStoreActions((s) => s);
   const { user, signout } = useAuth();
   const [darkMode, setDarkMode] = useDarkMode();
 

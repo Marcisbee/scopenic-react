@@ -4,7 +4,7 @@ import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ComponentIcon, ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
-import { useEditorDispatch, useEditorState } from '../../../../routes/editor/context/editor-context';
+import { EditorStore } from '../../../../routes/editor/context/editor-context';
 import { ILayerData } from '../../../../utils/vnode-helpers';
 import styles from '../layers.module.scss';
 
@@ -28,8 +28,8 @@ export interface ILayerProps {
 const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer }) => {
   const layerData: any = layer;
   const [showChildren, setShowChildren] = useState(true);
-  const { state } = useEditorState();
-  const { setActiveElement } = useEditorDispatch();
+  const activeElement = EditorStore.useStoreState((s) => s.state.activeElement);
+  const { setActiveElement } = EditorStore.useStoreActions((s) => s);
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'layer',
@@ -64,7 +64,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   }, []);
 
   const isTarget = !isDragging && canDrop && isOver;
-  const isActive = !state.activeElement.id && isRoot || state.activeElement.id === layer.id;
+  const isActive = !activeElement.id && isRoot || activeElement.id === layer.id;
   const opacity = isDragging ? 0.5 : 1;
 
   // Do not drag this layer here
@@ -93,7 +93,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
   }
 
   function setActiveElementMethod() {
-    setActiveElement(isRoot ? null : layer.id, path);
+    setActiveElement({ id: isRoot ? null : layer.id, path });
   }
 
   return (

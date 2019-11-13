@@ -3,7 +3,7 @@ import React from 'react';
 import { DatasetIcon } from '../../../components/icons';
 import { IPluginInterface } from '../../../components/plugins/plugins';
 import panelStyles from '../../../layouts/panel.module.scss';
-import { useEditorDispatch, useEditorState } from '../../../routes/editor/context/editor-context';
+import { EditorStore } from '../../../routes/editor/context/editor-context';
 
 import styles from './dataset.module.scss';
 
@@ -14,8 +14,8 @@ const Menu: React.FC = () => {
 };
 
 const LeftPanel: React.FC = () => {
-  const { dataset } = useEditorState();
-  const { setDataset } = useEditorDispatch();
+  const dataset = EditorStore.useStoreState((s) => s.dataset);
+  const { setDataset } = EditorStore.useStoreActions((s) => s);
 
   return (
     <div className={styles.wrapper}>
@@ -31,7 +31,9 @@ const LeftPanel: React.FC = () => {
             const value = JSON.parse(e.target.innerText);
 
             setDataset({
-              articles: value,
+              data: {
+                articles: value,
+              },
             });
           }}
           dangerouslySetInnerHTML={{
@@ -56,7 +58,9 @@ const LeftPanel: React.FC = () => {
             const value = JSON.parse(e.target.innerText);
 
             setDataset({
-              user: value,
+              data: {
+                user: value,
+              },
             });
           }}
           dangerouslySetInnerHTML={{

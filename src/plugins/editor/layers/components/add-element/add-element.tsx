@@ -4,7 +4,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 import ModalPortal from '../../../../../components/modal-portal';
 import { useOnClickOutside } from '../../../../../hooks/use-on-click-outside';
-import { useEditorDispatch } from '../../../../../routes/editor/context/editor-context';
+import { EditorStore } from '../../../../../routes/editor/context/editor-context';
 import { createVNode } from '../../../../../utils/create-vnode';
 import { ILayerData } from '../../../../../utils/vnode-helpers';
 
@@ -180,7 +180,7 @@ const AddElement: React.FC<IAddElementProps> = ({
 }) => {
   const ref: React.RefObject<HTMLDivElement> = useRef({} as any);
   const inputRef: React.RefObject<HTMLInputElement> = useRef({} as any);
-  const { addElement } = useEditorDispatch();
+  const { addElement } = EditorStore.useStoreActions((s) => s);
   const [showElements, setShowElements] = useState(true);
   const [showComponents, setShowComponents] = useState(false);
   const [showModal, setShowModal] = useState(showInitially);
@@ -220,7 +220,7 @@ const AddElement: React.FC<IAddElementProps> = ({
   }, [showModal]);
 
   function addNodeToTree(node: ILayerData) {
-    addElement(node);
+    addElement({ element: node });
     setShowModal(false);
   }
 

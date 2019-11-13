@@ -4,9 +4,9 @@ import cc from 'classcat';
 import React, { useEffect } from 'react';
 
 import Plugins from '../../../../components/plugins';
+import { UiStore } from '../../../../context/ui-context';
 import { COMMIT } from '../../../../graphql/mutations/projects';
-import { useStore } from '../../../../utils/store';
-import { useEditorDispatch, useEditorState } from '../../context/editor-context';
+import { EditorStore } from '../../context/editor-context';
 
 import styles from './editor-left.module.scss';
 
@@ -22,9 +22,9 @@ const createJsonDiff = (jsondiffpatch as any).create({
 
 const EditorLeft: React.FC = () => {
   const [commit, { data, loading, error }] = useMutation(COMMIT);
-  const { project, state } = useEditorState();
-  const { setProjectData } = useEditorDispatch();
-  const [panelLeftActive] = useStore<string>('editor.panel.left.active');
+  const { project, state } = EditorStore.useStoreState((s) => s);
+  const { setProjectData } = EditorStore.useStoreActions((s) => s);
+  const panelLeftActive = UiStore.useStoreState((s) => s.panel.left.active);
 
   useEffect(() => {
     if (!error && !loading && data) {

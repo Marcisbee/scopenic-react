@@ -6,7 +6,7 @@ const brackets = {
   '}': 0,
 };
 
-function compiler(startingString, lastChar = null, skipTo = 0) {
+function compiler(startingString: any, lastChar = null, skipTo = 0): any {
   const value = skipTo ? startingString.slice(skipTo) : startingString;
   const openingIndex = value.indexOf('{');
   const closingIndex = value.indexOf('}');
@@ -61,13 +61,13 @@ export class MessageFormat {
   constructor(defaultLocale: string) {
     this.defaultLocale = defaultLocale;
     this.formatters = {
-      uppercase(value, language, params) {
+      uppercase(value: string, language: any, params: any) {
         return value.toUpperCase();
       },
     };
   }
 
-  public addFormatters(formatters) {
+  public addFormatters(formatters: any) {
     Object.assign(this.formatters, formatters);
     return this;
   }
@@ -75,7 +75,7 @@ export class MessageFormat {
   public compile(stringData: string): (props: Record<string, any>) => string {
     const compiled = compiler(stringData);
 
-    return (props) => compiled.map((chunk) => {
+    return (props) => compiled.map((chunk: { value: string; }) => {
       if (chunk && typeof chunk === 'object' && chunk.value) {
         const [key, formatter, params] = split(chunk.value, { separator: ',' });
         const value = dlv(props, key.trim());

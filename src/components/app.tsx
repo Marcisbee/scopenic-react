@@ -2,11 +2,9 @@ import React, { lazy, Suspense } from 'react';
 // import { hot } from 'react-hot-ts';
 import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 
+import { UiStore } from '../context/ui-context';
 import GraphqlProvider from '../graphql';
 import { ProvideAuth, useAuth } from '../hooks/use-auth';
-import * as initialStore from '../store/store';
-import Store from '../utils/store';
-import StoreDevtools from '../utils/store-devtools';
 import { Suspend } from '../utils/suspend';
 
 import Spinner from './spinner';
@@ -56,7 +54,7 @@ const PrivateRoute: React.FC<any> = (props) => {
   }
 
   if (user) {
-    return <Route {...props}/>;
+    return <Route {...props} />;
   }
 
   return (
@@ -69,13 +67,10 @@ const PrivateRoute: React.FC<any> = (props) => {
   );
 };
 
-// Enable devtools in development mode
-const GlobalStore = (process.env.NODE_ENV === 'production') ? Store : StoreDevtools(Store);
-
 const App: React.FC = () => {
   return (
     <GraphqlProvider>
-      <GlobalStore {...initialStore}>
+      <UiStore.Provider>
         <Router>
           <ProvideAuth>
             <Suspense fallback={<Spinner type="full" />}>
@@ -127,7 +122,7 @@ const App: React.FC = () => {
             </Suspense>
           </ProvideAuth>
         </Router>
-      </GlobalStore>
+      </UiStore.Provider>
     </GraphqlProvider>
   );
 };

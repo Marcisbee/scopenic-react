@@ -11,7 +11,7 @@ import Workspace from './components/workspace';
 
 import EditorLeft from './components/editor-left';
 import EditorRight from './components/editor-right';
-import { EditorProvider } from './context/editor-context';
+import { EditorStore, IEditorState } from './context/editor-context';
 import styles from './editor.module.scss';
 
 // Plugins
@@ -27,10 +27,9 @@ const Editor: React.FC = () => {
   const [projectState, setProjectState] = useState<any>(null);
   const workspaceRef = useRef<Frame>(null);
 
-  const settings = {
-    page: '/',
-  };
+  const settings = {};
 
+  // @TODO: Move this to simple transformer function
   useLayoutEffect(() => {
     if (error || loading || !data) {
       return;
@@ -42,7 +41,7 @@ const Editor: React.FC = () => {
     };
     setProject(tempProjectState);
     setProjectState({
-      activePage: settings.page,
+      activePage: '/',
       activeElement: {
         id: null,
         path: [0],
@@ -86,14 +85,16 @@ const Editor: React.FC = () => {
     ],
   };
 
+  const initialData: Partial<IEditorState> = {
+    settings,
+    project,
+    state: projectState,
+    dataset,
+    workspaceRef,
+  };
+
   return (
-    <EditorProvider initialState={{
-      settings,
-      project,
-      state: projectState,
-      dataset,
-      workspaceRef,
-    }}>
+    <EditorStore.Provider initialData={initialData}>
       <div className={styles.wrapper}>
         <div className={styles.left}>
           <EditorLeft />
@@ -115,7 +116,7 @@ const Editor: React.FC = () => {
           />
         </div>
       </div>
-    </EditorProvider>
+    </EditorStore.Provider>
   );
 };
 

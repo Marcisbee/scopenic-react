@@ -1,11 +1,11 @@
 import dlv from 'dlv';
 import React, { useEffect, useState } from 'react';
 
-import { useEditorDispatch, useEditorState } from '../../context/editor-context';
+import { EditorStore } from '../../context/editor-context';
 
 const EditorRight: React.FC = () => {
-  const { state, workspaceRef } = useEditorState();
-  const { updateElement, updateStyle } = useEditorDispatch();
+  const { state, workspaceRef } = EditorStore.useStoreState((s) => s);
+  const { updateElement, updateStyle } = EditorStore.useStoreActions((s) => s);
   const [cssDeclarations, setCssDeclarations] = useState<CSSStyleDeclaration>();
 
   const element = dlv(state.data.pages[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
@@ -29,7 +29,7 @@ const EditorRight: React.FC = () => {
     }
 
     setCssDeclarations(undefined);
-  }, [state, 'pages', state.activeElement.id && dlv(state.data.css, state.activeElement.id), workspaceRef.current]);
+  }, [state, 'pages', state.activeElement.id && dlv(state.data.css, state.activeElement.id), workspaceRef && workspaceRef.current]);
 
   const defaultStyles = cssDeclarations && {
     backgroundColor: cssDeclarations.backgroundColor,
@@ -48,7 +48,7 @@ const EditorRight: React.FC = () => {
         onBlur={(e) => {
           const value = JSON.parse(e.target.innerText);
 
-          updateElement(state.activeElement.path.slice(1), value);
+          updateElement({ path: state.activeElement.path.slice(1), element: value });
         }}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
@@ -69,7 +69,7 @@ const EditorRight: React.FC = () => {
             const className = element.className;
             const value = JSON.parse(e.target.innerText);
 
-            updateStyle(key, className, value);
+            updateStyle({ id: key, className, style: value });
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(

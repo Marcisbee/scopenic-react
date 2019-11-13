@@ -5,7 +5,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { LayersIcon } from '../../../components/icons';
 import { IPluginInterface } from '../../../components/plugins/plugins';
 import panelStyles from '../../../layouts/panel.module.scss';
-import { useEditorDispatch, useEditorState } from '../../../routes/editor/context/editor-context';
+import { EditorStore } from '../../../routes/editor/context/editor-context';
 import { createVNode } from '../../../utils/create-vnode';
 
 import AddElement from './components/add-element';
@@ -19,8 +19,8 @@ const Menu: React.FC = () => {
 };
 
 const LeftPanel: React.FC = () => {
-  const { state } = useEditorState();
-  const { moveElement, removeElement, duplicateElement } = useEditorDispatch();
+  const { state } = EditorStore.useStoreState((a) => a);
+  const { moveElement, removeElement, duplicateElement } = EditorStore.useStoreActions((a) => a);
 
   const activePage = state.data.pages[state.activePage];
   const layers = [
@@ -29,7 +29,7 @@ const LeftPanel: React.FC = () => {
 
   const moveLayer = useCallback(
     (dragPath: string[], hoverPath: string[]) => {
-      moveElement(dragPath, hoverPath);
+      moveElement({ from: dragPath, to: hoverPath });
     },
     [layers],
   );
@@ -53,10 +53,10 @@ const LeftPanel: React.FC = () => {
           )}
         </AddElement>
         <a className="pt-button" onClick={() => {
-          removeElement();
+          removeElement({});
         }}>Remove</a>
         <a className="pt-button" onClick={() => {
-          duplicateElement();
+          duplicateElement({});
         }}>Duplicate</a>
       </div>
     </div>

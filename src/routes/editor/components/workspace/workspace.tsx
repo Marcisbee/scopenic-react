@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import Frame from 'react-frame-component';
 
 import { renderChild } from '../../../../components/render/render';
-import { useEditorState } from '../../context/editor-context';
+import { EditorStore } from '../../context/editor-context';
 
 import styles from './workspace.module.scss';
 
@@ -27,7 +27,7 @@ function buildCss(css: Record<string, CSSProperties>): string {
 }
 
 const Workspace = React.memo<any>(() => {
-  const { state, workspaceRef } = useEditorState();
+  const { state, workspaceRef } = EditorStore.useStoreState((s) => s);
 
   const css = buildCss(state.data.css);
 
