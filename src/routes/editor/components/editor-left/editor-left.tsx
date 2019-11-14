@@ -21,6 +21,9 @@ const createJsonDiff = (jsondiffpatch as any).create({
 });
 
 const EditorLeft: React.FC = () => {
+  // @TODO: Figure out why this component bottlenecks rendering
+  // return null;
+
   const [commit, { data, loading, error }] = useMutation(COMMIT);
   const { project, state } = EditorStore.useStoreState((s) => s);
   const { setProjectData } = EditorStore.useStoreActions((s) => s);

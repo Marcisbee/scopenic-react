@@ -1,6 +1,5 @@
 import dlv from 'dlv';
 import { Action, action, createContextStore } from 'easy-peasy';
-import { CSSProperties } from 'react';
 
 import { copyVNode } from '../../../utils/copy-vnode';
 
@@ -50,7 +49,7 @@ export interface IEditorState {
   moveElement: Action<IEditorState, { from: string[], to: string[] }>;
 
   updateStyle: Action<IEditorState, { id: string, className: string | undefined, style: any }>;
-  updateStylePropery: Action<IEditorState, { id: string, className: string | undefined, property: CSSProperties, value: string | null }>;
+  updateStylePropery: Action<IEditorState, { id: string, className: string | undefined, property: string, value: number | string | null }>;
 
   setDataset: Action<IEditorState, { data: Record<string, any> }>;
 }

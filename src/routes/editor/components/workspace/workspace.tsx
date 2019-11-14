@@ -5,6 +5,7 @@ import { renderChild } from '../../../../components/render/render';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 
+import Overlay from './components/overlay/overlay';
 import styles from './workspace.module.scss';
 
 const UPPERCASE_LETTER = /[A-Z]/g;
@@ -32,6 +33,7 @@ const Workspace = React.memo<any>(() => {
   const { state } = EditorStore.useStoreState((s) => s);
 
   const css = buildCss(state.data.css);
+
   return (
     <div>
       <div className={styles.container}>
@@ -47,6 +49,8 @@ const Workspace = React.memo<any>(() => {
           <div>
             {state.data.pages[state.activePage].children.map((props: any, n: number) => renderChild(props, [String(n)]))}
           </div>
+
+          <Overlay />
         </Frame>
       </div>
     </div>
