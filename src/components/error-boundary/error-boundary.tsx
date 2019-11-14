@@ -58,8 +58,8 @@ class ErrorBoundaryChild extends Component<{ title: string, silent?: boolean }> 
   }
 }
 
-const ErrorBoundary: React.FC<{ silent?: boolean }> = (props) => {
-  return <ErrorBoundaryChild title="Something bad happened" {...props}/>;
-};
+const ErrorBoundary: React.FC<{ silent?: boolean }> = React.memo((props) => {
+  return <ErrorBoundaryChild title="Something bad happened" {...props} />;
+}, () => false);
 
 export default ErrorBoundary;

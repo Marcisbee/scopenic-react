@@ -1,6 +1,6 @@
 import dlv from 'dlv';
 import { Action, action, createContextStore } from 'easy-peasy';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import Frame from 'react-frame-component';
 
 import { copyVNode } from '../../../utils/copy-vnode';
@@ -52,6 +52,7 @@ export interface IEditorState {
   moveElement: Action<IEditorState, { from: string[], to: string[] }>;
 
   updateStyle: Action<IEditorState, { id: string, className: string | undefined, style: any }>;
+  updateStylePropery: Action<IEditorState, { id: string, className: string | undefined, property: CSSProperties, value: string | null }>;
 
   setDataset: Action<IEditorState, { data: Record<string, any> }>;
 }
@@ -222,6 +223,35 @@ export const EditorStore = createContextStore<IEditorState>(
         const layers = draft.state.data.pages[draft.state.activePage];
 
         draft.state.data.css[className || id] = style;
+
+        if (className) {
+          return;
+        }
+
+        const { path } = parsePath(
+          draft.state.activeElement.path.slice(1),
+        );
+
+        const item = dlv(
+          layers,
+          path,
+        );
+
+        if (item) {
+          item.className = id;
+        }
+      }),
+      updateStylePropery: action((draft, { id, className, property, value }) => {
+        const layers = draft.state.data.pages[draft.state.activePage];
+        const style = draft.state.data.css[className || id];
+
+        if (value) {
+          Object.assign(style, {
+            [property as string]: value,
+          });
+        } else {
+          delete style[property as string];
+        }
 
         if (className) {
           return;

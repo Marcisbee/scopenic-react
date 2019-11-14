@@ -28,7 +28,7 @@ export interface IPluginInterface {
 }
 
 interface IPluginProps {
-  wrapper?: React.FC<{ config: Record<string, any>}>;
+  wrapper?: React.FC<{ config: Record<string, any> }>;
   scope: IPluginScopeTypes;
   src: () => Promise<any>;
 }

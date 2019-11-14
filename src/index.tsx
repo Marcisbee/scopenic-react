@@ -10,6 +10,11 @@ import App from './components/app';
 import './index.scss';
 // import * as serviceWorker from './serviceWorker';
 
+if (process.env.NODE_ENV === 'development') {
+  // tslint:disable-next-line: no-implicit-dependencies
+  require('panic-overlay');
+}
+
 // hot(module)(render(<App />, document.getElementById('root')));
 render(<App />, document.getElementById('root'));
 

@@ -25,6 +25,7 @@ class Context {
       plugins: [
         pluginTypeChecker({
           name: 'typecheck',
+          basePath: 'src',
           throwOnSyntactic: this.isProduction,
           throwOnSemantic: this.isProduction,
           throwOnGlobal: this.isProduction,
@@ -37,21 +38,21 @@ class Context {
       ],
       tsConfig: 'tsconfig.json',
       // dependencies: {
-        // ignorePackages: [
-          // 'react-dom/cjs',
-        //   'react',
-        //   'react-dom',
-        //   'react-router',
-        //   'react-router-dom',
-        //   'apollo-boost',
-        //   '@apollo/react-hooks',
-        //   'graphql',
-        //   'graphql-tag',
-        //   'react-app-polyfill',
-        //   'yup',
-        //   'tslib',
-        // ],
-        // ignoreAllExternal: true,
+      // ignorePackages: [
+      // 'react-dom/cjs',
+      //   'react',
+      //   'react-dom',
+      //   'react-router',
+      //   'react-router-dom',
+      //   'apollo-boost',
+      //   '@apollo/react-hooks',
+      //   'graphql',
+      //   'graphql-tag',
+      //   'react-app-polyfill',
+      //   'yup',
+      //   'tslib',
+      // ],
+      // ignoreAllExternal: true,
       // },
       homeDir: 'src',
       modules: [
@@ -76,7 +77,9 @@ class Context {
         maxPathLength: 0,
       },
       devServer: this.runServer,
-      logging: { level: 'succinct' },
+      logging: {
+        level: 'succinct',
+      },
     });
   }
 }
