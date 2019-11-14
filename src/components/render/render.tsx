@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
+import { useOverlayContext } from '../../routes/editor/components/workspace/context/overlay';
 import { EditorStore } from '../../routes/editor/context/editor-context';
 import { messageFormat } from '../../utils/messageformat';
 import { ILayerData, isComponent, isNode, isText, isVar } from '../../utils/vnode-helpers';
 
 interface IRenderProps {
   data: ILayerData;
+  path: string[];
   context?: Record<string, any>;
   isRepeated?: boolean;
 }
@@ -141,8 +143,54 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
 //   },
 // };
 
-const Render: React.FC<IRenderProps> = ({ data, context, isRepeated }) => {
+const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => {
+  const el = useRef<HTMLElement | null>(null);
+  const [, setOverlayContext] = useOverlayContext();
   const dataset = EditorStore.useStoreState((s) => s.dataset);
+
+  useEffect(() => {
+    if (el.current && isNode(data)) {
+      const handleHover = (e: MouseEvent) => {
+        e.preventDefault();
+
+        const node = e.target as HTMLElement;
+
+        if (!node) {
+          return;
+        }
+
+        const boundingClientRect = node.getBoundingClientRect();
+
+        setOverlayContext((draft) => {
+          draft.element = {
+            id: data.id,
+            node: data.node,
+            className: data.className,
+            path,
+          };
+
+          draft.position = {
+            x: boundingClientRect.x,
+            y: boundingClientRect.y,
+            top: boundingClientRect.top,
+            left: boundingClientRect.left,
+            right: boundingClientRect.right,
+            bottom: boundingClientRect.bottom,
+            width: boundingClientRect.width,
+            height: boundingClientRect.height,
+          };
+        });
+      };
+
+      el.current.addEventListener('mouseover', handleHover);
+
+      return () => {
+        if (el.current) {
+          el.current.removeEventListener('mouseover', handleHover);
+        }
+      };
+    }
+  }, []);
 
   if (!isRepeated && data.dataset && data.dataset.path) {
     const repeatSet = dataset[data.dataset.path];
@@ -154,7 +202,7 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated }) => {
     if (repeatSet instanceof Array) {
       return repeatSet.map((item, index) => {
 
-        return <Render key={`${JSON.stringify(item)}-${index}`} data={data} context={item} isRepeated={true} />;
+        return <Render key={`${JSON.stringify(item)}-${index}`} data={data} context={item} path={path.concat(String(index))} isRepeated={true} />;
       }) as unknown as React.ReactElement<IRenderProps>;
     }
 
@@ -189,7 +237,7 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated }) => {
         {
           ...props,
         },
-        data.children && data.children.map(renderChild),
+        data.children && data.children.map((childProps, n) => renderChild(childProps, path.concat(String(n)))),
       );
     }
 
@@ -214,17 +262,18 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated }) => {
       data.node,
       {
         ...props,
+        ref: el,
         className: [props.className, data.className].filter((a) => !!a).join(' '),
       },
-      data.children && data.children.map(renderChild),
+      data.children && data.children.map((childProps: any, n) => renderChild(childProps, path.concat(String(n)))),
     );
   }
 
   return null;
 };
 
-export const renderChild = (child: ILayerData): JSX.Element => {
-  return <Render key={child.id} data={child} />;
+export const renderChild = (child: ILayerData, path: string[] = ['0']): JSX.Element => {
+  return <Render key={child.id + path.toString()} data={child} path={path} />;
 };
 
 export default Render;

@@ -1,10 +1,12 @@
 import dlv from 'dlv';
 import React, { useEffect, useState } from 'react';
 
+import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 
 const EditorRight: React.FC = () => {
-  const { state, workspaceRef } = EditorStore.useStoreState((s) => s);
+  const refs = useRefsContext();
+  const { state } = EditorStore.useStoreState((s) => s);
   const { updateElement, updateStyle } = EditorStore.useStoreActions((s) => s);
   const [cssDeclarations, setCssDeclarations] = useState<CSSStyleDeclaration>();
 
@@ -12,12 +14,12 @@ const EditorRight: React.FC = () => {
   const currentClassName = (element && element.className) || state.activeElement.id;
 
   useEffect(() => {
-    if (!workspaceRef || !workspaceRef.current) {
+    if (!refs.workspace || !refs.workspace.current) {
       setCssDeclarations(undefined);
       return;
     }
 
-    const node: HTMLIFrameElement = (workspaceRef.current as any).node;
+    const node: HTMLIFrameElement = (refs.workspace.current as any).node;
 
     if (state.activeElement.id && node && node.contentDocument) {
       const el = node.contentDocument.querySelector(`.${currentClassName}`);
@@ -29,7 +31,7 @@ const EditorRight: React.FC = () => {
     }
 
     setCssDeclarations(undefined);
-  }, [state, 'pages', state.activeElement.id && dlv(state.data.css, state.activeElement.id), workspaceRef && workspaceRef.current]);
+  }, [state, 'pages', state.activeElement.id && dlv(state.data.css, state.activeElement.id), refs.workspace && refs.workspace.current]);
 
   const defaultStyles = cssDeclarations && {
     backgroundColor: cssDeclarations.backgroundColor,

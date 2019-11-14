@@ -1,7 +1,6 @@
 import dlv from 'dlv';
 import { Action, action, createContextStore } from 'easy-peasy';
-import React, { CSSProperties } from 'react';
-import Frame from 'react-frame-component';
+import { CSSProperties } from 'react';
 
 import { copyVNode } from '../../../utils/copy-vnode';
 
@@ -37,7 +36,6 @@ export interface IEditorState {
     [key: string]: any;
   };
   dataset: Record<string, any>;
-  workspaceRef?: React.RefObject<Frame>;
 
   // Actions
   setProject: Action<IEditorState, any>;

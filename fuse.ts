@@ -35,6 +35,10 @@ class Context {
             scopeBehaviour: 'local',
           },
         }),
+        pluginSass('*.inline.scss', {
+          asText: true,
+          useDefault: true,
+        }),
       ],
       tsConfig: 'tsconfig.json',
       // dependencies: {

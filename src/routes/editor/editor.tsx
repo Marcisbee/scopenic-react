@@ -1,16 +1,17 @@
 // import cc from 'classcat';
 import { useQuery } from '@apollo/react-hooks';
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import Frame from 'react-frame-component';
+import React, { useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 import Plugins from '../../components/plugins';
 import { GET_PROJECT_BY_ID } from '../../graphql/queries';
+import { RefsContext } from '../../utils/refs-context';
 import { Suspend } from '../../utils/suspend';
 import Workspace from './components/workspace';
 
 import EditorLeft from './components/editor-left';
 import EditorRight from './components/editor-right';
+import { OverlayContext } from './components/workspace/context/overlay';
 import { EditorStore, IEditorState } from './context/editor-context';
 import styles from './editor.module.scss';
 
@@ -25,7 +26,6 @@ const Editor: React.FC = () => {
   const { data, loading, error } = useQuery(GET_PROJECT_BY_ID, { variables: { id: params.id } });
   const [project, setProject] = useState(data);
   const [projectState, setProjectState] = useState<any>(null);
-  const workspaceRef = useRef<Frame>(null);
 
   const settings = {};
 
@@ -90,33 +90,38 @@ const Editor: React.FC = () => {
     project,
     state: projectState,
     dataset,
-    workspaceRef,
   };
 
   return (
-    <EditorStore.Provider initialData={initialData}>
-      <div className={styles.wrapper}>
-        <div className={styles.left}>
-          <EditorLeft />
-        </div>
+    <RefsContext.Provider value={{
+      workspace: React.createRef(),
+    }}>
+      <OverlayContext.Provider>
+        <EditorStore.Provider initialData={initialData}>
+          <div className={styles.wrapper}>
+            <div className={styles.left}>
+              <EditorLeft />
+            </div>
 
-        <div className={styles.right}>
-          <EditorRight />
-          <Plugins
-            scope="editor.panel.right"
-            src={enabledPlugins}
-          />
-        </div>
+            <div className={styles.right}>
+              <EditorRight />
+              <Plugins
+                scope="editor.panel.right"
+                src={enabledPlugins}
+              />
+            </div>
 
-        <div className={styles.main}>
-          <Workspace />
-          <Plugins
-            scope="editor.panel.main"
-            src={enabledPlugins}
-          />
-        </div>
-      </div>
-    </EditorStore.Provider>
+            <div className={styles.main}>
+              <Workspace />
+              <Plugins
+                scope="editor.panel.main"
+                src={enabledPlugins}
+              />
+            </div>
+          </div>
+        </EditorStore.Provider>
+      </OverlayContext.Provider>
+    </RefsContext.Provider>
   );
 };
 
