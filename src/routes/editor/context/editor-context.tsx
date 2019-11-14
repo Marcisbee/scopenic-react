@@ -91,7 +91,7 @@ export const EditorStore = createContextStore<IEditorState>(
 
         draft.state.activeElement = {
           id: element.id,
-          path: [0, ...addPath],
+          path: ['0', ...(addPath || ['0'])],
         };
       }),
       removeElement: action((draft, payload) => {
