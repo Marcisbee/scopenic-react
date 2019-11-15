@@ -18,11 +18,11 @@ const Menu: React.FC = () => {
   );
 };
 
-const LeftPanel: React.FC = () => {
-  const { state } = EditorStore.useStoreState((a) => a);
+const LeftPanel: React.FC = React.memo(() => {
+  const activePage = EditorStore.useStoreState((a) => a.state.data.pages[a.state.activePage]);
   const { moveElement, removeElement, duplicateElement } = EditorStore.useStoreActions((a) => a);
 
-  const activePage = state.data.pages[state.activePage];
+  // const activePage = state.data.pages[state.activePage];
   const layers = [
     createVNode('node', 'body', 'body', undefined, activePage.children),
   ];
@@ -61,7 +61,7 @@ const LeftPanel: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 const plugin: IPluginInterface = {
   'editor.panel.menu': {

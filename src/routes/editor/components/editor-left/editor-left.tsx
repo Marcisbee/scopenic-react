@@ -3,7 +3,7 @@ import jsondiffpatch from '@as-com/jsondiffpatch';
 import cc from 'classcat';
 import React, { useEffect } from 'react';
 
-import Plugins from '../../../../components/plugins';
+// import Plugins from '../../../../components/plugins';
 import { UiStore } from '../../../../context/ui-context';
 import { COMMIT } from '../../../../graphql/mutations/projects';
 import { EditorStore } from '../../context/editor-context';
@@ -11,10 +11,16 @@ import { EditorStore } from '../../context/editor-context';
 import styles from './editor-left.module.scss';
 
 // Plugins
-const enabledPlugins = {
-  'layers': () => import('../../../../plugins/editor/layers'),
-  'dataset': () => import('../../../../plugins/editor/dataset'),
-};
+// const enabledPlugins = {
+//   'layers': () => import('../../../../plugins/editor/layers'),
+//   'dataset': () => import('../../../../plugins/editor/dataset'),
+// };
+
+import dataset from '../../../../plugins/editor/dataset';
+import layers from '../../../../plugins/editor/layers';
+
+const LayersPlugin = (layers['editor.panel.left'] as any).render;
+const DatasetPlugin = (dataset['editor.panel.left'] as any).render;
 
 const createJsonDiff = (jsondiffpatch as any).create({
   cloneDiffValues: false,
@@ -73,7 +79,13 @@ const EditorLeft: React.FC = () => {
         </div>
       </div>
       <div className={styles.leftPlugins}>
-        <Plugins
+        {panelLeftActive === 'layers' && (
+          <LayersPlugin />
+        )}
+        {panelLeftActive === 'dataset' && (
+          <DatasetPlugin />
+        )}
+        {/* <Plugins
           scope="editor.panel.left"
           src={enabledPlugins}
           render={({ config: pluginConfig, children }) => (
@@ -85,7 +97,7 @@ const EditorLeft: React.FC = () => {
               }
             </>
           )}
-        />
+        /> */}
       </div>
     </>
   );

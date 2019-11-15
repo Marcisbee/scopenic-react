@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import dlv from 'dlv';
+import React, { useLayoutEffect, useRef } from 'react';
 
 import { useRefsContext } from '../../../../../../utils/refs-context';
-import { EditorStore } from '../../../../context/editor-context';
+import { EditorStore, parsePath } from '../../../../context/editor-context';
 import { useOverlayContext } from '../../context/overlay';
 
 import overlayCss from './overlay.inline.scss';
@@ -70,17 +71,25 @@ function VerticalHandler({
   function mouseUp() {
     setDown(false);
 
-    onFinish(`${state}px`);
+    const diff = y - position;
+
+    onFinish({
+      value: state,
+      diff,
+    });
   }
 
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     if (down) {
-      const newY = y - position;
-      if (state + newY >= 0) {
+      const diff = y - position;
+      if (state + diff >= 0) {
         setPosition(y);
       }
-      setState((s: any) => Math.max(0, s + newY));
-      onFinish(`${state}px`);
+      setState((s: any) => Math.max(0, s + diff));
+      onFinish({
+        value: state,
+        diff,
+      });
     }
   }, [state, down, y, position]);
 
@@ -99,6 +108,10 @@ function VerticalHandler({
 const Overlay: React.FC = () => {
   const { updateStylePropery } = EditorStore.useStoreActions((s) => s);
   const [marginTop, setMarginTop] = React.useState(0);
+  const [marginBottom, setMarginBottom] = React.useState(0);
+  // const [marginBottom, setMarginBottom] = React.useState(0);
+  // const [marginLeft, setMarginLeft] = React.useState(0);
+  // const [marginRight, setMarginRight] = React.useState(0);
 
   const el = useRef<HTMLDivElement>(null);
   const [overlayContext, setOverlayContext] = useOverlayContext();
@@ -108,7 +121,13 @@ const Overlay: React.FC = () => {
     position,
   } = overlayContext;
 
-  useEffect(() => {
+  const { pathFull } = parsePath(element ? element.path : []);
+
+  const item = EditorStore.useStoreState((s) => (
+    dlv(s.state.data.pages[s.state.activePage], pathFull)
+  ));
+
+  useLayoutEffect(() => {
     if (!el.current) {
       return;
     }
@@ -129,18 +148,26 @@ const Overlay: React.FC = () => {
         el.current.removeEventListener('mouseleave', handleLeave);
       }
     };
-  }, [overlayContext.element]);
+  }, [element]);
 
-  const updateStyle = (property: string) => (value: string | number) => {
-    if (!element) {
+  const updateStyle = (property: string, type: 'top' | 'bottom' | 'left' | 'right') => ({ value, diff }: { value: number, diff: number }) => {
+    const data = item || element;
+
+    if (!data) {
       return;
     }
 
     updateStylePropery({
-      id: element.id,
-      className: element.className,
+      id: data.id,
+      className: data.className,
       property,
-      value,
+      value: `${value}px`,
+    });
+
+    setOverlayContext((draft) => {
+      if (draft.position) {
+        draft.position[type] += diff;
+      }
     });
   };
 
@@ -159,7 +186,7 @@ const Overlay: React.FC = () => {
             top: position.top,
             width: position.width,
             height: position.height,
-            marginTop,
+            // marginTop,
           }}
         >
           <VerticalHandler
@@ -167,7 +194,14 @@ const Overlay: React.FC = () => {
             direction="top"
             state={marginTop}
             setState={setMarginTop}
-            onFinish={updateStyle('marginTop')}
+            onFinish={updateStyle('marginTop', 'top')}
+          />
+          <VerticalHandler
+            type="margin"
+            direction="bottom"
+            state={marginBottom}
+            setState={setMarginBottom}
+            onFinish={updateStyle('marginBottom', 'bottom')}
           />
         </div>
       )}

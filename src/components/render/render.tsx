@@ -237,7 +237,7 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
         {
           ...props,
         },
-        data.children && data.children.map((childProps, n) => renderChild(childProps, path.concat(String(n)))),
+        data.children && data.children.map((childProps, n) => renderChild(childProps, path.concat(String(n)), context)),
       );
     }
 
@@ -265,15 +265,15 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
         ref: el,
         className: [props.className, data.className].filter((a) => !!a).join(' '),
       },
-      data.children && data.children.map((childProps: any, n) => renderChild(childProps, path.concat(String(n)))),
+      data.children && data.children.map((childProps: any, n) => renderChild(childProps, path.concat(String(n)), context)),
     );
   }
 
   return null;
 };
 
-export const renderChild = (child: ILayerData, path: string[] = ['0']): JSX.Element => {
-  return <Render key={child.id + path.toString()} data={child} path={path} />;
+export const renderChild = (child: ILayerData, path: string[] = ['0'], context?: Record<string, any>): JSX.Element => {
+  return <Render key={child.id + path.toString()} data={child} path={path} context={context} />;
 };
 
 export default Render;

@@ -3,7 +3,7 @@ import { Action, action, createContextStore } from 'easy-peasy';
 
 import { copyVNode } from '../../../utils/copy-vnode';
 
-function parsePath(path: string[] = []): { lastIndex: string, lastIndexInt: number, path: string[], pathFull: string[] } {
+export function parsePath(path: string[] = []): { lastIndex: string, lastIndexInt: number, path: string[], pathFull: string[] } {
   const childSlice = 'children';
   const newPath = path.slice();
   const lastIndex = newPath.pop() || '0';
@@ -225,13 +225,14 @@ export const EditorStore = createContextStore<IEditorState>(
           return;
         }
 
-        const { path } = parsePath(
+        const { pathFull } = parsePath(
           draft.state.activeElement.path.slice(1),
         );
 
         const item = dlv(
           layers,
-          path,
+          pathFull,
+          null,
         );
 
         if (item) {
@@ -240,9 +241,11 @@ export const EditorStore = createContextStore<IEditorState>(
       }),
       updateStylePropery: action((draft, { id, className, property, value }) => {
         const layers = draft.state.data.pages[draft.state.activePage];
-        const style = draft.state.data.css[className || id];
+        const style = draft.state.data.css[className || id] = {
+          ...draft.state.data.css[className || id],
+        };
 
-        if (value) {
+        if (value !== undefined) {
           Object.assign(style, {
             [property as string]: value,
           });
@@ -254,13 +257,14 @@ export const EditorStore = createContextStore<IEditorState>(
           return;
         }
 
-        const { path } = parsePath(
+        const { pathFull } = parsePath(
           draft.state.activeElement.path.slice(1),
         );
 
         const item = dlv(
           layers,
-          path,
+          pathFull,
+          null,
         );
 
         if (item) {
