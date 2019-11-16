@@ -6,6 +6,7 @@ import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 
 import Overlay from './components/overlay/overlay';
+import { useOverlayContext } from './context/overlay';
 import styles from './workspace.module.scss';
 
 const UPPERCASE_LETTER = /[A-Z]/g;
@@ -31,6 +32,7 @@ function buildCss(css: Record<string, CSSProperties>): string {
 const Workspace = React.memo<any>(() => {
   const refs = useRefsContext();
   const { state } = EditorStore.useStoreState((s) => s);
+  const [overlayContext] = useOverlayContext();
 
   const css = buildCss(state.data.css);
 
@@ -44,13 +46,19 @@ const Workspace = React.memo<any>(() => {
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           />
 
+          <style>{`
+            body {
+              overflow-x: hidden;
+              overflow-y: scroll;
+            }
+          `}</style>
           <style>{css}</style>
 
           <div>
             {state.data.pages[state.activePage].children.map((props: any, n: number) => renderChild(props, [String(n)]))}
           </div>
 
-          <Overlay />
+          {overlayContext.element && <Overlay />}
         </Frame>
       </div>
     </div>
