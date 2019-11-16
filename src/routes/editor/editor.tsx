@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 
 import Plugins from '../../components/plugins';
 import { GET_PROJECT_BY_ID } from '../../graphql/queries';
-import { RefsContext } from '../../utils/refs-context';
+import { RefsContext, RefsContextInitial } from '../../utils/refs-context';
 import { Suspend } from '../../utils/suspend';
 import Workspace from './components/workspace';
 
@@ -67,7 +67,7 @@ const Editor: React.FC = () => {
   // @TODO: Use dataset from API
   const dataset = {
     user: {
-      name: 'Fedja',
+      name: 'John Wick',
     },
     articles: [
       {
@@ -93,9 +93,7 @@ const Editor: React.FC = () => {
   };
 
   return (
-    <RefsContext.Provider value={{
-      workspace: React.createRef(),
-    }}>
+    <RefsContext.Provider value={RefsContextInitial}>
       <OverlayContext.Provider>
         <EditorStore.Provider initialData={initialData}>
           <div className={styles.wrapper}>

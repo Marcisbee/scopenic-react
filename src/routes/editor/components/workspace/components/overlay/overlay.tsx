@@ -7,6 +7,21 @@ import { useOverlayContext } from '../../context/overlay';
 
 import overlayCss from './overlay.inline.scss';
 
+function getPosition(frame: HTMLIFrameElement, element: any): Record<string, number> {
+  if (!element || !frame || !frame.contentDocument) {
+    return {};
+  }
+
+  const target = frame.contentDocument.getElementById(element.id);
+
+  if (!target || !target.getBoundingClientRect) {
+    return {};
+  }
+
+  // @TODO: Figure out less expensive solution
+  return target.getBoundingClientRect() as any || {};
+}
+
 function useWindowMousePosition() {
   const refs = useRefsContext();
 
@@ -105,21 +120,141 @@ function VerticalHandler({
   );
 }
 
-const Overlay: React.FC = () => {
-  const { updateStylePropery } = EditorStore.useStoreActions((s) => s);
-  const [marginTop, setMarginTop] = React.useState(0);
-  const [marginBottom, setMarginBottom] = React.useState(0);
-  // const [marginBottom, setMarginBottom] = React.useState(0);
-  // const [marginLeft, setMarginLeft] = React.useState(0);
-  // const [marginRight, setMarginRight] = React.useState(0);
+function HorizontalHandler({
+  type = 'padding',
+  direction = 'left',
+  state,
+  setState,
+  onFinish,
+}: any) {
+  const [down, setDown] = React.useState(false);
+  const [position, setPosition] = React.useState(0);
+  const { x } = useWindowMousePosition();
 
+  function mouseDown() {
+    setPosition(x);
+    setDown(true);
+  }
+
+  function mouseUp() {
+    setDown(false);
+
+    const diff = x - position;
+
+    onFinish({
+      value: state,
+      diff,
+    });
+  }
+
+  React.useEffect(() => {
+    if (down) {
+      const diff = x - position;
+      // if (direction === 'right') {
+      //   if (state - diff >= 0) {
+      //     setPosition(x);
+      //   }
+      //   setState((s: number) => Math.max(0, s - diff));
+      //   onFinish({
+      //     value: state,
+      //     diff,
+      //   });
+      //   return;
+      // }
+
+      if (state + diff >= 0) {
+        setPosition(x);
+      }
+      setState((s: number) => Math.max(0, s + diff));
+      onFinish({
+        value: state,
+        diff,
+      });
+    }
+  }, [state, down, x, position]);
+
+  return (
+    <div
+      onMouseDown={mouseDown}
+      onMouseUp={mouseUp}
+      className={`selector-${type}-${direction}-handler ${down && 'active'}`}
+      style={{ width: state }}
+    >
+      <span>{state >= 30 && state + 'px'}</span>
+    </div>
+  );
+}
+
+function SizeHandler({ direction = 'right', state, setState, onFinish }: any) {
+  const [down, setDown] = React.useState(false);
+  const [position, setPosition] = React.useState(0);
+  const { x } = useWindowMousePosition();
+
+  function mouseDown() {
+    setPosition(x);
+    setDown(true);
+  }
+
+  function mouseUp() {
+    setDown(false);
+  }
+
+  React.useEffect(() => {
+    if (down) {
+      const diff = x - position;
+      // if (direction === "right") {
+      //   if (state - diff >= 0) {
+      //     setPosition(x);
+      //   }
+      //   setState(state => Math.max(0, state - diff));
+      //   return;
+      // }
+
+      if (state + diff >= 0) {
+        setPosition(x);
+      }
+      setState((s: number) => Math.max(0, s + diff));
+      onFinish({
+        value: state,
+        diff,
+      });
+    }
+  }, [state, down, x, position]);
+
+  return (
+    <div
+      onMouseDown={mouseDown}
+      onMouseUp={mouseUp}
+      className={`selector-width-${direction}-handler ${down && 'active'}`}
+    >
+      <span>{state >= 30 && state + 'px'}</span>
+    </div>
+  );
+}
+
+const Overlay: React.FC = () => {
+  const refs = useRefsContext();
   const el = useRef<HTMLDivElement>(null);
   const [overlayContext, setOverlayContext] = useOverlayContext();
 
-  const {
-    element,
-    position,
-  } = overlayContext;
+  const node: HTMLIFrameElement = (refs.workspace.current as any).node;
+
+  const { element, position } = overlayContext;
+  const currentPosition = getPosition(node, element);
+
+  const { updateStylePropery } = EditorStore.useStoreActions((s) => s);
+
+  const [marginTop, setMarginTop] = React.useState(0);
+  const [marginBottom, setMarginBottom] = React.useState(0);
+  const [marginLeft, setMarginLeft] = React.useState(0);
+  const [marginRight, setMarginRight] = React.useState(0);
+
+  const [paddingTop, setPaddingTop] = React.useState(0);
+  const [paddingBottom, setPaddingBottom] = React.useState(0);
+  const [paddingLeft, setPaddingLeft] = React.useState(0);
+  const [paddingRight, setPaddingRight] = React.useState(0);
+
+  const [width, setWidth] = React.useState(0);
 
   const { pathFull } = parsePath(element ? element.path : []);
 
@@ -146,11 +281,20 @@ const Overlay: React.FC = () => {
     return () => {
       if (el.current) {
         el.current.removeEventListener('mouseleave', handleLeave);
+
+        if (refs.activeElement) {
+          Object.assign(
+            refs.activeElement,
+            {
+              current: null,
+            },
+          );
+        }
       }
     };
   }, [element]);
 
-  const updateStyle = (property: string, type: 'top' | 'bottom' | 'left' | 'right') => ({ value, diff }: { value: number, diff: number }) => {
+  const updateStyle = (property: string) => ({ value, diff }: { value: number, diff: number }) => {
     const data = item || element;
 
     if (!data) {
@@ -164,11 +308,6 @@ const Overlay: React.FC = () => {
       value: `${value}px`,
     });
 
-    setOverlayContext((draft) => {
-      if (draft.position) {
-        draft.position[type] += diff;
-      }
-    });
   };
 
   return (
@@ -182,11 +321,10 @@ const Overlay: React.FC = () => {
           className="selector"
           ref={el}
           style={{
-            left: position.left,
-            top: position.top,
-            width: position.width,
-            height: position.height,
-            // marginTop,
+            left: currentPosition.left || position.left,
+            top: currentPosition.top || position.top,
+            width: currentPosition.width || position.width,
+            height: currentPosition.height || position.height,
           }}
         >
           <VerticalHandler
@@ -194,14 +332,59 @@ const Overlay: React.FC = () => {
             direction="top"
             state={marginTop}
             setState={setMarginTop}
-            onFinish={updateStyle('marginTop', 'top')}
+            onFinish={updateStyle('marginTop')}
           />
           <VerticalHandler
             type="margin"
             direction="bottom"
             state={marginBottom}
             setState={setMarginBottom}
-            onFinish={updateStyle('marginBottom', 'bottom')}
+            onFinish={updateStyle('marginBottom')}
+          />
+          <HorizontalHandler
+            type="margin"
+            direction="left"
+            state={marginLeft}
+            setState={setMarginLeft}
+            onFinish={updateStyle('marginLeft')}
+          />
+          <HorizontalHandler
+            type="margin"
+            direction="right"
+            state={marginRight}
+            setState={setMarginRight}
+            onFinish={updateStyle('marginRight')}
+          />
+
+          <VerticalHandler
+            direction="top"
+            state={paddingTop}
+            setState={setPaddingTop}
+            onFinish={updateStyle('paddingTop')}
+          />
+          <VerticalHandler
+            direction="bottom"
+            state={paddingBottom}
+            setState={setPaddingBottom}
+            onFinish={updateStyle('paddingBottom')}
+          />
+          <HorizontalHandler
+            direction="left"
+            state={paddingLeft}
+            setState={setPaddingLeft}
+            onFinish={updateStyle('paddingLeft')}
+          />
+          <HorizontalHandler
+            direction="right"
+            state={paddingRight}
+            setState={setPaddingRight}
+            onFinish={updateStyle('paddingRight')}
+          />
+          <SizeHandler
+            direction="right"
+            state={width}
+            setState={setWidth}
+            onFinish={updateStyle('width')}
           />
         </div>
       )}

@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useOverlayContext } from '../../routes/editor/components/workspace/context/overlay';
 import { EditorStore } from '../../routes/editor/context/editor-context';
 import { messageFormat } from '../../utils/messageformat';
+import { useRefsContext } from '../../utils/refs-context';
 import { ILayerData, isComponent, isNode, isText, isVar } from '../../utils/vnode-helpers';
 
 interface IRenderProps {
@@ -53,13 +54,13 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
       </nav>
     );
   },
-  card: ({ title, text, width }) => {
+  card: ({ title, text, width, children }) => {
     return (
       <div className="card" style={{ width: width || '18rem' }}>
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <p className="card-text">{text}</p>
-          <a href="#" className="btn btn-primary">Go somewhere</a>
+          {children}
         </div>
       </div>
     );
@@ -145,6 +146,7 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
 
 const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => {
   const el = useRef<HTMLElement | null>(null);
+  const refs = useRefsContext();
   const [, setOverlayContext] = useOverlayContext();
   const dataset = EditorStore.useStoreState((s) => s.dataset);
 
@@ -181,6 +183,13 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
           };
         });
       };
+
+      if (refs.activeElement) {
+        Object.assign(
+          refs.activeElement,
+          el,
+        );
+      }
 
       el.current.addEventListener('mouseover', handleHover);
 
@@ -263,6 +272,7 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
       {
         ...props,
         ref: el,
+        id: data.id,
         className: [props.className, data.className].filter((a) => !!a).join(' '),
       },
       data.children && data.children.map((childProps: any, n) => renderChild(childProps, path.concat(String(n)), context)),
