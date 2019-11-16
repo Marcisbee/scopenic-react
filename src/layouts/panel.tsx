@@ -1,5 +1,6 @@
+import cc from 'classcat';
 import React, { Suspense } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Avatar from '../components/avatar';
 import ScopeShape from '../components/decorations/scope-shape';
@@ -10,8 +11,10 @@ import {
   SettingIcon,
   SunIcon,
 } from '../components/icons';
+import CustomLink from '../components/link';
 import Plugins from '../components/plugins';
 import Spinner from '../components/spinner';
+import { UiStore } from '../context/ui-context';
 import { useAuth } from '../hooks/use-auth';
 import { useDarkMode } from '../hooks/use-dark-mode';
 
@@ -20,9 +23,16 @@ import styles from './panel.module.scss';
 // Plugins
 const enabledPlugins = {
   // 'hello-world': () => import('../plugins/panel/hello-world'),
+  'layers': () => import('../plugins/editor/layers'),
+  'dataset': () => import('../plugins/editor/dataset'),
 };
 
-const PanelLayout: React.FC = React.memo(({ children }) => {
+const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
+  type,
+  children,
+}) => {
+  const panelLeftActive = UiStore.useStoreState((s) => s.panel.left.active);
+  const { setPanelLeftActive } = UiStore.useStoreActions((s) => s);
   const { user, signout } = useAuth();
   const [darkMode, setDarkMode] = useDarkMode();
 
@@ -30,32 +40,58 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
     <div className={styles.panel}>
       <div className={styles.sidebar}>
         <div className={styles.logo}>
-          <img src={require('../assets/images/logo.png')} alt="Scopenic"/>
+          <Link to="/projects">
+            <img src={require('../assets/images/logo.png')} alt="Scopenic" />
+          </Link>
         </div>
 
-        <ul className={styles.menu}>
-          <li>
-            <NavLink exact={true} activeClassName={styles.menuActive} to="/projects">
-              <ScopeShape className={styles.menuIconBg} />
-              <HomeIcon className={styles.menuIcon} />
-            </NavLink>
-          </li>
-          <li>
-            <NavLink exact={true} activeClassName={styles.menuActive} to="/settings">
-              <ScopeShape className={styles.menuIconBg} />
-              <SettingIcon className={styles.menuIcon} />
-            </NavLink>
-          </li>
-          <Plugins
-            scope="panelMenu"
-            src={enabledPlugins}
-            render={({ children: child }) => (
-              <li>
-                {child}
-              </li>
-            )}
-          />
-        </ul>
+        {type === 'dashboard' && (
+          <ul className={styles.menu}>
+            <li>
+              <CustomLink exact={true} activeClassName={styles.menuActive} to="/projects">
+                <ScopeShape className={styles.menuIconBg} />
+                <HomeIcon className={styles.menuIcon} />
+              </CustomLink>
+            </li>
+            <li>
+              <CustomLink exact={true} activeClassName={styles.menuActive} to="/settings">
+                <ScopeShape className={styles.menuIconBg} />
+                <SettingIcon className={styles.menuIcon} />
+              </CustomLink>
+            </li>
+            <Plugins
+              scope="dashboard.panel.menu"
+              src={enabledPlugins}
+              render={({ children: child }) => (
+                <li>
+                  {child}
+                </li>
+              )}
+            />
+          </ul>
+        )}
+
+        {type === 'editor' && (
+          <ul className={styles.menu}>
+            <Plugins
+              scope="editor.panel.menu"
+              src={enabledPlugins}
+              render={({ config: pluginConfig, children: child }) => (
+                <li>
+                  <span
+                    className={cc([
+                      panelLeftActive === pluginConfig.action && styles.menuActive,
+                    ])}
+                    onClick={() => setPanelLeftActive(pluginConfig.action)}
+                  >
+                    <ScopeShape className={styles.menuIconBg} />
+                    {child}
+                  </span>
+                </li>
+              )}
+            />
+          </ul>
+        )}
 
         <ul className={styles.bottomMenu}>
           <li>
@@ -81,7 +117,7 @@ const PanelLayout: React.FC = React.memo(({ children }) => {
             <ul>
               <li><a>Help</a></li>
               <li><Link to="/settings">Edit profile</Link></li>
-              <li className={styles.divider}/>
+              <li className={styles.divider} />
               <li><a onClick={signout}>Sign out</a></li>
             </ul>
           </li>

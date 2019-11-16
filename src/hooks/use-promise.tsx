@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useLayoutEffect, useReducer } from 'react';
 
 function resolvePromise(promise: any) {
   if (typeof promise === 'function') {
@@ -53,7 +53,7 @@ export function usePromise<T = undefined>(
     state: states.pending,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     promise = resolvePromise(promise) as Promise<T>;
 
     if (!promise) {

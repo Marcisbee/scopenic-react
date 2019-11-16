@@ -16,6 +16,7 @@ $sidebar-size: 60px;
   height: 100%;
   width: $sidebar-size;
   z-index: 100;
+  user-select: none;
 }
 
 .logo {
@@ -35,7 +36,8 @@ $sidebar-size: 60px;
     margin-bottom: 8px;
     position: relative;
 
-    > a {
+    > a,
+    > span {
       display: block;
       position: relative;
       width: 42px;
@@ -45,6 +47,7 @@ $sidebar-size: 60px;
       color: #626262;
       border-radius: 42%;
       fill: transparent;
+      cursor: pointer;
 
       &:hover {
         color: #2743ff;
@@ -156,7 +159,7 @@ $sidebar-size: 60px;
 }
 
 .main {
-  padding: 20px 0 20px $sidebar-size;
+  padding: 0 0 0 $sidebar-size;
 }
 
 // Dark theme
@@ -171,6 +174,7 @@ $sidebar-size: 60px;
   }
 
   .menu > li {
+    & > span,
     & > a {
       color: #a8bac7;
 

@@ -1,0 +1,43 @@
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  font-size: 14px;
+}
+
+.left {
+  float: left;
+  position: relative;
+  width: 260px;
+  height: 100vh;
+  background-color: #f5f8fa;
+  color: #333;
+}
+
+.right {
+  float: right;
+  position: relative;
+  height: 100vh;
+  width: 260px;
+  background-color: #f5f8fa;
+  color: #333;
+}
+
+.main {
+  position: relative;
+  height: 100vh;
+  margin-left: 260px;
+  margin-right: 260px;
+  background-color: #e1e8ed;
+}
+
+:global(.pt-dark) {
+  .main {
+    background-color: #202b33;
+  }
+
+  .left,
+  .right {
+    background-color: #293742;
+    color: #ccc;
+  }
+}

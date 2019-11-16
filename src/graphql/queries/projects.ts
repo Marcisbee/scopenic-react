@@ -44,3 +44,36 @@ export const GET_PROJECTS_BY_VIEWER = gql`
     }
   }
 `;
+
+export const GET_PROJECT_BY_ID = gql`
+  query(
+    $id: ID!
+  ) {
+    project(id: $id) {
+      id
+      name
+      image
+      description
+      createdAt
+      updatedAt
+      isPrivate
+      isArchived
+      url
+      views
+      type
+      responsive
+      data
+      contributors {
+        id
+        first_name
+        last_name
+        avatar
+      }
+      owner {
+        id
+        avatar
+        name
+      }
+    }
+  }
+`;

@@ -19,3 +19,22 @@ export const CREATE_PROJECT = gql`
     }
   }
 `;
+
+export const COMMIT = gql`
+  mutation (
+    $name: String!
+    $description: String!
+    $content: String!
+    $project_id: ID!
+  ) {
+    commit(
+      name: $name
+      description: $description
+      content: $content
+      project_id: $project_id
+    ) {
+      id
+      content
+    }
+  }
+`;

@@ -1,0 +1,217 @@
+@import "../../../assets/scss/variables.scss";
+
+.wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+}
+
+.layers {
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.layerWrapper {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: normal;
+
+  .layerWrapper > div {
+    padding-right: 0;
+  }
+}
+
+.layer {
+  display: block;
+  cursor: pointer;
+  width: 100%;
+
+  &:global(.isActive) {
+    > .layerHandler {
+      background-color: $primary-color !important;
+      color: #fff;
+
+      .icon {
+        :global(.primary) {
+          fill: #51ccff;
+        }
+
+        :global(.secondary) {
+          fill: #51ccff;
+        }
+      }
+
+      .displayIcon {
+        opacity: 1;
+
+        :global(.primary) {
+          fill: #51ccff;
+        }
+
+        :global(.secondary) {
+          fill: #51ccff;
+        }
+
+        &:hover {
+          :global(.primary) {
+            fill: #fff;
+          }
+
+          :global(.secondary) {
+            fill: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  &:global(.isTarget) {
+    > .layerHandler {
+      box-shadow: inset 0 0 0 1px $primary-active-color, 0 0 0 1px $primary-active-color;
+    }
+  }
+}
+
+.layerHandler {
+  padding: 0.38rem;
+  border-radius: 3px;
+  position: relative;
+
+  > div {
+    position: relative;
+
+    > :global(.im) {
+      position: absolute;
+      font-size: 10px;
+      left: -6px;
+      top: 3px;
+      z-index: 10;
+      opacity: 0.4;
+
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -50%;
+        top: -50%;
+        width: 200%;
+        height: 200%;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    > span {
+      display: block;
+      margin-left: 20px;
+      margin-right: 20px;
+      padding-left: 0.38rem;
+    }
+  }
+
+  &:hover .displayIcon {
+    opacity: 0.2;
+  }
+
+  &:hover {
+    background-color: #ebf1f5;
+  }
+}
+
+.icon {
+  margin-right: 5px;
+  vertical-align: bottom;
+  margin-top: -1px;
+  height: 15px;
+  width: 15px;
+  position: relative;
+  float: left;
+  margin-left: 0.38rem;
+
+  :global(.primary) {
+    fill: $primary-color;
+  }
+
+  :global(.secondary) {
+    fill: $primary-color;
+  }
+}
+
+.displayIcon {
+  margin-right: 5px;
+  vertical-align: bottom;
+  margin-top: -10px;
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  opacity: 0;
+
+  &:hover {
+    opacity: 1 !important;
+  }
+
+  :global(.primary) {
+    fill: #333;
+  }
+
+  :global(.secondary) {
+    fill: #333;
+  }
+}
+
+.dropInBetween {
+  display: block;
+  position: absolute;
+  background-color: transparent;
+  z-index: 2;
+  height: 10px;
+  margin-top: -5px;
+  width: 100%;
+
+  &::before {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 4px;
+    width: calc(100% - 6px);
+    height: 3px;
+    border-radius: 5px;
+    margin-top: -2px;
+    background-color: transparent;
+  }
+
+  &:global(.active) {
+    &::before {
+      background-color: $primary-active-color;
+    }
+  }
+}
+
+:global(.pt-dark) {
+  .layerHandler {
+    &:hover {
+      background-color: #30404d;
+    }
+  }
+
+  .displayIcon {
+    :global(.primary) {
+      fill: #ccc;
+    }
+
+    :global(.secondary) {
+      fill: #ccc;
+    }
+  }
+}

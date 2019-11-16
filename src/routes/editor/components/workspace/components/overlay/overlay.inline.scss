@@ -1,0 +1,205 @@
+.selector h1 {
+  margin: 0;
+}
+
+.selector {
+  display: block;
+  position: absolute;
+  z-index: 1000000;
+  box-shadow: 0 0 0 2px red;
+  border-radius: 1px;
+}
+
+.handler-borders {
+  display: block;
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border: 30px solid red;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.selector:hover .handler-borders {
+  opacity: 0.07;
+}
+
+.selector-width-right-handler {
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  border: 4px solid red;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  transition: all 0.2s;
+  user-select: none;
+  cursor: grab;
+}
+
+.selector-width-right-handler:after {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 400%;
+  height: 400%;
+  top: -150%;
+  left: -150%;
+  border-radius: inherit;
+}
+
+.selector-width-right-handler:active {
+  cursor: grabbing;
+}
+
+.selector-width-right-handler {
+  top: 50%;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -6px;
+}
+
+.selector-width-right-handler:hover {
+  width: 16px;
+  height: 16px;
+  border-width: 6px;
+  margin-top: -8px;
+  margin-left: -8px;
+}
+
+.selector-width-right-handler span {
+  display: none;
+}
+
+.selector-margin-top-handler,
+.selector-margin-bottom-handler,
+.selector-margin-left-handler,
+.selector-margin-right-handler,
+.selector-padding-top-handler,
+.selector-padding-bottom-handler,
+.selector-padding-left-handler,
+.selector-padding-right-handler {
+  position: absolute;
+  color: rgb(156, 0, 0);
+  background-color: rgba(255, 0, 0, 0.1);
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+
+.selector-margin-top-handler:hover,
+.selector-margin-bottom-handler:hover,
+.selector-margin-left-handler:hover,
+.selector-margin-right-handler:hover,
+.selector-padding-top-handler:hover,
+.selector-padding-bottom-handler:hover,
+.selector-padding-left-handler:hover,
+.selector-padding-right-handler:hover {
+  opacity: 1;
+}
+
+.selector-margin-top-handler > span,
+.selector-margin-bottom-handler > span,
+.selector-margin-left-handler > span,
+.selector-margin-right-handler > span,
+.selector-padding-top-handler > span,
+.selector-padding-bottom-handler > span,
+.selector-padding-left-handler > span,
+.selector-padding-right-handler > span {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.selector-margin-top-handler {
+  left: 0;
+  bottom: 100%;
+  right: 0;
+  min-height: 10px;
+  cursor: row-resize;
+}
+
+.selector-margin-bottom-handler {
+  left: 0;
+  top: 100%;
+  right: 0;
+  min-height: 10px;
+  cursor: row-resize;
+}
+
+.selector-margin-left-handler {
+  right: 100%;
+  top: 0;
+  bottom: 0;
+  min-width: 10px;
+  cursor: col-resize;
+}
+
+.selector-margin-right-handler {
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  min-width: 10px;
+  cursor: col-resize;
+}
+
+.selector-padding-top-handler {
+  left: 0;
+  top: 0;
+  right: 0;
+  min-height: 10px;
+  cursor: row-resize;
+}
+
+.selector-padding-bottom-handler {
+  left: 0;
+  bottom: 0;
+  right: 0;
+  min-height: 10px;
+  cursor: row-resize;
+}
+
+.selector-padding-left-handler {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  min-width: 10px;
+  cursor: col-resize;
+}
+
+.selector-padding-right-handler {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  min-width: 10px;
+  cursor: col-resize;
+}
+
+.selector-width-right-handler.active:before,
+.selector-margin-bottom-handler.active:before,
+.selector-margin-top-handler.active:before,
+.selector-margin-left-handler.active:before,
+.selector-margin-right-handler.active:before,
+.selector-padding-bottom-handler.active:before,
+.selector-padding-top-handler.active:before,
+.selector-padding-left-handler.active:before,
+.selector-padding-right-handler.active:before {
+  content: "";
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30000;
+}

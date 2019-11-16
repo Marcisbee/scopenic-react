@@ -1,20 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { CloseIcon } from '../../components/icons';
 import { useLockBodyScroll } from '../../hooks/use-lock-body-scroll';
+import ModalPortal from '../modal-portal';
 
 import styles from './modal.module.scss';
-
-const ModalNode = document.getElementById('modal');
-
-const ModalPortal = ({ children }: any) => {
-  if (!ModalNode) {
-    return children;
-  }
-
-  return ReactDOM.createPortal(children, ModalNode);
-};
 
 interface IModalProps {
   title?: string;
