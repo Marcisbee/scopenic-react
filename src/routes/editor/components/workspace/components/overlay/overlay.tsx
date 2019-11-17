@@ -1,5 +1,5 @@
 import dlv from 'dlv';
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 
 import { useRefsContext } from '../../../../../../utils/refs-context';
 import { EditorStore, parsePath } from '../../../../context/editor-context';
@@ -7,19 +7,22 @@ import { useOverlayContext } from '../../context/overlay';
 
 import overlayCss from './overlay.inline.scss';
 
-function getPosition(frame: HTMLIFrameElement, element: any): Record<string, number> {
+function getPosition(frame: HTMLIFrameElement, element: any): { target: Element, position: Record<string, number> } {
   if (!element || !frame || !frame.contentDocument) {
-    return {};
+    return {} as any;
   }
 
   const target = frame.contentDocument.getElementById(element.id);
 
   if (!target || !target.getBoundingClientRect) {
-    return {};
+    return {} as any;
   }
 
   // @TODO: Figure out less expensive solution
-  return target.getBoundingClientRect() as any || {};
+  return {
+    target,
+    position: target.getBoundingClientRect() as any || {},
+  };
 }
 
 function useWindowMousePosition() {
@@ -240,21 +243,26 @@ const Overlay: React.FC = () => {
   const node: HTMLIFrameElement = (refs.workspace.current as any).node;
 
   const { element, position } = overlayContext;
-  const currentPosition = getPosition(node, element);
+  const {
+    target,
+    position: currentPosition,
+  } = getPosition(node, element);
 
-  const { updateStylePropery } = EditorStore.useStoreActions((s) => s);
+  const initialValues = useMemo(() => target && getComputedStyle(target) || {}, [target]);
 
-  const [marginTop, setMarginTop] = React.useState(0);
-  const [marginBottom, setMarginBottom] = React.useState(0);
-  const [marginLeft, setMarginLeft] = React.useState(0);
-  const [marginRight, setMarginRight] = React.useState(0);
+  const { updateStylePropery, setActiveElement } = EditorStore.useStoreActions((s) => s);
 
-  const [paddingTop, setPaddingTop] = React.useState(0);
-  const [paddingBottom, setPaddingBottom] = React.useState(0);
-  const [paddingLeft, setPaddingLeft] = React.useState(0);
-  const [paddingRight, setPaddingRight] = React.useState(0);
+  const [marginTop, setMarginTop] = React.useState(parseInt(initialValues.marginTop, 10));
+  const [marginBottom, setMarginBottom] = React.useState(parseInt(initialValues.marginBottom, 10));
+  const [marginLeft, setMarginLeft] = React.useState(parseInt(initialValues.marginLeft, 10));
+  const [marginRight, setMarginRight] = React.useState(parseInt(initialValues.marginRight, 10));
 
-  const [width, setWidth] = React.useState(0);
+  const [paddingTop, setPaddingTop] = React.useState(parseInt(initialValues.paddingTop, 10));
+  const [paddingBottom, setPaddingBottom] = React.useState(parseInt(initialValues.paddingBottom, 10));
+  const [paddingLeft, setPaddingLeft] = React.useState(parseInt(initialValues.paddingLeft, 10));
+  const [paddingRight, setPaddingRight] = React.useState(parseInt(initialValues.paddingRight, 10));
+
+  const [width, setWidth] = React.useState(parseInt(initialValues.width, 10));
 
   const { pathFull } = parsePath(element ? element.path : []);
 
@@ -325,6 +333,16 @@ const Overlay: React.FC = () => {
             top: currentPosition.top || position.top,
             width: currentPosition.width || position.width,
             height: currentPosition.height || position.height,
+          }}
+          onClick={() => {
+            if (!element) {
+              return;
+            }
+
+            setActiveElement({
+              id: element.id,
+              path: ['0', ...element.path],
+            });
           }}
         >
           <VerticalHandler
