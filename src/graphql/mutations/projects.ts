@@ -42,6 +42,18 @@ export const UPDATE_PROJECT = gql`
   }
 `;
 
+export const ARCHIVE_PROJECT = gql`
+  mutation (
+    $id: ID!
+  ) {
+    archiveProject(
+      id: $id
+    ) {
+      id
+    }
+  }
+`;
+
 export const COMMIT = gql`
   mutation (
     $name: String!

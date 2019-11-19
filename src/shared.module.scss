@@ -21,6 +21,29 @@
   margin: 0 auto;
 }
 
+.cta {
+  display: block;
+
+  > strong {
+    display: block;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+
+  > p {
+    display: block;
+    margin-top: 6px;
+    margin-bottom: 0;
+    font-size: 14px;
+    opacity: 0.5;
+  }
+
+  > strong,
+  > p {
+    margin-right: 40%;
+  }
+}
+
 // Dark theme
 :global(.pt-dark) {
   .heading {

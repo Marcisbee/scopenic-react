@@ -161,6 +161,10 @@ $containerMaxHeight: 20px + $containerTop;
 }
 
 :global(.pt-dark) {
+  .tabs {
+    background-color: #202529;
+  }
+
   .handle {
     &::after,
     &::before {

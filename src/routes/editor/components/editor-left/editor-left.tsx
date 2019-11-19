@@ -11,6 +11,7 @@ import SettingsBlock from '../../../../components/settings-block/settings-block'
 import { UiStore } from '../../../../context/ui-context';
 import { COMMIT } from '../../../../graphql/mutations/projects';
 import { EditorStore } from '../../context/editor-context';
+import ProjectDanger from '../project-danger/project-danger';
 import ProjectDetails from '../project-details/project-details';
 
 import styles from './editor-left.module.scss';
@@ -30,26 +31,6 @@ const DatasetPlugin = (dataset['editor.panel.left'] as any).render;
 const createJsonDiff = (jsondiffpatch as any).create({
   cloneDiffValues: false,
 });
-
-const ProjectDanger: React.FC = () => {
-  return (
-    <div>
-      <div>
-        <strong>Make this project private</strong><br />
-        <p>Hide this project from public</p>
-        <button className="pt-button pt-intent-danger">Make private</button>
-      </div>
-
-      <hr />
-
-      <div>
-        <strong>Delete this project</strong><br />
-        <p>Once you delete a project, there is no going back</p>
-        <button className="pt-button pt-intent-danger">Delete this project</button>
-      </div>
-    </div>
-  );
-};
 
 const EditorLeft: React.FC = () => {
   const [commit, { data, loading, error }] = useMutation(COMMIT);
