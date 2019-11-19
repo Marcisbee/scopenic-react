@@ -153,6 +153,13 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
   useEffect(() => {
     if (el.current && isNode(data)) {
       const handleHover = (e: MouseEvent) => {
+        const isRenderedElement = el.current === e.target;
+
+        if (!isRenderedElement) {
+          return true;
+        }
+
+        e.stopPropagation();
         e.preventDefault();
 
         const node = e.target as HTMLElement;
@@ -162,6 +169,13 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
         }
 
         const boundingClientRect = node.getBoundingClientRect();
+
+        if (refs.overlayElement) {
+          Object.assign(
+            refs.overlayElement,
+            el,
+          );
+        }
 
         setOverlayContext((draft) => {
           draft.element = {
@@ -184,18 +198,11 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
         });
       };
 
-      if (refs.activeElement) {
-        Object.assign(
-          refs.activeElement,
-          el,
-        );
-      }
-
-      el.current.addEventListener('mouseover', handleHover);
+      el.current.addEventListener('mouseenter', handleHover, {});
 
       return () => {
         if (el.current) {
-          el.current.removeEventListener('mouseover', handleHover);
+          el.current.removeEventListener('mouseenter', handleHover);
         }
       };
     }

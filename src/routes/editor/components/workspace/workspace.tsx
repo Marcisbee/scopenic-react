@@ -1,7 +1,10 @@
-import React, { CSSProperties } from 'react';
+import cc from 'classcat';
+import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
 import Frame from 'react-frame-component';
 
+import DragPortal from '../../../../components/drag-portal/drag-portal';
 import { renderChild } from '../../../../components/render/render';
+import { useMousePosition } from '../../../../hooks/use-mouse-position';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 
@@ -29,16 +32,108 @@ function buildCss(css: Record<string, CSSProperties>): string {
   return Object.entries(css).reduce(buildSelectors, '');
 }
 
+function useWorkspaceSize({ reverse, mousePosition, type, setState }: { reverse?: boolean, mousePosition: any, type: 'x' | 'y', setState: React.Dispatch<React.SetStateAction<number>> } = {} as any) {
+  const [down, setDown] = React.useState(false);
+  const { diff } = mousePosition;
+
+  const modifier = reverse ? -1 : 1;
+
+  const onMouseDown = useCallback(() => {
+    setDown(true);
+  }, []);
+
+  const onMouseUp = useCallback(() => {
+    setDown(false);
+  }, []);
+
+  React.useEffect(() => {
+    if (down) {
+      const newValue = diff[type] * modifier;
+
+      setState((s: number) => Math.max(0, s + newValue));
+    }
+  }, [diff[type]]);
+
+  return {
+    onMouseDown,
+    onMouseUp,
+  };
+}
+
+const ResizeHandlers: React.FC<{
+  setWidth: React.Dispatch<React.SetStateAction<number>>,
+  setHeight: React.Dispatch<React.SetStateAction<number>>,
+}> = ({ setWidth, setHeight }) => {
+  const mousePosition = useMousePosition();
+  const handlersWidth = useWorkspaceSize({ reverse: false, mousePosition, type: 'x', setState: setWidth });
+  const handlersWidthReverse = useWorkspaceSize({ reverse: true, mousePosition, type: 'x', setState: setWidth });
+  const handlersHeight = useWorkspaceSize({ reverse: false, mousePosition, type: 'y', setState: setHeight });
+
+  return (
+    <>
+      <div {...handlersWidthReverse} className={styles.handleLeft}><DragPortal /></div>
+      <div {...handlersWidth} className={styles.handleRight}><DragPortal /></div>
+
+      <div {...handlersHeight} className={styles.handleBottom}><DragPortal /></div>
+    </>
+  );
+};
+
 const Workspace = React.memo<any>(() => {
   const refs = useRefsContext();
   const { state } = EditorStore.useStoreState((s) => s);
   const [overlayContext] = useOverlayContext();
+  const [width, setWidth] = useState(500);
+  const [height, setHeight] = useState(900);
+
+  const type = useMemo(() => {
+    if (width <= 576 / 2) {
+      return 'mobile';
+    }
+
+    if (width <= 992 / 2) {
+      return 'tablet';
+    }
+
+    return 'desktop';
+  }, [width]);
 
   const css = buildCss(state.data.css);
 
   return (
     <div>
-      <div className={styles.container}>
+      <div className={styles.tabs}>
+        Tabs
+      </div>
+
+      <div className={styles.controls}>
+        <button
+          onClick={() => setWidth(992 / 2)}
+          className={cc({ active: type === 'desktop' })}
+        >
+          <i className="im im-monitor-o" />
+        </button>
+        <button
+          onClick={() => setWidth(768 / 2)}
+          className={cc({ active: type === 'tablet' })}
+        >
+          <i className="im im-laptop-o" />
+        </button>
+        <button
+          onClick={() => setWidth(576 / 2)}
+          className={cc({ active: type === 'mobile' })}
+        >
+          <i className="im im-mobile" />
+        </button>
+      </div>
+
+      <div
+        className={styles.container}
+        style={{
+          height: Math.max(height, 300),
+          width: Math.max(width * 2, 300),
+        }}
+      >
         {/* https://github.com/ryanseddon/react-frame-component */}
         <Frame ref={refs.workspace}>
           <link
@@ -46,12 +141,14 @@ const Workspace = React.memo<any>(() => {
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           />
 
-          <style>{`
-            body {
-              overflow-x: hidden;
-              overflow-y: scroll;
-            }
-          `}</style>
+          <style>
+            {`
+              body {
+                overflow-x: hidden;
+                overflow-y: scroll;
+              }
+            `}
+          </style>
           <style>{css}</style>
 
           <div>
@@ -60,6 +157,8 @@ const Workspace = React.memo<any>(() => {
 
           {overlayContext.element && <Overlay />}
         </Frame>
+
+        <ResizeHandlers setWidth={setWidth} setHeight={setHeight} />
       </div>
     </div>
   );
