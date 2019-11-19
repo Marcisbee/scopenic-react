@@ -17,6 +17,46 @@ export function parsePath(path: string[] = []): { lastIndex: string, lastIndexIn
   };
 }
 
+function findChildById<T = undefined>(source: any, prop: string, evaluation: (item: any) => any, path: string[] = ['0']): null | { item: T, path: string[] } {
+  if (!source) {
+    return null;
+  }
+
+  const target = source[prop];
+
+  if (!(target instanceof Array)) {
+    return null;
+  }
+
+  let result;
+  let p;
+
+  for (p in target) {
+    if (target.hasOwnProperty(p) && typeof target[p] === 'object') {
+      result = evaluation(target[p]);
+
+      const newPath = path.concat(p);
+
+      if (result) {
+        return {
+          item: result,
+          path: newPath,
+        };
+      }
+
+      if (!result) {
+        result = findChildById(target[p], prop, evaluation, newPath);
+      }
+
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}
+
 export interface IEditorState {
   // Store
   project: {
@@ -187,7 +227,7 @@ export const EditorStore = createContextStore<IEditorState>(
 
         draft.state.activeElement = {
           id: newItem.id,
-          path: [0, ...duplicatePath],
+          path: ['0', ...duplicatePath],
         };
       }),
       moveElement: action((draft, { from, to }) => {
@@ -198,23 +238,51 @@ export const EditorStore = createContextStore<IEditorState>(
 
         const fromLayer = dlv(layers, fromPath.pathFull);
 
-        // @TODO: Reselect active element if current element is active
-        const fromItem = dlv(layers, fromPath.path);
+        const fromItemParent = dlv(layers, fromPath.path);
+        const fromItem = fromItemParent[fromPath.lastIndexInt];
 
         if (fromPath.path.join('.') === toPath.path.join('.')) {
           // Both values are in the same array
           const hoverIndexAdjusted = fromPath.lastIndexInt < toPath.lastIndexInt ? toPath.lastIndexInt - 1 : toPath.lastIndexInt;
 
-          fromItem.splice(fromPath.lastIndexInt, 1);
-          fromItem.splice(hoverIndexAdjusted, 0, fromLayer);
+          fromItemParent.splice(fromPath.lastIndexInt, 1);
+          fromItemParent.splice(hoverIndexAdjusted, 0, fromLayer);
+
+          // Select new element
+          const selectedElement = findChildById<any>(
+            draft.state.data.pages[draft.state.activePage],
+            'children',
+            (item) => item.id === fromItem.id && item,
+          );
+
+          if (selectedElement) {
+            draft.state.activeElement = {
+              id: selectedElement.item.id,
+              path: selectedElement.path,
+            };
+          }
           return;
         }
 
         // Different arrays
         const toParent = dlv(layers, toPath.path);
 
-        fromItem.splice(fromPath.lastIndexInt, 1);
+        fromItemParent.splice(fromPath.lastIndexInt, 1);
         toParent.splice(toPath.lastIndex, 0, fromLayer);
+
+        // Select new element
+        const newEl = findChildById<any>(
+          draft.state.data.pages[draft.state.activePage],
+          'children',
+          (item) => item.id === fromItem.id && item,
+        );
+
+        if (newEl) {
+          draft.state.activeElement = {
+            id: newEl.item.id,
+            path: newEl.path,
+          };
+        }
       }),
       updateStyle: action((draft, { id, className, style }) => {
         const layers = draft.state.data.pages[draft.state.activePage];

@@ -7,15 +7,19 @@ import { useOverlayContext } from '../../context/overlay';
 
 import overlayCss from './overlay.inline.scss';
 
-function getPosition(frame: HTMLIFrameElement, element: any): { target: Element, position: Record<string, number> } {
-  if (!element || !frame || !frame.contentDocument) {
-    return {} as any;
+function getPosition(ref: React.RefObject<HTMLElement>, element: any): { target: Element, position: Record<string, number> } {
+  if (!element || !ref || !ref.current) {
+    return {
+      position: {},
+    } as any;
   }
 
-  const target = frame.contentDocument.getElementById(element.id);
+  const target = ref.current;
 
   if (!target || !target.getBoundingClientRect) {
-    return {} as any;
+    return {
+      position: {},
+    } as any;
   }
 
   // @TODO: Figure out less expensive solution
@@ -240,15 +244,13 @@ const Overlay: React.FC = () => {
   const el = useRef<HTMLDivElement>(null);
   const [overlayContext, setOverlayContext] = useOverlayContext();
 
-  const node: HTMLIFrameElement = (refs.workspace.current as any).node;
-
   const { element, position } = overlayContext;
   const {
     target,
     position: currentPosition,
-  } = getPosition(node, element);
+  } = getPosition(refs.overlayElement, element);
 
-  const initialValues = useMemo(() => target && getComputedStyle(target) || {}, [target]);
+  const initialValues = useMemo(() => target && getComputedStyle(target) || {}, [target, currentPosition]);
 
   const { updateStylePropery, setActiveElement } = EditorStore.useStoreActions((s) => s);
 
@@ -290,9 +292,9 @@ const Overlay: React.FC = () => {
       if (el.current) {
         el.current.removeEventListener('mouseleave', handleLeave);
 
-        if (refs.activeElement) {
+        if (refs.overlayElement) {
           Object.assign(
-            refs.activeElement,
+            refs.overlayElement,
             {
               current: null,
             },

@@ -1,5 +1,5 @@
 import dlv from 'dlv';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
@@ -8,15 +8,13 @@ const EditorRight: React.FC = () => {
   const refs = useRefsContext();
   const { state } = EditorStore.useStoreState((s) => s);
   const { updateElement, updateStyle } = EditorStore.useStoreActions((s) => s);
-  const [cssDeclarations, setCssDeclarations] = useState<CSSStyleDeclaration>();
 
   const element = dlv(state.data.pages[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
   const currentClassName = (element && element.className) || state.activeElement.id;
 
-  useEffect(() => {
+  const cssDeclarations = useMemo(() => {
     if (!refs.workspace || !refs.workspace.current) {
-      setCssDeclarations(undefined);
-      return;
+      return undefined;
     }
 
     const node: HTMLIFrameElement = (refs.workspace.current as any).node;
@@ -25,13 +23,10 @@ const EditorRight: React.FC = () => {
       const el = node.contentDocument.querySelector(`.${currentClassName}`);
 
       if (el) {
-        setCssDeclarations(window.getComputedStyle(el));
-        return;
+        return window.getComputedStyle(el);
       }
     }
-
-    setCssDeclarations(undefined);
-  }, [state, 'pages', state.activeElement.id && dlv(state.data.css, state.activeElement.id), refs.workspace && refs.workspace.current]);
+  }, [state.activeElement.id, state.activeElement.path]);
 
   const defaultStyles = cssDeclarations && {
     backgroundColor: cssDeclarations.backgroundColor,
@@ -48,9 +43,13 @@ const EditorRight: React.FC = () => {
         style={{ fontSize: 12 }}
         contentEditable={true}
         onBlur={(e) => {
-          const value = JSON.parse(e.target.innerText);
+          try {
+            const value = JSON.parse(e.target.innerText);
 
-          updateElement({ path: state.activeElement.path.slice(1), element: value });
+            updateElement({ path: state.activeElement.path.slice(1), element: value });
+          } catch (e) {
+            console.error(e);
+          }
         }}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
@@ -69,9 +68,14 @@ const EditorRight: React.FC = () => {
           onBlur={(e) => {
             const key = state.activeElement.id;
             const className = element.className;
-            const value = JSON.parse(e.target.innerText);
 
-            updateStyle({ id: key, className, style: value });
+            try {
+              const value = JSON.parse(e.target.innerText);
+
+              updateStyle({ id: key, className, style: value });
+            } catch (e) {
+              console.error(e);
+            }
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
