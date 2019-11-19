@@ -22,7 +22,6 @@ const LeftPanel: React.FC = React.memo(() => {
   const activePage = EditorStore.useStoreState((a) => a.state.data.pages[a.state.activePage]);
   const { moveElement, removeElement, duplicateElement } = EditorStore.useStoreActions((a) => a);
 
-  // const activePage = state.data.pages[state.activePage];
   const layers = [
     createVNode('node', 'body', 'body', undefined, activePage.children),
   ];

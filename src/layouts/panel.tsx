@@ -37,7 +37,7 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
   const [darkMode, setDarkMode] = useDarkMode();
 
   return (
-    <div className={styles.panel}>
+    <div className={styles.panel} style={{ minWidth: type === 'editor' ? 1100 : '100%' }}>
       <div className={styles.sidebar}>
         <div className={styles.logo}>
           <Link to="/projects">
