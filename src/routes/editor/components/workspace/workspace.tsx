@@ -1,4 +1,5 @@
-import React, { CSSProperties, useCallback, useState } from 'react';
+import cc from 'classcat';
+import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
 import Frame from 'react-frame-component';
 
 import DragPortal from '../../../../components/drag-portal/drag-portal';
@@ -85,10 +86,47 @@ const Workspace = React.memo<any>(() => {
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(900);
 
+  const type = useMemo(() => {
+    if (width <= 576 / 2) {
+      return 'mobile';
+    }
+
+    if (width <= 992 / 2) {
+      return 'tablet';
+    }
+
+    return 'desktop';
+  }, [width]);
+
   const css = buildCss(state.data.css);
 
   return (
     <div>
+      <div className={styles.tabs}>
+        Tabs
+      </div>
+
+      <div className={styles.controls}>
+        <button
+          onClick={() => setWidth(992 / 2)}
+          className={cc({ active: type === 'desktop' })}
+        >
+          <i className="im im-monitor-o" />
+        </button>
+        <button
+          onClick={() => setWidth(768 / 2)}
+          className={cc({ active: type === 'tablet' })}
+        >
+          <i className="im im-laptop-o" />
+        </button>
+        <button
+          onClick={() => setWidth(576 / 2)}
+          className={cc({ active: type === 'mobile' })}
+        >
+          <i className="im im-mobile" />
+        </button>
+      </div>
+
       <div
         className={styles.container}
         style={{
