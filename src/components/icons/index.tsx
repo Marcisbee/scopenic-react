@@ -585,3 +585,49 @@ export const DatasetIcon: React.FC<{ className?: string }> = ({ className }) => 
     </svg>
   );
 };
+
+export const DangerIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path fill="#B0A8FF" d="M9 19H15V21H9z" className="primary" />
+        <path
+          fill="#594BC8"
+          d="M16 20.4v-.8a.6.6 0 01.6-.6h2.365a.4.4 0 00.349-.596L12.348 6.048a.4.4 0 00-.697 0L4.686 18.404a.4.4 0 00.349.596H7.4a.6.6 0 01.6.6v.8a.6.6 0 01-.6.6H3.671A1.664 1.664 0 012 19.343c0-.285.074-.565.215-.813l8.328-14.685a1.679 1.679 0 012.913 0l8.33 14.685a1.65 1.65 0 01-.638 2.257c-.25.14-.532.213-.82.213H16.6a.6.6 0 01-.6-.6zM11.4 16h1.2c.22 0 .4.18.4.4v1.2a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4v-1.2c0-.22.18-.4.4-.4zm0-7h1.2c.22 0 .4.18.4.4v5.2a.4.4 0 01-.4.4h-1.2a.4.4 0 01-.4-.4V9.4c0-.22.18-.4.4-.4z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const ProjectIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <path
+          fill="#B0A8FF"
+          d="M18 19.86V11h1.476C20.87 11 22 12.12 22 13.5c0 .435-.115.863-.333 1.24l-2.307 4A2.518 2.518 0 0118 19.86zM18 13v4.067l1.914-3.319a.502.502 0 00-.438-.748H18z"
+          className="primary"
+        />
+        <path
+          fill="#594BC8"
+          d="M18 19.86c-.263.092-.544.14-.831.14H3.4A1.4 1.4 0 012 18.6V5.4A1.4 1.4 0 013.4 4h7.116a1.4 1.4 0 011.114.552L12.733 6H16.6A1.4 1.4 0 0118 7.4v12.46zM12.436 8a1.4 1.4 0 01-1.113-.552L10.219 6H4v12h12V8h-3.564z"
+          className="secondary"
+        />
+      </g>
+    </svg>
+  );
+};

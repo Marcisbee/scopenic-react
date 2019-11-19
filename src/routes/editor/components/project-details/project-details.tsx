@@ -1,42 +1,43 @@
+import { useMutation } from '@apollo/react-hooks';
 import cc from 'classcat';
 import React, { useState } from 'react';
 import useForm, { FormContext } from 'react-hook-form';
 import * as Yup from 'yup';
 
-import { useAuth } from '../../hooks/use-auth';
-import { formatErrorMessage } from '../../utils/format-error-message';
-import Alert from '../alert';
-import AvatarUpload from '../avatar-upload';
-import FormInput from '../form-input';
+import Alert from '../../../../components/alert/alert';
+import FormInput from '../../../../components/form-input/form-input';
+import IconUpload from '../../../../components/icon-upload';
+import { UPDATE_PROJECT } from '../../../../graphql/mutations/projects';
+import { formatErrorMessage } from '../../../../utils/format-error-message';
+import { EditorStore } from '../../context/editor-context';
 
-interface ISettingsProfileValues {
-  email: string;
-  first_name: string;
-  last_name: string;
-  language: string;
-  avatar: string;
-}
-
-const validationSchema = Yup.object().shape<ISettingsProfileValues>({
-  email: Yup.string()
-    .email('Invalid email')
+const validationSchema = Yup.object().shape<any>({
+  name: Yup.string()
     .required('Field is required'),
-  first_name: Yup.string()
+  description: Yup.string()
     .required('Field is required'),
-  last_name: Yup.string()
+  type: Yup.string()
     .required('Field is required'),
-  language: Yup.string()
-    .required(),
-  avatar: Yup.string(),
+  icon: Yup.string()
+    .required('Field is required'),
 });
 
-const SettingsProfile: React.FC = () => {
-  const { user: defaultValues, updateUser } = useAuth();
+const ProjectDetails: React.FC = () => {
+  const [updateProject] = useMutation(UPDATE_PROJECT);
   const [status, setStatus] = useState<Record<string, any>>({});
-  const formMethods = useForm<ISettingsProfileValues>({
+  const project = EditorStore.useStoreState((s) => s.project);
+  const setProject = EditorStore.useStoreActions((s) => s.setProject);
+  const formMethods = useForm<any>({
     validationSchema,
-    defaultValues,
+    defaultValues: {
+      name: project.name,
+      description: project.description,
+      icon: project.icon,
+      type: project.type,
+      responsive: project.responsive,
+    },
   });
+
   const {
     handleSubmit,
     formState: { dirty, isSubmitting },
@@ -47,17 +48,30 @@ const SettingsProfile: React.FC = () => {
     triggerValidation,
   } = formMethods;
 
-  const onSubmit = async (values: ISettingsProfileValues) => {
+  const onSubmit = async (values: any) => {
     setStatus({});
 
-    await updateUser(values)
+    await updateProject({
+      variables: {
+        project_id: project.id,
+        name: values.name || project.name,
+        description: values.description || project.description,
+        icon: values.icon || project.icon,
+        type: values.type || project.type,
+        responsive: values.responsive || project.responsive,
+      },
+    })
       .then((response) => {
-        if (!response.data || !response.data.updateUserData) {
+        if (!response.data || !response.data.updateProject) {
           throw new Error('Something went wrong');
         }
 
         reset(values);
         setStatus({ success: 'Changes saved!' });
+        setProject({
+          ...project,
+          ...values,
+        });
       })
       .catch((error) => {
         const errorMessage = formatErrorMessage(error, setError);
@@ -90,9 +104,8 @@ const SettingsProfile: React.FC = () => {
           <div className="field">
             <FormInput
               type="horizontal"
-              label="First name"
-              name="first_name"
-              required={true}
+              label="Project name"
+              name="name"
               className="pt-large pt-input"
               errorClassName="pt-intent-danger"
               component={(props) => (
@@ -104,9 +117,8 @@ const SettingsProfile: React.FC = () => {
           <div className="field">
             <FormInput
               type="horizontal"
-              label="Last name"
-              name="last_name"
-              required={true}
+              label="Description"
+              name="description"
               className="pt-large pt-input"
               errorClassName="pt-intent-danger"
               component={(props) => (
@@ -117,32 +129,11 @@ const SettingsProfile: React.FC = () => {
 
           <hr />
 
-          <p className="pt-text-small pt-text-muted">
-            E-mail is only visible to you and organization members
-            you are part of (you login to your account with it).
-          </p>
-
           <div className="field">
             <FormInput
               type="horizontal"
-              label="E-mail address"
-              name="email"
-              required={true}
-              className="pt-large pt-input"
-              errorClassName="pt-intent-danger"
-              component={(props) => (
-                <input {...props} type="email" autoComplete="email" />
-              )}
-            />
-          </div>
-
-          <hr />
-
-          <div className="field">
-            <FormInput
-              type="horizontal"
-              label="Avatar"
-              name="avatar"
+              label="Icon (favicon)"
+              name="icon"
               className="pt-large pt-input"
               errorClassName="pt-intent-danger"
               component={(props) => {
@@ -151,11 +142,10 @@ const SettingsProfile: React.FC = () => {
                 const values = getValues();
 
                 return (
-                  <AvatarUpload
-                    current={values.avatar}
-                    userName={`${values.first_name} ${values.last_name}`}
-                    onSetAvatar={async (avatarUrl) => {
-                      await setValue('avatar', avatarUrl);
+                  <IconUpload
+                    current={values.icon}
+                    onSetIcon={async (iconUrl) => {
+                      await setValue('icon', iconUrl);
                     }}
                   />
                 );
@@ -166,8 +156,8 @@ const SettingsProfile: React.FC = () => {
           <div className="field">
             <FormInput
               type="horizontal"
-              label="Language"
-              name="language"
+              label="Project type"
+              name="type"
               className="pt-large pt-select"
               errorClassName="pt-intent-danger"
               component={(props) => {
@@ -176,8 +166,8 @@ const SettingsProfile: React.FC = () => {
                 return (
                   <div className={className}>
                     <select {...restProps} onChange={() => triggerValidation()}>
-                      <option value="en">English</option>
-                      <option value="lv">Latvian</option>
+                      <option value="webpage">Desktop webpage</option>
+                      <option disabled={true} value="mobile-app">Mobile application (SOON)</option>
                     </select>
                   </div>
                 );
@@ -196,7 +186,7 @@ const SettingsProfile: React.FC = () => {
             <button
               type="submit"
               className={cc([
-                'pt-button pt-large pt-intent-success',
+                'pt-button pt-intent-success',
                 isSubmitting && 'pt-loading',
               ])}
               disabled={!dirty || isSubmitting}
@@ -210,4 +200,4 @@ const SettingsProfile: React.FC = () => {
   );
 };
 
-export default SettingsProfile;
+export default ProjectDetails;

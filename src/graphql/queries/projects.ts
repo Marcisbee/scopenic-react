@@ -21,6 +21,7 @@ export const GET_PROJECTS_BY_VIEWER = gql`
       id
       name
       image
+      icon
       description
       createdAt
       updatedAt
@@ -53,6 +54,7 @@ export const GET_PROJECT_BY_ID = gql`
       id
       name
       image
+      icon
       description
       createdAt
       updatedAt

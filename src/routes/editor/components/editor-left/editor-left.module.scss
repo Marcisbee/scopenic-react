@@ -1,8 +1,54 @@
 .details {
   position: relative;
-  height: 80px;
+  height: 66px;
   background-color: #fff;
   border-bottom: 1px solid #e7edf2;
+  padding: 11px 10px;
+}
+
+.icon {
+  display: block;
+  float: left;
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  background-color: #e0e7ec;
+}
+
+.data {
+  display: block;
+  margin-left: 50px;
+  margin-right: 40px;
+
+  > strong {
+    display: block;
+    font-size: 15px;
+    padding-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > span {
+    display: block;
+    font-size: 11px;
+    margin-top: 5px;
+    color: #797d7f;
+  }
+}
+
+.edit {
+  position: absolute;
+  right: 10px;
+  top: 17px;
+  height: 28px;
+  font-size: 12px;
+  line-height: 26px;
+  color: #565656;
+
+  i {
+    font-size: inherit;
+  }
 }
 
 .leftPlugins {
@@ -14,5 +60,15 @@
   .details {
     background-color: #30404d;
     border-color: #27353e;
+  }
+
+  .data {
+    > span {
+      color: #6f7a83;
+    }
+  }
+
+  .icon {
+    background-color: #26343e;
   }
 }

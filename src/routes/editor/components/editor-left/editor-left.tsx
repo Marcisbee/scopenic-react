@@ -1,12 +1,17 @@
 import { useMutation } from '@apollo/react-hooks';
 import jsondiffpatch from '@as-com/jsondiffpatch';
 import cc from 'classcat';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // import Plugins from '../../../../components/plugins';
+import FormModal from '../../../../components/form-modal/form-modal';
+import { DangerIcon, ProjectIcon } from '../../../../components/icons';
+import ProjectIconComponent from '../../../../components/project-icon/project-icon';
+import SettingsBlock from '../../../../components/settings-block/settings-block';
 import { UiStore } from '../../../../context/ui-context';
 import { COMMIT } from '../../../../graphql/mutations/projects';
 import { EditorStore } from '../../context/editor-context';
+import ProjectDetails from '../project-details/project-details';
 
 import styles from './editor-left.module.scss';
 
@@ -26,11 +31,29 @@ const createJsonDiff = (jsondiffpatch as any).create({
   cloneDiffValues: false,
 });
 
-const EditorLeft: React.FC = () => {
-  // @TODO: Figure out why this component bottlenecks rendering
-  // return null;
+const ProjectDanger: React.FC = () => {
+  return (
+    <div>
+      <div>
+        <strong>Make this project private</strong><br />
+        <p>Hide this project from public</p>
+        <button className="pt-button pt-intent-danger">Make private</button>
+      </div>
 
+      <hr />
+
+      <div>
+        <strong>Delete this project</strong><br />
+        <p>Once you delete a project, there is no going back</p>
+        <button className="pt-button pt-intent-danger">Delete this project</button>
+      </div>
+    </div>
+  );
+};
+
+const EditorLeft: React.FC = () => {
   const [commit, { data, loading, error }] = useMutation(COMMIT);
+  const [editProject, setEditProject] = useState(false);
   const { project, state } = EditorStore.useStoreState((s) => s);
   const { setProjectData } = EditorStore.useStoreActions((s) => s);
   const panelLeftActive = UiStore.useStoreState((s) => s.panel.left.active);
@@ -66,9 +89,54 @@ const EditorLeft: React.FC = () => {
   return (
     <>
       <div className={styles.details}>
-        Project name: {project.name}
+        <div className={styles.icon}>
+          <ProjectIconComponent size={40} src={project.icon} />
+        </div>
 
-        <div>
+        <div className={styles.data}>
+          <strong>{project.name}</strong>
+          <span>
+            by <strong>{project.owner.name}</strong>
+          </span>
+        </div>
+
+        <button
+          className={cc([styles.edit, 'pt-button'])}
+          onClick={() => setEditProject(true)}
+        >
+          <i className="im im-pencil" />
+        </button>
+
+        {editProject && (
+          <FormModal width={600} close={() => {
+            setEditProject(false);
+          }}>
+            <SettingsBlock
+              icon={
+                <ProjectIcon className="sc-settings-icon-fg" />
+              }
+              color="#0a8ffb"
+              title="Project details"
+              description="General project settings"
+              open={true}
+            >
+              <ProjectDetails />
+            </SettingsBlock>
+
+            <SettingsBlock
+              icon={
+                <DangerIcon className="sc-settings-icon-fg" />
+              }
+              color="#d62828"
+              title="Danger zone"
+              description="Actions that have side effects"
+            >
+              <ProjectDanger />
+            </SettingsBlock>
+          </FormModal>
+        )}
+
+        {/* <div>
           <button
             className={cc(['pt-button pt-intent-primary', { 'pt-loading': loading }])}
             onClick={commitChanges}
@@ -76,8 +144,9 @@ const EditorLeft: React.FC = () => {
           >
             Commit changes
           </button>
-        </div>
+        </div> */}
       </div>
+
       <div className={styles.leftPlugins}>
         {panelLeftActive === 'layers' && (
           <LayersPlugin />
