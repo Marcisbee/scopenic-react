@@ -1,7 +1,9 @@
 import dlv from 'dlv';
 import { Action, action, createContextStore } from 'easy-peasy';
+import { CSSProperties } from 'react';
 
 import { copyVNode } from '../../../utils/copy-vnode';
+import { ILayerData } from '../../../utils/vnode-helpers';
 
 export function parsePath(path: string[] = []): { lastIndex: string, lastIndexInt: number, path: string[], pathFull: string[] } {
   const childSlice = 'children';
@@ -57,23 +59,60 @@ function findChildById<T = undefined>(source: any, prop: string, evaluation: (it
   return null;
 }
 
+export interface IProjectState {
+  id: string;
+  name: string;
+  image: string;
+  icon: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  isPrivate: boolean;
+  isArchived: boolean;
+  url: string;
+  views: number;
+  type: string;
+  responsive: string;
+  owner: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  contributors: Array<{
+    id: string;
+    first_name: string;
+    last_name: string;
+    avatar: string;
+  }> | null;
+  data: {
+    pages: Record<string, {
+      name: string,
+      children: ILayerData[],
+    }>;
+    css: Record<string, CSSProperties>;
+  };
+}
+
+export interface IState {
+  data: {
+    pages: Record<string, {
+      name: string,
+      children: ILayerData[],
+    }>;
+    css: Record<string, CSSProperties>;
+  };
+  activePage: string;
+  activeElement: {
+    id: null | string,
+    path: string[],
+  };
+}
+
 export interface IEditorState {
   // Store
-  project: {
-    data: {
-      pages: Record<string, any>;
-      css: Record<string, any>;
-    };
-    [key: string]: any;
-  };
+  project: IProjectState;
   settings: Record<string, any>;
-  state: {
-    data: {
-      pages: Record<string, any>;
-      css: Record<string, any>;
-    };
-    [key: string]: any;
-  };
+  state: IState;
   dataset: Record<string, any>;
 
   // Actions
@@ -88,8 +127,8 @@ export interface IEditorState {
   duplicateElement: Action<IEditorState, { path?: string[] }>;
   moveElement: Action<IEditorState, { from: string[], to: string[] }>;
 
-  updateStyle: Action<IEditorState, { id: string, className: string | undefined, style: any }>;
-  updateStylePropery: Action<IEditorState, { id: string, className: string | undefined, property: string, value: number | string | null }>;
+  updateStyle: Action<IEditorState, { id: string | null, className: string | undefined, style: any }>;
+  updateStylePropery: Action<IEditorState, { id: string | null, className: string | undefined, property: string, value: number | string | null }>;
 
   setDataset: Action<IEditorState, { data: Record<string, any> }>;
 }
@@ -285,6 +324,10 @@ export const EditorStore = createContextStore<IEditorState>(
         }
       }),
       updateStyle: action((draft, { id, className, style }) => {
+        if (!id) {
+          return;
+        }
+
         const layers = draft.state.data.pages[draft.state.activePage];
 
         draft.state.data.css[className || id] = style;
@@ -308,6 +351,10 @@ export const EditorStore = createContextStore<IEditorState>(
         }
       }),
       updateStylePropery: action((draft, { id, className, property, value }) => {
+        if (!id) {
+          return;
+        }
+
         const layers = draft.state.data.pages[draft.state.activePage];
         const style = draft.state.data.css[className || id] = {
           ...draft.state.data.css[className || id],
@@ -318,7 +365,7 @@ export const EditorStore = createContextStore<IEditorState>(
             [property as string]: value,
           });
         } else {
-          delete style[property as string];
+          delete (style as any)[property];
         }
 
         if (className) {

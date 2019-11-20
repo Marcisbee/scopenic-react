@@ -5,6 +5,9 @@ import React, { createContext, useContext, useLayoutEffect, useState } from 'rea
 import { useLocation } from 'react-router';
 
 import { LOGIN, UPDATE_USER_DATA, UPDATE_USER_PASSWORD } from '../graphql/mutations';
+import { Login, LoginVariables } from '../graphql/mutations/types/Login';
+import { UpdateUserData, UpdateUserDataVariables } from '../graphql/mutations/types/UpdateUserData';
+import { UpdateUserPassword, UpdateUserPasswordVariables } from '../graphql/mutations/types/UpdateUserPassword';
 
 export type IUpdateUserMethod = (variables: {
   email: string,
@@ -92,17 +95,17 @@ function useProvideAuth() {
   };
 
   const signin = (email: string, password: string): ISigninOutput => {
-    return client.mutate({
-        mutation: LOGIN,
-        variables: {
-          email,
-          password,
-        },
-      })
+    return client.mutate<Login, LoginVariables>({
+      mutation: LOGIN,
+      variables: {
+        email,
+        password,
+      },
+    })
       .then((response) => {
         const { data, errors } = response;
 
-        if (data.login && data.login.token) {
+        if (data && data.login && data.login.token) {
           const loginToken = data.login.token;
 
           setTokenData(loginToken);
@@ -120,13 +123,13 @@ function useProvideAuth() {
   };
 
   const updateUser: IUpdateUserMethod = (variables) => {
-    return client.mutate({
+    return client.mutate<UpdateUserData, UpdateUserDataVariables>({
       mutation: UPDATE_USER_DATA,
       variables,
     }).then((response) => {
       const { data, errors } = response;
 
-      if (data.updateUserData && data.updateUserData.token) {
+      if (data && data.updateUserData && data.updateUserData.token) {
         setTokenData(data.updateUserData.token);
       }
 
@@ -146,13 +149,13 @@ function useProvideAuth() {
   };
 
   const updatePassword: IUpdatePasswordMethod = (variables) => {
-    return client.mutate({
+    return client.mutate<UpdateUserPassword, UpdateUserPasswordVariables>({
       mutation: UPDATE_USER_PASSWORD,
       variables,
     }).then((response) => {
       const { data, errors } = response;
 
-      if (data.updateUserPassword) {
+      if (data && data.updateUserPassword) {
         setError(null);
       }
 

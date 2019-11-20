@@ -8,10 +8,19 @@ import Alert from '../../../../components/alert/alert';
 import FormInput from '../../../../components/form-input/form-input';
 import IconUpload from '../../../../components/icon-upload';
 import { UPDATE_PROJECT } from '../../../../graphql/mutations/projects';
+import { UpdateProject, UpdateProjectVariables } from '../../../../graphql/mutations/types/UpdateProject';
 import { formatErrorMessage } from '../../../../utils/format-error-message';
 import { EditorStore } from '../../context/editor-context';
 
-const validationSchema = Yup.object().shape<any>({
+interface IFormInput {
+  name: string;
+  description: string;
+  icon: string;
+  type: string;
+  responsive: string;
+}
+
+const validationSchema = Yup.object().shape<IFormInput>({
   name: Yup.string()
     .required('Field is required'),
   description: Yup.string()
@@ -20,14 +29,16 @@ const validationSchema = Yup.object().shape<any>({
     .required('Field is required'),
   icon: Yup.string()
     .required('Field is required'),
+  responsive: Yup.string()
+    .required('Field is required'),
 });
 
 const ProjectDetails: React.FC = () => {
-  const [updateProject] = useMutation(UPDATE_PROJECT);
+  const [updateProject] = useMutation<UpdateProject, UpdateProjectVariables>(UPDATE_PROJECT);
   const [status, setStatus] = useState<Record<string, any>>({});
   const project = EditorStore.useStoreState((s) => s.project);
   const setProject = EditorStore.useStoreActions((s) => s.setProject);
-  const formMethods = useForm<any>({
+  const formMethods = useForm<IFormInput>({
     validationSchema,
     defaultValues: {
       name: project.name,
@@ -48,7 +59,7 @@ const ProjectDetails: React.FC = () => {
     triggerValidation,
   } = formMethods;
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: IFormInput) => {
     setStatus({});
 
     await updateProject({

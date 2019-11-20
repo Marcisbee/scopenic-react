@@ -10,6 +10,7 @@ import ProjectIconComponent from '../../../../components/project-icon/project-ic
 import SettingsBlock from '../../../../components/settings-block/settings-block';
 import { UiStore } from '../../../../context/ui-context';
 import { COMMIT } from '../../../../graphql/mutations/projects';
+import { Commit, CommitVariables } from '../../../../graphql/mutations/types/Commit';
 import { EditorStore } from '../../context/editor-context';
 import ProjectDanger from '../project-danger/project-danger';
 import ProjectDetails from '../project-details/project-details';
@@ -33,7 +34,7 @@ const createJsonDiff = (jsondiffpatch as any).create({
 });
 
 const EditorLeft: React.FC = () => {
-  const [commit, { data, loading, error }] = useMutation(COMMIT);
+  const [commit, { data, loading, error }] = useMutation<Commit, CommitVariables>(COMMIT);
   const [editProject, setEditProject] = useState(false);
   const { project, state } = EditorStore.useStoreState((s) => s);
   const { setProjectData } = EditorStore.useStoreActions((s) => s);

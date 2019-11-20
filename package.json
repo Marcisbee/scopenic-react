@@ -7,6 +7,9 @@
     "start": "ts-node fuse",
     "build": "ts-node fuse dist",
     "preview": "ts-node fuse preview",
+    "download-schema": "apollo schema:download --endpoint=http://localhost:5577/graphql graphql-schema.json",
+    "generate-types": "apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --includes=src/**/*.ts --tagName=gql --addTypename --globalTypesFile=types/graphql-global-types.ts types",
+    "types": "npm run download-schema && npm run generate-types",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx}'"
   },
@@ -25,6 +28,7 @@
     "@types/react-router-dom": "^5.1.2",
     "@types/shortid": "0.0.29",
     "@types/yup": "^0.26.24",
+    "apollo": "^2.21.0",
     "dotenv": "^8.2.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.4.0",

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const GET_PROJECTS_BY_OWNER = gql`
-  query(
+  query GetProjectsByOwner (
     $owner_id: ID!
   ) {
     projectsByOwner(owner_id: $owner_id) {
@@ -16,7 +16,7 @@ export const GET_PROJECTS_BY_OWNER = gql`
 `;
 
 export const GET_PROJECTS_BY_VIEWER = gql`
-  query {
+  query GetProjectsByViewer {
     projectsByViewer {
       id
       name
@@ -47,7 +47,7 @@ export const GET_PROJECTS_BY_VIEWER = gql`
 `;
 
 export const GET_PROJECT_BY_ID = gql`
-  query(
+  query GetProjectById (
     $id: ID!
   ) {
     project(id: $id) {

@@ -7,11 +7,12 @@ import CreateNewProject from '../../components/create-new-project';
 import ProjectPreview from '../../components/project-preview';
 import Spinner from '../../components/spinner';
 import { GET_PROJECTS_BY_VIEWER } from '../../graphql/queries';
+import { GetProjectsByViewer } from '../../graphql/queries/types/GetProjectsByViewer';
 import sharedStyles from '../../shared.module.scss';
 import { Suspend } from '../../utils/suspend';
 
 const Projects: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_PROJECTS_BY_VIEWER, {
+  const { loading, error, data } = useQuery<GetProjectsByViewer>(GET_PROJECTS_BY_VIEWER, {
     fetchPolicy: 'cache-and-network',
   });
 

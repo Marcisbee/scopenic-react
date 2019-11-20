@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const CREATE_PROJECT = gql`
-  mutation (
+  mutation CreateProject (
     $name: String!
     $description: String!
     $isPrivate: Boolean!
@@ -21,7 +21,7 @@ export const CREATE_PROJECT = gql`
 `;
 
 export const UPDATE_PROJECT = gql`
-  mutation (
+  mutation UpdateProject (
     $project_id: ID!
     $name: String!
     $description: String
@@ -43,7 +43,7 @@ export const UPDATE_PROJECT = gql`
 `;
 
 export const ARCHIVE_PROJECT = gql`
-  mutation (
+  mutation ArchiveProject (
     $id: ID!
   ) {
     archiveProject(
@@ -55,7 +55,7 @@ export const ARCHIVE_PROJECT = gql`
 `;
 
 export const COMMIT = gql`
-  mutation (
+  mutation Commit (
     $name: String!
     $description: String!
     $content: String!

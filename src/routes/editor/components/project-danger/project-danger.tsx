@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 import Alert from '../../../../components/alert/alert';
 import { ARCHIVE_PROJECT } from '../../../../graphql/mutations/projects';
+import { ArchiveProject, ArchiveProjectVariables } from '../../../../graphql/mutations/types/ArchiveProject';
 import sharedStyles from '../../../../shared.module.scss';
 import { formatErrorMessage } from '../../../../utils/format-error-message';
 import { EditorStore } from '../../context/editor-context';
@@ -13,7 +14,7 @@ const ProjectDanger: React.FC = () => {
   const history = useHistory();
   const [status, setStatus] = useState<Record<string, any>>({});
   const project = EditorStore.useStoreState((s) => s.project);
-  const [archiveProject, { loading: loadingArchiveProject }] = useMutation(ARCHIVE_PROJECT);
+  const [archiveProject, { loading: loadingArchiveProject }] = useMutation<ArchiveProject, ArchiveProjectVariables>(ARCHIVE_PROJECT);
 
   const onRemove = async () => {
     // @TODO: Replace confirm popup with custom component

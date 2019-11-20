@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import * as Yup from 'yup';
 
 import { CREATE_PROJECT } from '../../graphql/mutations/projects';
+import { CreateProject, CreateProjectVariables } from '../../graphql/mutations/types/CreateProject';
 import { formatErrorMessage } from '../../utils/format-error-message';
 import Alert from '../alert';
 import FormInput from '../form-input';
@@ -66,16 +67,16 @@ const CreateNewProject: React.FC = () => {
   const onSubmit = async (values: ICreateNewProjectValues) => {
     setStatus({});
 
-    await client.mutate({
+    await client.mutate<CreateProject, CreateProjectVariables>({
       mutation: CREATE_PROJECT,
       variables: values,
     })
-      .then((response) => {
-        if (!response.data || !response.data.createProject) {
+      .then(({ data }) => {
+        if (!data || !data.createProject) {
           throw new Error('Something went wrong');
         }
 
-        const projectId = response.data.createProject.id;
+        const projectId = data.createProject.id;
 
         reset();
         setStatus({ success: 'Project created' });
