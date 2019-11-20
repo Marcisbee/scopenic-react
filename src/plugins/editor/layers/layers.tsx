@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import cc from 'classcat';
+import React, { useCallback, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
@@ -9,7 +10,10 @@ import { EditorStore } from '../../../routes/editor/context/editor-context';
 import { createVNode } from '../../../utils/create-vnode';
 
 import AddElement from './components/add-element';
+import AddPagePopup from './components/add-page/add-page';
+import EditPagePopup from './components/edit-page/edit-page';
 import LayerContainer from './components/layer-container';
+import ListPagesPopup from './components/list-pages/list-pages';
 import styles from './layers.module.scss';
 
 const Menu: React.FC = () => {
@@ -19,8 +23,17 @@ const Menu: React.FC = () => {
 };
 
 const LeftPanel: React.FC = React.memo(() => {
-  const activePage = EditorStore.useStoreState((a) => a.state.data.pages[a.state.activePage]);
-  const { moveElement, removeElement, duplicateElement } = EditorStore.useStoreActions((a) => a);
+  const [pageSelectPopup, setPageSelectPopup] = useState(false);
+  const [pageAddPopup, setPageAddPopup] = useState(false);
+  const [pageEditPopup, setPageEditPopup] = useState<string | null>(null);
+  const activePageKey = EditorStore.useStoreState((a) => a.state.activePage);
+  const pages = EditorStore.useStoreState((a) => a.state.data.pages);
+  const activePage = pages[activePageKey];
+  const {
+    moveElement,
+    removeElement,
+    duplicateElement,
+  } = EditorStore.useStoreActions((a) => a);
 
   const layers = [
     createVNode('node', 'body', 'body', undefined, activePage.children),
@@ -33,13 +46,55 @@ const LeftPanel: React.FC = React.memo(() => {
     [layers],
   );
 
+  const closeAddPagePopup = () => {
+    setPageAddPopup(false);
+  };
+
+  const closeEditPagePopup = () => {
+    setPageEditPopup(null);
+  };
+
+  const closeListPagesPopup = () => {
+    setPageSelectPopup(false);
+  };
+
   return (
     <div className={styles.wrapper}>
-      <div>
-        {activePage.name}
+      <div className={styles.pages}>
+        <div
+          className={styles.currentPage}
+          onClick={() => setPageSelectPopup(true)}
+        >
+          <span>
+            <strong>{activePage.name}</strong>
+          </span>
+          <i className="im-group">
+            <i className="im im-care-down" />
+            <i className="im im-care-up" />
+          </i>
+        </div>
+
+        {pageSelectPopup && (
+          <ListPagesPopup edit={setPageEditPopup} close={closeListPagesPopup} />
+        )}
+
+        {pageAddPopup && (
+          <AddPagePopup close={closeAddPagePopup} />
+        )}
+
+        {pageEditPopup && (
+          <EditPagePopup route={pageEditPopup} close={closeEditPagePopup} />
+        )}
+
+        <button
+          className={cc([styles.addPageButton, 'pt-button'])}
+          onClick={() => setPageAddPopup(true)}
+        >
+          <i className="im im-plus" />
+        </button>
       </div>
 
-      <div>
+      <div className={styles.content}>
         <DndProvider backend={HTML5Backend}>
           <LayerContainer data={layers} moveLayer={moveLayer} />
         </DndProvider>

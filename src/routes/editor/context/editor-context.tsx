@@ -120,6 +120,11 @@ export interface IEditorState {
   setProjectData: Action<IEditorState, any>;
   setState: Action<IEditorState, any>;
 
+  addPage: Action<IEditorState, { route: string, name: string, children: ILayerData[] }>;
+  updatePage: Action<IEditorState, { target: string, route: string, name: string, children?: ILayerData[] }>;
+  deletePage: Action<IEditorState, { route: string }>;
+
+  setActivePage: Action<IEditorState, { path: string }>;
   setActiveElement: Action<IEditorState, { id: string | null, path: string[] }>;
   addElement: Action<IEditorState, { element: any, path?: string[] }>;
   removeElement: Action<IEditorState, { path?: string[] }>;
@@ -150,6 +155,32 @@ export const EditorStore = createContextStore<IEditorState>(
         draft.state = payload;
       }),
 
+      addPage: action((draft, payload) => {
+        draft.state.data.pages[payload.route] = {
+          name: payload.name,
+          children: payload.children,
+        };
+      }),
+      updatePage: action((draft, payload) => {
+        const target = draft.state.data.pages[payload.target];
+        const newData = {
+          ...target,
+          name: payload.name,
+          children: payload.children || target.children,
+        };
+
+        delete draft.state.data.pages[payload.target];
+
+        draft.state.data.pages[payload.route] = newData;
+        draft.state.activePage = payload.route;
+      }),
+      deletePage: action((draft, payload) => {
+        delete draft.state.data.pages[payload.route];
+      }),
+
+      setActivePage: action((draft, payload) => {
+        draft.state.activePage = payload.path;
+      }),
       setActiveElement: action((draft, payload) => {
         draft.state.activeElement = {
           ...draft.state.activeElement,
