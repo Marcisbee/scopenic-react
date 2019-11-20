@@ -9,6 +9,7 @@ import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 
 import Overlay from './components/overlay/overlay';
+import Tabs from './components/tabs/tabs';
 import { useOverlayContext } from './context/overlay';
 import styles from './workspace.module.scss';
 
@@ -103,7 +104,7 @@ const Workspace = React.memo<any>(() => {
   return (
     <div>
       <div className={styles.tabs}>
-        Tabs
+        <Tabs />
       </div>
 
       <div className={styles.controls}>
