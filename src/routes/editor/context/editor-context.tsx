@@ -134,8 +134,8 @@ export interface IEditorState {
   updatePage: Action<IEditorState, { target: string, route: string, name: string, children?: ILayerData[] }>;
   deletePage: Action<IEditorState, { route: string }>;
 
-  activeWorkspace: Action<IEditorState, IActiveWorkspace>;
-  activePage: Action<IEditorState, { path: string }>;
+  setActiveWorkspace: Action<IEditorState, IActiveWorkspace>;
+  setActivePage: Action<IEditorState, { path: string }>;
   setActiveElement: Action<IEditorState, { id: string | null, path: string[] }>;
   addElement: Action<IEditorState, { element: any, path?: string[] }>;
   removeElement: Action<IEditorState, { path?: string[] }>;
@@ -189,10 +189,10 @@ export const EditorStore = createContextStore<IEditorState>(
         delete draft.state.data.pages[payload.route];
       }),
 
-      activePage: action((draft, payload) => {
+      setActivePage: action((draft, payload) => {
         draft.state.activePage = payload.path;
       }),
-      activeWorkspace: action((draft, payload) => {
+      setActiveWorkspace: action((draft, payload) => {
         draft.state.activeWorkspace = payload;
       }),
       setActiveElement: action((draft, payload) => {
