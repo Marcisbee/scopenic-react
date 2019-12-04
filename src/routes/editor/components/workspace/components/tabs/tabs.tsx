@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
+import shortid from 'shortid';
+
+import { EditorStore } from '../../../../context/editor-context';
 
 import styles from './tabs.module.scss';
 
@@ -42,36 +45,61 @@ function getTabClass(active: IActiveTab, tab: ITab) {
 }
 
 const Tabs: React.FC = () => {
+  const { data: { pages }, activePage } = EditorStore.useStoreState((s) => s.state);
+  const setActivePage = EditorStore.useStoreActions((s) => s.setActivePage);
+  const activePageDetails = pages[activePage];
   const [activeTab, setActiveTab] = useState<IActiveTab>({
     type: 'page',
-    route: '/',
+    route: activePage,
   });
   const [tabs, setTabs] = useState<ITab[]>([
     {
-      id: '0',
-      text: 'Home',
+      id: shortid.generate(),
+      text: activePageDetails.name,
       type: 'page',
       payload: {
-        route: '/',
+        route: activePage,
       },
     },
-    {
-      id: '1',
-      text: 'Blog',
-      type: 'page',
-      payload: {
-        route: '/blog',
-      },
-    },
-    {
-      id: '2',
-      text: 'Header',
-      type: 'component',
-      payload: {
-        node: 'Header',
-      },
-    },
+    // {
+    //   id: '1',
+    //   text: 'Blog',
+    //   type: 'page',
+    //   payload: {
+    //     route: '/blog',
+    //   },
+    // },
+    // {
+    //   id: '2',
+    //   text: 'Header',
+    //   type: 'component',
+    //   payload: {
+    //     node: 'Header',
+    //   },
+    // },
   ]);
+
+  useLayoutEffect(() => {
+    const existingTabPage = tabs.find((tab) => (
+      tab.type === 'page' && tab.payload.route === activePage
+    ));
+
+    if (!existingTabPage) {
+      setTabs((state) => state.concat({
+        id: shortid.generate(),
+        text: activePageDetails.name,
+        type: 'page',
+        payload: {
+          route: activePage,
+        },
+      }));
+    }
+
+    setActiveTab({
+      type: 'page',
+      route: activePage,
+    });
+  }, [activePage]);
 
   const onClick = (tab: ITab) => {
     if (tab.type === 'component') {
@@ -83,16 +111,46 @@ const Tabs: React.FC = () => {
     }
 
     if (tab.type === 'page') {
-      setActiveTab({
-        type: tab.type,
-        route: tab.payload.route,
+      setActivePage({
+        path: tab.payload.route,
       });
       return;
     }
   };
 
   const onClose = (closingTab: ITab) => {
-    setTabs((s) => s.filter((tab) => tab !== closingTab));
+    const index = tabs.findIndex((tab) => tab === closingTab);
+    setTabs((s) => s.slice(0, index).concat(s.slice(index + 1)));
+
+    const isClosingActivePage = closingTab.type === 'page'
+      && activeTab.type === 'page'
+      && closingTab.payload.route === activeTab.route;
+    // Don't switch tabs if closing tab is not active tab
+    if (!isClosingActivePage) {
+      return;
+    }
+
+    const newTab = index !== undefined && (tabs[index + 1] || tabs[index - 1]);
+
+    if (!newTab) {
+      // Render empty page
+      return;
+    }
+
+    if (newTab.type === 'component') {
+      setActiveTab({
+        type: newTab.type,
+        node: newTab.payload.node,
+      });
+      return;
+    }
+
+    if (newTab.type === 'page') {
+      setActivePage({
+        path: newTab.payload.route,
+      });
+      return;
+    }
   };
 
   return (

@@ -93,6 +93,14 @@ export interface IProjectState {
   };
 }
 
+export type IActiveWorkspace = {
+  type: 'page',
+  route: string,
+} | {
+  type: 'component',
+  node: string,
+} | null;
+
 export interface IState {
   data: {
     pages: Record<string, {
@@ -101,6 +109,8 @@ export interface IState {
     }>;
     css: Record<string, CSSProperties>;
   };
+  // @TODO: Replace activeWorkspace with activePage
+  activeWorkspace: IActiveWorkspace;
   activePage: string;
   activeElement: {
     id: null | string,
@@ -124,7 +134,8 @@ export interface IEditorState {
   updatePage: Action<IEditorState, { target: string, route: string, name: string, children?: ILayerData[] }>;
   deletePage: Action<IEditorState, { route: string }>;
 
-  setActivePage: Action<IEditorState, { path: string }>;
+  activeWorkspace: Action<IEditorState, IActiveWorkspace>;
+  activePage: Action<IEditorState, { path: string }>;
   setActiveElement: Action<IEditorState, { id: string | null, path: string[] }>;
   addElement: Action<IEditorState, { element: any, path?: string[] }>;
   removeElement: Action<IEditorState, { path?: string[] }>;
@@ -178,8 +189,11 @@ export const EditorStore = createContextStore<IEditorState>(
         delete draft.state.data.pages[payload.route];
       }),
 
-      setActivePage: action((draft, payload) => {
+      activePage: action((draft, payload) => {
         draft.state.activePage = payload.path;
+      }),
+      activeWorkspace: action((draft, payload) => {
+        draft.state.activeWorkspace = payload;
       }),
       setActiveElement: action((draft, payload) => {
         draft.state.activeElement = {
