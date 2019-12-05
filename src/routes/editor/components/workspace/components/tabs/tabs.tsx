@@ -45,12 +45,17 @@ function getTabClass(active: IActiveTab, tab: ITab) {
 }
 
 const Tabs: React.FC = () => {
-  const { data: { pages }, activePage } = EditorStore.useStoreState((s) => s.state);
-  const setActivePage = EditorStore.useStoreActions((s) => s.setActivePage);
-  const activePageDetails = pages[activePage];
+  const { data: { pages } } = EditorStore.useStoreState((s) => s.state);
+  const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
+  const setActiveWorkspace = EditorStore.useStoreActions((s) => s.setActiveWorkspace);
+  const activePageDetails = {
+    name: typeof isWorkspacePageActive === 'string'
+      ? pages[isWorkspacePageActive].name
+      : '',
+  };
   const [activeTab, setActiveTab] = useState<IActiveTab>({
     type: 'page',
-    route: activePage,
+    route: typeof isWorkspacePageActive === 'string' ? isWorkspacePageActive : '',
   });
   const [tabs, setTabs] = useState<ITab[]>([
     {
@@ -58,7 +63,7 @@ const Tabs: React.FC = () => {
       text: activePageDetails.name,
       type: 'page',
       payload: {
-        route: activePage,
+        route: typeof isWorkspacePageActive === 'string' ? isWorkspacePageActive : '',
       },
     },
     // {
@@ -81,7 +86,7 @@ const Tabs: React.FC = () => {
 
   useLayoutEffect(() => {
     const existingTabPage = tabs.find((tab) => (
-      tab.type === 'page' && tab.payload.route === activePage
+      tab.type === 'page' && tab.payload.route === isWorkspacePageActive
     ));
 
     if (!existingTabPage) {
@@ -90,16 +95,16 @@ const Tabs: React.FC = () => {
         text: activePageDetails.name,
         type: 'page',
         payload: {
-          route: activePage,
+          route: typeof isWorkspacePageActive === 'string' ? isWorkspacePageActive : '',
         },
       }));
     }
 
     setActiveTab({
       type: 'page',
-      route: activePage,
+      route: typeof isWorkspacePageActive === 'string' ? isWorkspacePageActive : '',
     });
-  }, [activePage]);
+  }, [isWorkspacePageActive]);
 
   const onClick = (tab: ITab) => {
     if (tab.type === 'component') {
@@ -111,8 +116,9 @@ const Tabs: React.FC = () => {
     }
 
     if (tab.type === 'page') {
-      setActivePage({
-        path: tab.payload.route,
+      setActiveWorkspace({
+        type: 'page',
+        route: tab.payload.route,
       });
       return;
     }
@@ -133,7 +139,7 @@ const Tabs: React.FC = () => {
     const newTab = index !== undefined && (tabs[index + 1] || tabs[index - 1]);
 
     if (!newTab) {
-      // Render empty page
+      setActiveWorkspace(null);
       return;
     }
 
@@ -146,8 +152,9 @@ const Tabs: React.FC = () => {
     }
 
     if (newTab.type === 'page') {
-      setActivePage({
-        path: newTab.payload.route,
+      setActiveWorkspace({
+        type: 'page',
+        route: newTab.payload.route,
       });
       return;
     }

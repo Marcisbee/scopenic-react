@@ -9,17 +9,17 @@ const ListPagesPopup: React.FC<{
   edit: (route: string) => void,
   close: () => void,
 }> = ({ edit, close }) => {
-  const activePageKey = EditorStore.useStoreState((a) => a.state.activePage);
+  const activePageKey = EditorStore.useStoreState((a) => a.isWorkspacePageActive);
   const pages = EditorStore.useStoreState((a) => a.state.data.pages);
   const pageKeys = Object.keys(pages);
   const ref = useRef<any>();
   useOnClickOutside(ref, close);
   const {
-    setActivePage,
+    setActiveWorkspace,
   } = EditorStore.useStoreActions((a) => a);
 
-  const selectPage = (path: string) => {
-    setActivePage({ path });
+  const selectPage = (route: string) => {
+    setActiveWorkspace({ type: 'page', route });
   };
 
   return (

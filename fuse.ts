@@ -21,6 +21,7 @@ class Context {
         publicPath: '/',
         template: 'public/index.html',
       },
+      sourceMap: true,
       turboMode: true,
       plugins: [
         // pluginTypeChecker({

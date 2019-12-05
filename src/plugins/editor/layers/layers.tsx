@@ -26,9 +26,12 @@ const LeftPanel: React.FC = React.memo(() => {
   const [pageSelectPopup, setPageSelectPopup] = useState(false);
   const [pageAddPopup, setPageAddPopup] = useState(false);
   const [pageEditPopup, setPageEditPopup] = useState<string | null>(null);
-  const activePageKey = EditorStore.useStoreState((a) => a.state.activePage);
+  const activePageKey = EditorStore.useStoreState((a) => a.isWorkspacePageActive);
   const pages = EditorStore.useStoreState((a) => a.state.data.pages);
-  const activePage = pages[activePageKey];
+  const activePage = typeof activePageKey === 'string' ? pages[activePageKey] : {
+    name: null,
+    children: [],
+  };
   const {
     moveElement,
     removeElement,
@@ -66,7 +69,11 @@ const LeftPanel: React.FC = React.memo(() => {
           onClick={() => setPageSelectPopup(true)}
         >
           <span>
-            <strong>{activePage.name}</strong>
+            <strong>
+              {activePage.name
+                ? activePage.name
+                : <i style={{ opacity: '0.5' }}>Nothing selected</i>}
+            </strong>
           </span>
           <i className="im-group">
             <i className="im im-care-down" />

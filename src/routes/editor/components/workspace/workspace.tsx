@@ -82,7 +82,7 @@ const ResizeHandlers: React.FC<{
 
 const Workspace = React.memo<any>(() => {
   const refs = useRefsContext();
-  const { state } = EditorStore.useStoreState((s) => s);
+  const { state, isWorkspacePageActive } = EditorStore.useStoreState((s) => s);
   const [overlayContext] = useOverlayContext();
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(900);
@@ -103,64 +103,95 @@ const Workspace = React.memo<any>(() => {
 
   return (
     <div>
-      <div className={styles.tabs}>
-        <Tabs />
-      </div>
-
-      <div className={styles.controls}>
-        <button
-          onClick={() => setWidth(992 / 2)}
-          className={cc({ active: type === 'desktop' })}
-        >
-          <i className="im im-monitor-o" />
-        </button>
-        <button
-          onClick={() => setWidth(768 / 2)}
-          className={cc({ active: type === 'tablet' })}
-        >
-          <i className="im im-laptop-o" />
-        </button>
-        <button
-          onClick={() => setWidth(576 / 2)}
-          className={cc({ active: type === 'mobile' })}
-        >
-          <i className="im im-mobile" />
-        </button>
-      </div>
-
-      <div
-        className={styles.container}
-        style={{
-          height: Math.max(height, 300),
-          width: Math.max(width * 2, 300),
-        }}
-      >
-        {/* https://github.com/ryanseddon/react-frame-component */}
-        <Frame ref={refs.workspace}>
-          <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          />
-
-          <style>
-            {`
-              body {
-                overflow-x: hidden;
-                overflow-y: scroll;
-              }
-            `}
-          </style>
-          <style>{css}</style>
-
-          <div>
-            {state.data.pages[state.activePage].children.map((props: any, n: number) => renderChild(props, [String(n)]))}
+      {isWorkspacePageActive ? (
+        <>
+          <div className={styles.tabs}>
+            <Tabs />
           </div>
 
-          {overlayContext.element && <Overlay />}
-        </Frame>
+          <div className={styles.controls}>
+            <button
+              onClick={() => setWidth(992 / 2)}
+              className={cc({ active: type === 'desktop' })}
+            >
+              <i className="im im-monitor-o" />
+            </button>
+            <button
+              onClick={() => setWidth(768 / 2)}
+              className={cc({ active: type === 'tablet' })}
+            >
+              <i className="im im-laptop-o" />
+            </button>
+            <button
+              onClick={() => setWidth(576 / 2)}
+              className={cc({ active: type === 'mobile' })}
+            >
+              <i className="im im-mobile" />
+            </button>
+          </div>
 
-        <ResizeHandlers setWidth={setWidth} setHeight={setHeight} />
-      </div>
+          <div
+            className={styles.container}
+            style={{
+              height: Math.max(height, 300),
+              width: Math.max(width * 2, 300),
+            }}
+          >
+            {/* https://github.com/ryanseddon/react-frame-component */}
+            <Frame ref={refs.workspace}>
+              <link
+                rel="stylesheet"
+                href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              />
+
+              <style>
+                {`
+                  body {
+                    overflow-x: hidden;
+                    overflow-y: scroll;
+                  }
+                `}
+              </style>
+              <style>{css}</style>
+
+              {typeof isWorkspacePageActive === 'string' && (
+                <div>
+                  {state.data.pages[isWorkspacePageActive].children.map(
+                    (props: any, n: number) => renderChild(props, [String(n)]),
+                  )}
+                </div>
+              )}
+
+              {overlayContext.element && <Overlay />}
+            </Frame>
+
+            <ResizeHandlers setWidth={setWidth} setHeight={setHeight} />
+          </div>
+        </>
+      ) : (
+          <div className={styles.noTab}>
+            <h4>Scopenic Editor</h4>
+            <p>Visual web developer tool</p>
+
+            <hr />
+
+            <div className={styles.noTabBlock}>
+              <strong>Start</strong>
+              <ul>
+                <li>New page</li>
+                <li>New component</li>
+              </ul>
+            </div>
+
+            <div className={styles.noTabBlock}>
+              <strong>Help</strong>
+              <ul>
+                <li>New page</li>
+                <li>New component</li>
+              </ul>
+            </div>
+          </div>
+        )}
     </div>
   );
 }, () => false);

@@ -29,7 +29,7 @@ const AddPagePopup: React.FC<{ close: (event?: MouseEvent | TouchEvent) => void 
   const ref = useRef<any>();
   useOnClickOutside(ref, close);
   const {
-    setActivePage,
+    setActiveWorkspace,
   } = EditorStore.useStoreActions((a) => a);
   const formMethods = useForm<IAddNewPageValues>({
     validationSchema,
@@ -59,8 +59,9 @@ const AddPagePopup: React.FC<{ close: (event?: MouseEvent | TouchEvent) => void 
 
     reset();
     close();
-    setActivePage({
-      path: values.route,
+    setActiveWorkspace({
+      type: 'page',
+      route: values.route,
     });
   };
 

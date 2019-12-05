@@ -41,7 +41,10 @@ const Editor: React.FC = () => {
     }
 
     return {
-      activePage: '/',
+      activeWorkspace: {
+        type: 'page',
+        route: '/',
+      },
       activeElement: {
         id: null,
         path: ['0'],

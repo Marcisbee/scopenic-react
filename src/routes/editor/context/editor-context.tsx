@@ -1,5 +1,5 @@
 import dlv from 'dlv';
-import { Action, action, createContextStore } from 'easy-peasy';
+import { Action, action, Computed, computed, createContextStore } from 'easy-peasy';
 import { CSSProperties } from 'react';
 
 import { copyVNode } from '../../../utils/copy-vnode';
@@ -109,9 +109,7 @@ export interface IState {
     }>;
     css: Record<string, CSSProperties>;
   };
-  // @TODO: Replace activeWorkspace with activePage
   activeWorkspace: IActiveWorkspace;
-  activePage: string;
   activeElement: {
     id: null | string,
     path: string[],
@@ -125,6 +123,10 @@ export interface IEditorState {
   state: IState;
   dataset: Record<string, any>;
 
+  // Computed
+  isWorkspacePageActive: Computed<IEditorState, boolean | string>;
+  isWorkspaceComponentctive: Computed<IEditorState, boolean | string>;
+
   // Actions
   setProject: Action<IEditorState, any>;
   setProjectData: Action<IEditorState, any>;
@@ -135,7 +137,6 @@ export interface IEditorState {
   deletePage: Action<IEditorState, { route: string }>;
 
   setActiveWorkspace: Action<IEditorState, IActiveWorkspace>;
-  setActivePage: Action<IEditorState, { path: string }>;
   setActiveElement: Action<IEditorState, { id: string | null, path: string[] }>;
   addElement: Action<IEditorState, { element: any, path?: string[] }>;
   removeElement: Action<IEditorState, { path?: string[] }>;
@@ -154,6 +155,18 @@ export const EditorStore = createContextStore<IEditorState>(
     return {
       // Store
       ...initialData,
+
+      // Computed
+      isWorkspacePageActive: computed((draft) => (
+        !!draft.state.activeWorkspace
+        && draft.state.activeWorkspace.type === 'page'
+        && draft.state.activeWorkspace.route
+      )),
+      isWorkspaceComponentctive: computed((draft) => (
+        !!draft.state.activeWorkspace
+        && draft.state.activeWorkspace.type === 'component'
+        && draft.state.activeWorkspace.node
+      )),
 
       // Actions
       setProject: action((draft, payload) => {
@@ -183,15 +196,15 @@ export const EditorStore = createContextStore<IEditorState>(
         delete draft.state.data.pages[payload.target];
 
         draft.state.data.pages[payload.route] = newData;
-        draft.state.activePage = payload.route;
+        draft.state.activeWorkspace = {
+          type: 'page',
+          route: payload.route,
+        };
       }),
       deletePage: action((draft, payload) => {
         delete draft.state.data.pages[payload.route];
       }),
 
-      setActivePage: action((draft, payload) => {
-        draft.state.activePage = payload.path;
-      }),
       setActiveWorkspace: action((draft, payload) => {
         draft.state.activeWorkspace = payload;
       }),
@@ -205,76 +218,84 @@ export const EditorStore = createContextStore<IEditorState>(
         const addPath = originalPath || draft.state.activeElement.path.slice(1);
         const { lastIndex, path } = parsePath(addPath);
 
-        const parent = dlv(draft.state.data.pages[draft.state.activePage], path);
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const parent = dlv(draft.state.data.pages[draft.isWorkspacePageActive], path);
 
-        if (parent) {
-          parent.splice(lastIndex, 0, element);
+          if (parent) {
+            parent.splice(lastIndex, 0, element);
+          }
+
+          draft.state.activeElement = {
+            id: element.id,
+            path: ['0', ...(addPath || ['0'])],
+          };
         }
-
-        draft.state.activeElement = {
-          id: element.id,
-          path: ['0', ...(addPath || ['0'])],
-        };
       }),
       removeElement: action((draft, payload) => {
         const isSelf = !payload.path;
         const removePath = payload.path || draft.state.activeElement.path.slice(1);
         const { lastIndex, lastIndexInt, path } = parsePath(removePath);
-        const layers = draft.state.data.pages[draft.state.activePage];
 
-        if (lastIndex === null || lastIndex === undefined) {
-          return;
-        }
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
 
-        const parent = dlv(
-          layers,
-          path,
-          null,
-        );
-
-        parent.splice(lastIndex, 1);
-
-        if (isSelf) {
-          const itemPath = removePath
-            .slice(0, -1)
-            .concat(lastIndexInt > 0 ? String(lastIndexInt - 1) : []);
-
-          if (itemPath.length === 0) {
-            draft.state.activeElement = {
-              id: null,
-              path: ['0'],
-            };
-
+          if (lastIndex === null || lastIndex === undefined) {
             return;
           }
 
-          const { path: newPath, lastIndex: newIndex } = parsePath(itemPath);
-
-          const newParent = dlv(
+          const parent = dlv(
             layers,
-            newPath,
+            path,
             null,
           );
 
-          const item = newParent[newIndex];
+          parent.splice(lastIndex, 1);
 
-          draft.state.activeElement = {
-            id: item && item.id || null,
-            path: ['0', ...itemPath],
-          };
+          if (isSelf) {
+            const itemPath = removePath
+              .slice(0, -1)
+              .concat(lastIndexInt > 0 ? String(lastIndexInt - 1) : []);
+
+            if (itemPath.length === 0) {
+              draft.state.activeElement = {
+                id: null,
+                path: ['0'],
+              };
+
+              return;
+            }
+
+            const { path: newPath, lastIndex: newIndex } = parsePath(itemPath);
+
+            const newParent = dlv(
+              layers,
+              newPath,
+              null,
+            );
+
+            const item = newParent[newIndex];
+
+            draft.state.activeElement = {
+              id: item && item.id || null,
+              path: ['0', ...itemPath],
+            };
+          }
         }
       }),
       updateElement: action((draft, payload) => {
         const updatePath = payload.path || draft.state.activeElement.path.slice(1);
         const { pathFull } = parsePath(updatePath);
-        const layers = draft.state.data.pages[draft.state.activePage];
 
-        const item = dlv(
-          layers,
-          pathFull,
-        );
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
 
-        Object.assign(item, payload.element);
+          const item = dlv(
+            layers,
+            pathFull,
+          );
+
+          Object.assign(item, payload.element);
+        }
       }),
       duplicateElement: action((draft, payload) => {
         const duplicatePath = payload.path || draft.state.activeElement.path.slice(1);
@@ -288,84 +309,87 @@ export const EditorStore = createContextStore<IEditorState>(
           return;
         }
 
-        const { activePage } = draft.state;
-        const item = dlv(
-          draft.state.data.pages[activePage],
-          path.concat(lastIndex),
-          null,
-        );
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const item = dlv(
+            draft.state.data.pages[draft.isWorkspacePageActive],
+            path.concat(lastIndex),
+            null,
+          );
 
-        if (!item) {
-          return;
+          if (!item) {
+            return;
+          }
+
+          const newItem = copyVNode(item);
+
+          const parent = dlv(
+            draft.state.data.pages[draft.isWorkspacePageActive],
+            path,
+            null,
+          );
+
+          parent.splice(lastIndex, 0, newItem);
+
+          draft.state.activeElement = {
+            id: newItem.id,
+            path: ['0', ...duplicatePath],
+          };
         }
-
-        const newItem = copyVNode(item);
-
-        const parent = dlv(
-          draft.state.data.pages[activePage],
-          path,
-          null,
-        );
-
-        parent.splice(lastIndex, 0, newItem);
-
-        draft.state.activeElement = {
-          id: newItem.id,
-          path: ['0', ...duplicatePath],
-        };
       }),
       moveElement: action((draft, { from, to }) => {
-        const layers = draft.state.data.pages[draft.state.activePage];
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
 
-        const fromPath = parsePath(from.slice(1));
-        const toPath = parsePath(to.slice(1));
+          const fromPath = parsePath(from.slice(1));
+          const toPath = parsePath(to.slice(1));
 
-        const fromLayer = dlv(layers, fromPath.pathFull);
+          const fromLayer = dlv(layers, fromPath.pathFull);
 
-        const fromItemParent = dlv(layers, fromPath.path);
-        const fromItem = fromItemParent[fromPath.lastIndexInt];
+          const fromItemParent = dlv(layers, fromPath.path);
+          const fromItem = fromItemParent[fromPath.lastIndexInt];
 
-        if (fromPath.path.join('.') === toPath.path.join('.')) {
-          // Both values are in the same array
-          const hoverIndexAdjusted = fromPath.lastIndexInt < toPath.lastIndexInt ? toPath.lastIndexInt - 1 : toPath.lastIndexInt;
+          if (fromPath.path.join('.') === toPath.path.join('.')) {
+            // Both values are in the same array
+            const hoverIndexAdjusted = fromPath.lastIndexInt < toPath.lastIndexInt ? toPath.lastIndexInt - 1 : toPath.lastIndexInt;
+
+            fromItemParent.splice(fromPath.lastIndexInt, 1);
+            fromItemParent.splice(hoverIndexAdjusted, 0, fromLayer);
+
+            // Select new element
+            const selectedElement = findChildById<any>(
+              draft.state.data.pages[draft.isWorkspacePageActive],
+              'children',
+              (item) => item.id === fromItem.id && item,
+            );
+
+            if (selectedElement) {
+              draft.state.activeElement = {
+                id: selectedElement.item.id,
+                path: selectedElement.path,
+              };
+            }
+            return;
+          }
+
+          // Different arrays
+          const toParent = dlv(layers, toPath.path);
 
           fromItemParent.splice(fromPath.lastIndexInt, 1);
-          fromItemParent.splice(hoverIndexAdjusted, 0, fromLayer);
+          toParent.splice(toPath.lastIndex, 0, fromLayer);
 
           // Select new element
-          const selectedElement = findChildById<any>(
-            draft.state.data.pages[draft.state.activePage],
+          const newEl = findChildById<any>(
+            draft.state.data.pages[draft.isWorkspacePageActive],
             'children',
             (item) => item.id === fromItem.id && item,
           );
 
-          if (selectedElement) {
+          if (newEl) {
             draft.state.activeElement = {
-              id: selectedElement.item.id,
-              path: selectedElement.path,
+              id: newEl.item.id,
+              path: newEl.path,
             };
           }
-          return;
-        }
-
-        // Different arrays
-        const toParent = dlv(layers, toPath.path);
-
-        fromItemParent.splice(fromPath.lastIndexInt, 1);
-        toParent.splice(toPath.lastIndex, 0, fromLayer);
-
-        // Select new element
-        const newEl = findChildById<any>(
-          draft.state.data.pages[draft.state.activePage],
-          'children',
-          (item) => item.id === fromItem.id && item,
-        );
-
-        if (newEl) {
-          draft.state.activeElement = {
-            id: newEl.item.id,
-            path: newEl.path,
-          };
         }
       }),
       updateStyle: action((draft, { id, className, style }) => {
@@ -373,26 +397,28 @@ export const EditorStore = createContextStore<IEditorState>(
           return;
         }
 
-        const layers = draft.state.data.pages[draft.state.activePage];
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
 
-        draft.state.data.css[className || id] = style;
+          draft.state.data.css[className || id] = style;
 
-        if (className) {
-          return;
-        }
+          if (className) {
+            return;
+          }
 
-        const { pathFull } = parsePath(
-          draft.state.activeElement.path.slice(1),
-        );
+          const { pathFull } = parsePath(
+            draft.state.activeElement.path.slice(1),
+          );
 
-        const item = dlv(
-          layers,
-          pathFull,
-          null,
-        );
+          const item = dlv(
+            layers,
+            pathFull,
+            null,
+          );
 
-        if (item) {
-          item.className = id;
+          if (item) {
+            item.className = id;
+          }
         }
       }),
       updateStylePropery: action((draft, { id, className, property, value }) => {
@@ -400,35 +426,37 @@ export const EditorStore = createContextStore<IEditorState>(
           return;
         }
 
-        const layers = draft.state.data.pages[draft.state.activePage];
-        const style = draft.state.data.css[className || id] = {
-          ...draft.state.data.css[className || id],
-        };
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
+          const style = draft.state.data.css[className || id] = {
+            ...draft.state.data.css[className || id],
+          };
 
-        if (value !== undefined) {
-          Object.assign(style, {
-            [property as string]: value,
-          });
-        } else {
-          delete (style as any)[property];
-        }
+          if (value !== undefined) {
+            Object.assign(style, {
+              [property as string]: value,
+            });
+          } else {
+            delete (style as any)[property];
+          }
 
-        if (className) {
-          return;
-        }
+          if (className) {
+            return;
+          }
 
-        const { pathFull } = parsePath(
-          draft.state.activeElement.path.slice(1),
-        );
+          const { pathFull } = parsePath(
+            draft.state.activeElement.path.slice(1),
+          );
 
-        const item = dlv(
-          layers,
-          pathFull,
-          null,
-        );
+          const item = dlv(
+            layers,
+            pathFull,
+            null,
+          );
 
-        if (item) {
-          item.className = id;
+          if (item) {
+            item.className = id;
+          }
         }
       }),
       setDataset: action((draft, { data }) => {

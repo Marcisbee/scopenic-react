@@ -269,7 +269,7 @@ const Overlay: React.FC = () => {
   const { pathFull } = parsePath(element ? element.path : []);
 
   const item = EditorStore.useStoreState((s) => (
-    dlv(s.state.data.pages[s.state.activePage], pathFull)
+    typeof s.isWorkspacePageActive === 'string' && dlv(s.state.data.pages[s.isWorkspacePageActive], pathFull)
   ));
 
   useLayoutEffect(() => {

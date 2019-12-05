@@ -60,6 +60,28 @@ $containerMaxHeight: 20px + $containerTop;
   }
 }
 
+.noTab {
+  padding: 30px;
+  text-align: left;
+  width: 600px;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+
+  h4 {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+
+  ul {
+    padding: 0;
+  }
+}
+
+.noTabBlock {
+  margin-bottom: 38px;
+}
+
 .handle {
   display: block;
   position: absolute;

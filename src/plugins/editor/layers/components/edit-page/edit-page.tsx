@@ -29,7 +29,7 @@ const EditPagePopup: React.FC<{
 }> = ({ route, close }) => {
   const pages = EditorStore.useStoreState((a) => a.state.data.pages);
   const pageKeys = Object.keys(pages);
-  const { setActivePage, updatePage, deletePage } = EditorStore.useStoreActions((a) => a);
+  const { setActiveWorkspace, updatePage, deletePage } = EditorStore.useStoreActions((a) => a);
   const ref = useRef<any>();
   useOnClickOutside(ref, close);
   const defaultValues = {
@@ -57,6 +57,12 @@ const EditPagePopup: React.FC<{
     }
 
     if (route === '/') {
+      updatePage({
+        target: defaultValues.route,
+        route: defaultValues.route,
+        name: values.name,
+      });
+      close();
       return;
     }
 
@@ -73,7 +79,7 @@ const EditPagePopup: React.FC<{
       return;
     }
 
-    setActivePage({ path: '/' });
+    setActiveWorkspace({ type: 'page', route: '/' });
     deletePage({
       route,
     });

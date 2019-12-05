@@ -6,10 +6,11 @@ import { EditorStore } from '../../context/editor-context';
 
 const EditorRight: React.FC = () => {
   const refs = useRefsContext();
-  const { state } = EditorStore.useStoreState((s) => s);
+  const { state, isWorkspacePageActive } = EditorStore.useStoreState((s) => s);
   const { updateElement, updateStyle } = EditorStore.useStoreActions((s) => s);
 
-  const element = dlv(state.data.pages[state.activePage], 'children.' + state.activeElement.path.slice(1).join('.children.'));
+  const element = typeof isWorkspacePageActive === 'string'
+    && dlv(state.data.pages[isWorkspacePageActive], 'children.' + state.activeElement.path.slice(1).join('.children.'));
   const currentClassName = (element && element.className) || state.activeElement.id;
 
   const cssDeclarations = useMemo(() => {
