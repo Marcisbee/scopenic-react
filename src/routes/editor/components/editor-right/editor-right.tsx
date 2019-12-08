@@ -1,13 +1,188 @@
 import dlv from 'dlv';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
+
+interface INumberInputProps {
+  min?: number;
+  max?: number;
+  value?: number | string;
+  metric?: 'px' | 'rem' | 'em';
+  readOnly?: boolean;
+  onChange?: (value: string) => void;
+}
+
+function separateValueFromMetric(data: string | number) {
+  if (typeof data === 'number') {
+    return {
+      value: data,
+    };
+  }
+
+  const value = parseInt(data, 10);
+  const metric = data.replace(String(value), '');
+
+  return {
+    value,
+    metric,
+  };
+}
+
+const NumberInput: React.FC<INumberInputProps> = ({
+  min = Number.NEGATIVE_INFINITY,
+  max = Number.POSITIVE_INFINITY,
+  value: defaultValue = 0,
+  metric: defaultMetric,
+  onChange,
+  readOnly,
+}) => {
+  const normalised = separateValueFromMetric(defaultValue);
+  const value = normalised.value;
+  const metric = defaultMetric || normalised.metric || 'px';
+
+  const [isInvalid, setIsInvalid] = useState(true);
+  const [isPointerLocked, setIsPointerLocked] = useState(false);
+  const selfRef = useRef<HTMLInputElement>();
+
+  function handleMouseDown() {
+    if (!isPointerLocked && !readOnly && selfRef.current) { selfRef.current.requestPointerLock(); }
+  }
+  function handleMouseUp() {
+    if (isPointerLocked && !readOnly) { document.exitPointerLock(); }
+  }
+  function handleMouseMove({ movementY }: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+    if (isPointerLocked && movementY) {
+      handleValueChange(`${value}${metric}`, movementY < 0 ? 'up' : 'down');
+    }
+  }
+
+  function handlePointerLockChange() {
+    const locked = document.pointerLockElement === selfRef.current;
+    setIsPointerLocked(locked);
+  }
+
+  function onInput(e: React.FormEvent<HTMLInputElement>) {
+    const inputValue = (e.target as HTMLInputElement).value;
+
+    if (validateValue(inputValue) && onChange) {
+      onChange(inputValue);
+    }
+  }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (isPointerLocked) {
+      e.preventDefault();
+      return;
+    }
+
+    const target = (e.target as HTMLInputElement);
+    let modifier = 1;
+
+    if (e.shiftKey) {
+      modifier = 10;
+    }
+
+    if (e.which === 38
+      && handleValueChange(target.value, 'up', modifier)) {
+      e.preventDefault();
+    }
+
+    if (e.which === 40
+      && handleValueChange(target.value, 'down', modifier)) {
+      e.preventDefault();
+    }
+  }
+
+  function handleValueChange(beforeValue: string | number, direction: 'up' | 'down', modifier: number = 1) {
+    const {
+      value: currentValue,
+      metric: currentMetric,
+    } = separateValueFromMetric(beforeValue);
+    let newValue: number | undefined;
+
+    if (direction === 'up') {
+      newValue = Math.min(max, currentValue + modifier);
+    }
+
+    if (direction === 'down') {
+      newValue = Math.max(min, currentValue - modifier);
+    }
+
+    if (newValue !== undefined && onChange) {
+      const result = `${newValue}${currentMetric}`;
+
+      if (!validateValue(result)) {
+        return;
+      }
+
+      onChange(result);
+
+      return result;
+    }
+  }
+
+  function validateValue(inputValue: string | number): boolean {
+    const valid = /^\d+(px|em)$/.test(String(inputValue));
+
+    if (selfRef.current) {
+      selfRef.current.value = String(inputValue);
+    }
+
+    if (!isInvalid && !valid) {
+      setIsInvalid(true);
+      return false;
+    }
+
+    if (isInvalid) {
+      setIsInvalid(false);
+    }
+
+    return valid;
+  }
+
+  useEffect(() => {
+    document.addEventListener(
+      'pointerlockchange',
+      handlePointerLockChange,
+      false,
+    );
+
+    return () => {
+      document.removeEventListener(
+        'pointerlockchange',
+        handlePointerLockChange,
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    validateValue(`${value}${metric}`);
+  }, [value, metric]);
+
+  return (
+    <>
+      <input
+        type="text"
+        ref={selfRef as any}
+        defaultValue={`${value}${metric}`}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onChange={() => { }}
+        onInput={onInput}
+        onKeyDown={onKeyDown}
+      />
+      {isInvalid && 'Invalid value'}
+    </>
+  );
+};
 
 const EditorRight: React.FC = () => {
   const refs = useRefsContext();
   const { state, isWorkspacePageActive } = EditorStore.useStoreState((s) => s);
-  const { updateElement, updateStyle } = EditorStore.useStoreActions((s) => s);
+  const { updateElement, updateStyle, updateStylePropery } = EditorStore.useStoreActions((s) => s);
 
   const element = typeof isWorkspacePageActive === 'string'
     && dlv(state.data.pages[isWorkspacePageActive], 'children.' + state.activeElement.path.slice(1).join('.children.'));
@@ -29,13 +204,46 @@ const EditorRight: React.FC = () => {
     }
   }, [state.activeElement.id, state.activeElement.path]);
 
-  const defaultStyles = cssDeclarations && {
-    backgroundColor: cssDeclarations.backgroundColor,
-    color: cssDeclarations.color,
+  const currentStyles = state.data.css[currentClassName] || {};
+
+  const defaultStyles = {
+    backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
+    color: cssDeclarations && cssDeclarations.color,
+    fontSize: cssDeclarations && cssDeclarations.fontSize,
   };
+
+  if (!currentClassName) {
+    return null;
+  }
 
   return (
     <div>
+      <br />
+      <br />
+      <KnobsBlock
+        title="Text format"
+      >
+        Font size
+        <NumberInput
+          min={1}
+          value={currentStyles.fontSize || defaultStyles.fontSize}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'fontSize',
+              value,
+            });
+          }}
+        />
+      </KnobsBlock>
+
+      <KnobsBlock
+        title="Appearance"
+      >
+        asd
+      </KnobsBlock>
+
       Selected element: {JSON.stringify(state.activeElement)}
       <br />
       ClassName: {currentClassName || <i>NONE</i>}
