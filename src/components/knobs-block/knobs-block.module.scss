@@ -58,3 +58,17 @@
     font-size: 20px;
   }
 }
+
+:global(.pt-dark) {
+  .header {
+    border-color: #1f2b32;
+
+    &:hover {
+      background-color: #30404d;
+    }
+  }
+
+  .toggle {
+    color: #4e5d69;
+  }
+}

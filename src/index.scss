@@ -35,10 +35,8 @@ body {
     // Safari for macOS and iOS (San Francisco) -apple-system,
     // Chrome < 56 for macOS (San Francisco) BlinkMacSystemFont,
     // Windows "Segoe UI",
-    // Android
-      "Roboto",
-    // Basic web fallback
-      "Helvetica Neue",
+    // Android "Roboto",
+    // Basic web fallback "Helvetica Neue",
     Arial, sans-serif,
     // Emoji fonts
       "Apple Color Emoji",
@@ -241,4 +239,19 @@ hr {
 }
 .pt-dark .text-color-warning {
   color: #efaa62;
+}
+
+.pt-small {
+  .pt-icon {
+    height: 13px;
+    font-size: 14px;
+    margin-top: 7px;
+    margin-bottom: 6px;
+  }
+
+  .pt-input {
+    height: 26px;
+    line-height: 26px;
+    font-size: 13px;
+  }
 }
