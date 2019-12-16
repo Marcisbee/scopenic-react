@@ -161,10 +161,10 @@ const NumberInput: React.FC<INumberInputProps> = ({
   }, [value, metric]);
 
   return (
-    <label className="row">
+    <label className="row" style={{ marginBottom: 7 }}>
       <span className="col-xs-4">
         {label && (
-          <span style={{ display: 'block', fontSize: 13, paddingTop: 6 }}>
+          <span className="knob-label">
             {label}
           </span>
         )}

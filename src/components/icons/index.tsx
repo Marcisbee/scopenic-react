@@ -631,3 +631,87 @@ export const ProjectIcon: React.FC<{ className?: string }> = ({ className }) => 
     </svg>
   );
 };
+
+export const TextAlignCenter: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <rect className="primary" width="18" height="2" x="3" y="13" fill="#B0A8FF" rx="1" />
+        <path
+          className="secondary"
+          fill="#594BC8"
+          d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm2 4h12a1 1 0 010 2H6a1 1 0 010-2zm0 8h12a1 1 0 010 2H6a1 1 0 010-2z"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const TextAlignJustify: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <rect className="primary" width="18" height="2" x="3" y="13" fill="#B0A8FF" rx="1" />
+        <path
+          className="secondary"
+          fill="#594BC8"
+          d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 4h16a1 1 0 010 2H4a1 1 0 010-2zm0 8h16a1 1 0 010 2H4a1 1 0 010-2z"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const TextAlignLeft: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <rect className="primary" width="18" height="2" x="3" y="13" fill="#B0A8FF" rx="1" />
+        <path
+          className="secondary"
+          fill="#594BC8"
+          d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 4h12a1 1 0 010 2H4a1 1 0 010-2zm0 8h12a1 1 0 010 2H4a1 1 0 010-2z"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const TextAlignRight: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <rect className="primary" width="18" height="2" x="3" y="13" fill="#B0A8FF" rx="1" />
+        <path
+          className="secondary"
+          fill="#594BC8"
+          d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm4 4h12a1 1 0 010 2H8a1 1 0 010-2zm0 8h12a1 1 0 010 2H8a1 1 0 010-2z"
+        />
+      </g>
+    </svg>
+  );
+};

@@ -1,10 +1,13 @@
+import cc from 'classcat';
 import dlv from 'dlv';
 import React, { useMemo } from 'react';
 
+import { TextAlignCenter, TextAlignJustify, TextAlignLeft, TextAlignRight } from '../../../../components/icons';
 import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 import NumberInput from '../knob-number-input/knob-number-input';
+import KnobTextAlign from '../knob-text-align/knob-text-align';
 
 const EditorRight: React.FC = () => {
   const refs = useRefsContext();
@@ -37,7 +40,9 @@ const EditorRight: React.FC = () => {
     backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
     color: cssDeclarations && cssDeclarations.color,
     fontSize: cssDeclarations && cssDeclarations.fontSize,
+    fontFamily: cssDeclarations && cssDeclarations.fontFamily,
     lineHeight: cssDeclarations && cssDeclarations.lineHeight,
+    textAlign: cssDeclarations && cssDeclarations.textAlign,
   };
 
   if (!currentClassName) {
@@ -51,6 +56,54 @@ const EditorRight: React.FC = () => {
       <KnobsBlock
         title="Text format"
       >
+        <label className="pt-small row" style={{ marginBottom: 7 }}>
+          <span className="col-xs-4">
+            <span className="knob-label">
+              Font
+            </span>
+          </span>
+
+          <span className="col-xs-8">
+            <div className="pt-fill pt-select">
+              <select
+                value={currentStyles.fontFamily || defaultStyles.fontFamily}
+                onChange={(e) => {
+                  updateStylePropery({
+                    id: element.id,
+                    className: currentClassName,
+                    property: 'fontFamily',
+                    value: e.target.value,
+                  });
+                }}
+              >
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Impact">Impact</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Lucida Console">Lucida Console</option>
+              </select>
+            </div>
+          </span>
+        </label>
+
+        <KnobTextAlign
+          label="Align"
+          value={currentStyles.textAlign || defaultStyles.textAlign}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'textAlign',
+              value,
+            });
+          }}
+        />
+
         <NumberInput
           label="Font Size"
           min={1}
