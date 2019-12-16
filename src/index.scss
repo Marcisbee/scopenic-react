@@ -278,3 +278,44 @@ hr {
     }
   }
 }
+
+.pt-input-color {
+  position: relative;
+
+  .color-backdrop {
+    display: block;
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    opacity: 0.2;
+  }
+
+  .color-bull {
+    position: absolute;
+    top: 0;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(234, 234, 234, 0.9);
+    z-index: 16;
+    width: 18px;
+    height: 18px;
+    margin: 4px 7px;
+  }
+
+  .pt-input {
+    background-color: transparent;
+  }
+}
+
+.pt-input-group {
+  .pt-icon:first-child + .pt-input,
+  .color-bull:first-child + .pt-input {
+    border-radius: 3px;
+  }
+}

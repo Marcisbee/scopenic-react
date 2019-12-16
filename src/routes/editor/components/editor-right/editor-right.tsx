@@ -1,11 +1,10 @@
-import cc from 'classcat';
 import dlv from 'dlv';
 import React, { useMemo } from 'react';
 
-import { TextAlignCenter, TextAlignJustify, TextAlignLeft, TextAlignRight } from '../../../../components/icons';
 import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
+import KnobColorInput from '../knob-color-input/knob-color-input';
 import NumberInput from '../knob-number-input/knob-number-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
 
@@ -130,6 +129,20 @@ const EditorRight: React.FC = () => {
             });
           }}
         />
+
+        <KnobColorInput
+          label="Text color"
+          value={currentStyles.color !== undefined ? currentStyles.color : defaultStyles.color}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'color',
+              value,
+            });
+          }}
+        />
+
       </KnobsBlock>
 
       <KnobsBlock
