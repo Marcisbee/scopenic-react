@@ -6,6 +6,7 @@ import * as React from 'react';
 import { render } from 'react-dom';
 // import { hot } from 'react-hot-ts';
 
+import '@blueprintjs/core/lib/css/blueprint.css';
 import App from './components/app';
 import './index.scss';
 // import * as serviceWorker from './serviceWorker';

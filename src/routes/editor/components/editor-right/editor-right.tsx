@@ -6,6 +6,7 @@ import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
 import KnobColorInput from '../knob-color-input/knob-color-input';
 import NumberInput from '../knob-number-input/knob-number-input';
+import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
 
 const EditorRight: React.FC = () => {
@@ -42,6 +43,7 @@ const EditorRight: React.FC = () => {
     fontFamily: cssDeclarations && cssDeclarations.fontFamily,
     lineHeight: cssDeclarations && cssDeclarations.lineHeight,
     textAlign: cssDeclarations && cssDeclarations.textAlign,
+    opacity: cssDeclarations && cssDeclarations.opacity,
   };
 
   if (!currentClassName) {
@@ -148,6 +150,36 @@ const EditorRight: React.FC = () => {
       <KnobsBlock
         title="Appearance"
       >
+        <KnobSliderInput
+          label="Opacity"
+          value={currentStyles.opacity || defaultStyles.opacity}
+          min={0}
+          max={1}
+          stepSize={0.05}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'opacity',
+              value,
+            });
+          }}
+        />
+
+        Background
+
+        <KnobColorInput
+          label="Color"
+          value={currentStyles.backgroundColor !== undefined ? currentStyles.backgroundColor : defaultStyles.backgroundColor}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'backgroundColor',
+              value,
+            });
+          }}
+        />
         asd
       </KnobsBlock>
 
