@@ -68,14 +68,12 @@ const ResizeHandlers: React.FC<{
   const mousePosition = useMousePosition();
   const handlersWidth = useWorkspaceSize({ reverse: false, mousePosition, type: 'x', setState: setWidth });
   const handlersWidthReverse = useWorkspaceSize({ reverse: true, mousePosition, type: 'x', setState: setWidth });
-  const handlersHeight = useWorkspaceSize({ reverse: false, mousePosition, type: 'y', setState: setHeight });
 
   return (
     <>
       <div {...handlersWidthReverse} className={styles.handleLeft}><DragPortal /></div>
       <div {...handlersWidth} className={styles.handleRight}><DragPortal /></div>
 
-      <div {...handlersHeight} className={styles.handleBottom}><DragPortal /></div>
     </>
   );
 };
