@@ -279,6 +279,17 @@ hr {
   }
 }
 
+.pt-dark {
+  .text-align-group-knob {
+    a {
+      .secondary,
+      .primary {
+        fill: #fff;
+      }
+    }
+  }
+}
+
 .pt-input-color {
   position: relative;
 
@@ -310,6 +321,14 @@ hr {
 
   .pt-input {
     background-color: transparent;
+  }
+}
+
+.pt-dark {
+  .pt-input-color {
+    .color-bull {
+      border-color: rgba(100, 100, 100, 0.9);
+    }
   }
 }
 
