@@ -1,5 +1,5 @@
-import { Slider } from '@blueprintjs/core';
 import React from 'react';
+import Slider from 'react-input-slider';
 
 interface IKnobSliderInputProps {
   label?: string;
@@ -30,15 +30,32 @@ const KnobSliderInput: React.FC<IKnobSliderInputProps> = ({
 
       <span className="col-xs-8">
         <span className="row">
-          <span className="col-xs-8" style={{ paddingTop: 7 }}>
+          <span className="col-xs-8" style={{ paddingTop: 5 }}>
             <Slider
-              min={min}
-              max={max}
-              stepSize={stepSize}
-              onChange={onChange}
-              value={Number(value) || 0}
-              vertical={false}
-              labelRenderer={false}
+              styles={{
+                track: {
+                  height: 5,
+                  width: '100%',
+                  backgroundColor: '#eaeaea',
+                  boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.03)',
+                },
+                active: {
+                  backgroundColor: '#51ccff',
+                  boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.03)',
+                },
+                thumb: {
+                  width: 15,
+                  height: 15,
+                  backgroundColor: '#0a8ffb',
+                  boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.06)',
+                },
+              }}
+              axis="x"
+              xmin={min}
+              xmax={max}
+              xstep={stepSize}
+              onChange={onChange && (({ x }) => onChange(x))}
+              x={Number(value) || 0}
             />
           </span>
           <span className="col-xs-4">
