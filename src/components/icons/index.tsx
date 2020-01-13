@@ -715,3 +715,17 @@ export const TextAlignRight: React.FC<{ className?: string }> = ({ className }) 
     </svg>
   );
 };
+
+export const IncreaseDecrease: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <path className="primary" d="M14 12a2 2 0 11-4.001-.001A2 2 0 0114 12zm-3-3.858c.321-.083.653-.142 1-.142s.679.059 1 .142V6h4l-5-6-5 6h4v2.142zm2 7.716c-.321.083-.653.142-1 .142s-.679-.059-1-.142V18H7l5 6 5-6h-4v-2.142z" />
+    </svg>
+  );
+};

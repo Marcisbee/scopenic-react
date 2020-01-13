@@ -10,6 +10,7 @@ import KnobImageInput from '../knob-image-input/knob-image-input';
 import NumberInput from '../knob-number-input/knob-number-input';
 import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
+import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
 
 const EditorRight: React.FC = () => {
   const refs = useRefsContext();
@@ -56,14 +57,8 @@ const EditorRight: React.FC = () => {
 
     width: cssDeclarations && cssDeclarations.width,
     height: cssDeclarations && cssDeclarations.height,
-    marginTop: cssDeclarations && cssDeclarations.marginTop,
-    marginBottom: cssDeclarations && cssDeclarations.marginBottom,
-    marginLeft: cssDeclarations && cssDeclarations.marginLeft,
-    marginRight: cssDeclarations && cssDeclarations.marginRight,
-    paddingTop: cssDeclarations && cssDeclarations.paddingTop,
-    paddingBottom: cssDeclarations && cssDeclarations.paddingBottom,
-    paddingLeft: cssDeclarations && cssDeclarations.paddingLeft,
-    paddingRight: cssDeclarations && cssDeclarations.paddingRight,
+    margin: cssDeclarations && cssDeclarations.margin,
+    padding: cssDeclarations && cssDeclarations.padding,
   };
 
   if (!currentClassName) {
@@ -168,154 +163,6 @@ const EditorRight: React.FC = () => {
       </KnobsBlock>
 
       <KnobsBlock
-        title="Size"
-      >
-        <NumberInput
-          label="Width"
-          min={1}
-          value={currentStyles.width || defaultStyles.width}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'width',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Height"
-          min={1}
-          value={currentStyles.height || defaultStyles.height}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'height',
-              value,
-            });
-          }}
-        />
-
-        <hr />
-
-        <NumberInput
-          label="Margin top"
-          min={1}
-          value={currentStyles.marginTop || defaultStyles.marginTop}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'marginTop',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Margin right"
-          min={1}
-          value={currentStyles.marginRight || defaultStyles.marginRight}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'marginRight',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Margin bottom"
-          min={1}
-          value={currentStyles.marginBottom || defaultStyles.marginBottom}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'marginBottom',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Margin left"
-          min={1}
-          value={currentStyles.marginLeft || defaultStyles.marginLeft}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'marginLeft',
-              value,
-            });
-          }}
-        />
-
-        <hr />
-
-        <NumberInput
-          label="Padding top"
-          min={1}
-          value={currentStyles.paddingTop || defaultStyles.paddingTop}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'paddingTop',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Padding right"
-          min={1}
-          value={currentStyles.paddingRight || defaultStyles.paddingRight}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'paddingRight',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Padding bottom"
-          min={1}
-          value={currentStyles.paddingBottom || defaultStyles.paddingBottom}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'paddingBottom',
-              value,
-            });
-          }}
-        />
-
-        <NumberInput
-          label="Padding left"
-          min={1}
-          value={currentStyles.paddingLeft || defaultStyles.paddingLeft}
-          onChange={(value) => {
-            updateStylePropery({
-              id: element.id,
-              className: currentClassName,
-              property: 'paddingLeft',
-              value,
-            });
-          }}
-        />
-      </KnobsBlock>
-
-      <KnobsBlock
         title="Appearance"
       >
         <KnobSliderInput
@@ -329,6 +176,63 @@ const EditorRight: React.FC = () => {
               id: element.id,
               className: currentClassName,
               property: 'opacity',
+              value,
+            });
+          }}
+        />
+      </KnobsBlock>
+
+      <KnobsBlock
+        title="Background"
+      >
+        <KnobColorInput
+          label="Color"
+          value={currentStyles.backgroundColor !== undefined ? currentStyles.backgroundColor : defaultStyles.backgroundColor}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'backgroundColor',
+              value,
+            });
+          }}
+        />
+
+        <KnobImageInput
+          label="Image"
+          value={currentStyles.backgroundImage || defaultStyles.backgroundImage}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'backgroundImage',
+              value,
+            });
+          }}
+        />
+
+        <KnobButtonGroup
+          label="Size"
+          value={currentStyles.backgroundSize || defaultStyles.backgroundSize}
+          options={[
+            {
+              text: 'auto',
+              value: '100% auto',
+            },
+            {
+              text: 'contain',
+              value: 'contain',
+            },
+            {
+              text: 'cover',
+              value: 'cover',
+            },
+          ]}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'backgroundSize',
               value,
             });
           }}
@@ -415,61 +319,71 @@ const EditorRight: React.FC = () => {
       </KnobsBlock>
 
       <KnobsBlock
-        title="Background"
+        title="Size"
       >
-        <KnobColorInput
-          label="Color"
-          value={currentStyles.backgroundColor !== undefined ? currentStyles.backgroundColor : defaultStyles.backgroundColor}
+        <NumberInput
+          label="Width"
+          min={1}
+          value={currentStyles.width || defaultStyles.width}
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
               className: currentClassName,
-              property: 'backgroundColor',
+              property: 'width',
               value,
             });
           }}
         />
 
-        <KnobImageInput
-          label="Image"
-          value={currentStyles.backgroundImage || defaultStyles.backgroundImage}
+        <NumberInput
+          label="Height"
+          min={1}
+          value={currentStyles.height || defaultStyles.height}
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
               className: currentClassName,
-              property: 'backgroundImage',
+              property: 'height',
               value,
             });
           }}
         />
 
-        <KnobButtonGroup
-          label="Size"
-          value={currentStyles.backgroundSize || defaultStyles.backgroundSize}
-          options={[
-            {
-              text: 'auto',
-              value: '100% auto',
-            },
-            {
-              text: 'contain',
-              value: 'contain',
-            },
-            {
-              text: 'cover',
-              value: 'cover',
-            },
-          ]}
+      </KnobsBlock>
+
+      <KnobsBlock
+        title="Spacing"
+      >
+        <KnobSpacingInput
+          label="Margin"
+          value={currentStyles.margin || defaultStyles.margin}
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
               className: currentClassName,
-              property: 'backgroundSize',
+              property: 'margin',
+              value,
+            });
+          }}
+        />
+
+        <hr />
+
+        <KnobSpacingInput
+          label="Padding"
+          value={currentStyles.padding || defaultStyles.padding}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'padding',
               value,
             });
           }}
         />
       </KnobsBlock>
+
+      <hr />
 
       Selected element: {JSON.stringify(state.activeElement)}
       <br />

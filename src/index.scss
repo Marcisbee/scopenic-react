@@ -324,17 +324,49 @@ hr {
   }
 }
 
+.pt-input-group {
+  .pt-icon:first-child + .pt-input,
+  .color-bull:first-child + .pt-input {
+    border-radius: 3px;
+  }
+}
+
+.pt-input-group > .pt-icon.size-resize + .pt-input {
+  padding-left: 22px;
+}
+
+.pt-input-group > .pt-icon.size-resize {
+  margin-left: 7px;
+  margin-right: 7px;
+  opacity: 0.4;
+  cursor: ns-resize;
+
+  &:hover {
+    opacity: 1;
+
+    svg {
+      fill: $primary-color;
+    }
+  }
+
+  svg {
+    margin: -1px 0 0 -2px;
+    fill: #333;
+  }
+}
+
 .pt-dark {
   .pt-input-color {
     .color-bull {
       border-color: rgba(100, 100, 100, 0.9);
     }
   }
-}
 
-.pt-input-group {
-  .pt-icon:first-child + .pt-input,
-  .color-bull:first-child + .pt-input {
-    border-radius: 3px;
+  .pt-input-group > .pt-icon.size-resize svg {
+    fill: #b4b4b4;
+
+    &:hover {
+      fill: #51ccff;
+    }
   }
 }

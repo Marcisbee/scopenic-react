@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { ChromePicker } from 'react-color';
+import { useOnClickOutside } from '../../../../hooks/use-on-click-outside';
 
 interface IKnowColorInputProps {
   label?: string;
@@ -13,45 +15,69 @@ const KnowColorInput: React.FC<IKnowColorInputProps> = ({
   onChange,
   readOnly,
 }) => {
-  return (
-    <label className="pt-small row" style={{ marginBottom: 7 }}>
-      <span className="col-xs-4">
-        {label && (
-          <span className="knob-label">
-            {label}
-          </span>
-        )}
-      </span>
+  const [show, setShow] = useState(false);
+  const ref = useRef(null as unknown as HTMLDivElement);
+  useOnClickOutside(ref, () => {
+    setShow(false);
+  });
 
-      <span className="col-xs-8">
-        <span className="pt-input-color pt-small pt-control-group pt-fill">
-          <span
-            className="color-backdrop"
-            style={{
-              backgroundColor: defaultValue || '',
-            }}
-          />
-          <span className="pt-input-group">
+  return (
+    <div ref={ref}>
+      <label className="pt-small row" style={{ marginBottom: 7 }} onFocus={() => setShow(true)}>
+        <span className="col-xs-4">
+          {label && (
+            <span className="knob-label">
+              {label}
+            </span>
+          )}
+        </span>
+
+        <span className="col-xs-8">
+          <span className="pt-input-color pt-small pt-control-group pt-fill">
             <span
-              className="color-bull"
+              className="color-backdrop"
               style={{
                 backgroundColor: defaultValue || '',
               }}
             />
-            <input
-              className="pt-input"
-              type="text"
-              value={defaultValue || ''}
-              onChange={(e) => {
-                if (onChange) {
-                  onChange(e.target.value);
-                }
-              }}
-            />
+            <span className="pt-input-group">
+              <span
+                className="color-bull"
+                style={{
+                  backgroundColor: defaultValue || '',
+                }}
+              />
+              <input
+                className="pt-input"
+                type="text"
+                value={defaultValue || ''}
+                onChange={(e) => {
+                  if (onChange) {
+                    onChange(e.target.value);
+                  }
+                }}
+              />
+            </span>
           </span>
         </span>
-      </span>
-    </label>
+      </label>
+
+      {show && (
+        <div style={{ position: 'absolute', zIndex: 10 }}>
+          <ChromePicker
+            color={defaultValue || ''}
+            onChange={onChange && (({ hex, rgb }) => {
+              if (rgb.a !== undefined && rgb.a < 1) {
+                onChange(`rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`);
+                return;
+              }
+
+              onChange(hex);
+            })}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 
