@@ -30,7 +30,7 @@ const KnobSliderInput: React.FC<IKnobSliderInputProps> = ({
 
       <span className="col-xs-8">
         <span className="row">
-          <span className="col-xs-8" style={{ paddingTop: 5 }}>
+          <span className="col-xs-7" style={{ paddingTop: 5 }}>
             <Slider
               styles={{
                 track: {
@@ -58,7 +58,7 @@ const KnobSliderInput: React.FC<IKnobSliderInputProps> = ({
               x={Number(value) || 0}
             />
           </span>
-          <span className="col-xs-4">
+          <span className="col-xs-5">
             <input
               className="pt-input"
               type="number"

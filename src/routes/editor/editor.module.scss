@@ -20,6 +20,12 @@
   width: 260px;
   background-color: #f5f8fa;
   color: #333;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  :global(hr) {
+    margin: 14px 0;
+  }
 }
 
 .main {

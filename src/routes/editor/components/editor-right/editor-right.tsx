@@ -4,7 +4,9 @@ import React, { useMemo } from 'react';
 import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { EditorStore } from '../../context/editor-context';
+import KnobButtonGroup from '../knob-button-group/knob-button-group';
 import KnobColorInput from '../knob-color-input/knob-color-input';
+import KnobImageInput from '../knob-image-input/knob-image-input';
 import NumberInput from '../knob-number-input/knob-number-input';
 import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
@@ -38,12 +40,30 @@ const EditorRight: React.FC = () => {
 
   const defaultStyles = {
     backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
+    backgroundImage: cssDeclarations && cssDeclarations.backgroundImage,
+    backgroundSize: cssDeclarations && cssDeclarations.backgroundSize,
     color: cssDeclarations && cssDeclarations.color,
     fontSize: cssDeclarations && cssDeclarations.fontSize,
     fontFamily: cssDeclarations && cssDeclarations.fontFamily,
     lineHeight: cssDeclarations && cssDeclarations.lineHeight,
     textAlign: cssDeclarations && cssDeclarations.textAlign,
     opacity: cssDeclarations && cssDeclarations.opacity,
+
+    borderColor: cssDeclarations && cssDeclarations.borderColor,
+    borderStyle: cssDeclarations && cssDeclarations.borderStyle,
+    borderWidth: cssDeclarations && cssDeclarations.borderWidth,
+    borderRadius: cssDeclarations && cssDeclarations.borderRadius,
+
+    width: cssDeclarations && cssDeclarations.width,
+    height: cssDeclarations && cssDeclarations.height,
+    marginTop: cssDeclarations && cssDeclarations.marginTop,
+    marginBottom: cssDeclarations && cssDeclarations.marginBottom,
+    marginLeft: cssDeclarations && cssDeclarations.marginLeft,
+    marginRight: cssDeclarations && cssDeclarations.marginRight,
+    paddingTop: cssDeclarations && cssDeclarations.paddingTop,
+    paddingBottom: cssDeclarations && cssDeclarations.paddingBottom,
+    paddingLeft: cssDeclarations && cssDeclarations.paddingLeft,
+    paddingRight: cssDeclarations && cssDeclarations.paddingRight,
   };
 
   if (!currentClassName) {
@@ -148,6 +168,154 @@ const EditorRight: React.FC = () => {
       </KnobsBlock>
 
       <KnobsBlock
+        title="Size"
+      >
+        <NumberInput
+          label="Width"
+          min={1}
+          value={currentStyles.width || defaultStyles.width}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'width',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Height"
+          min={1}
+          value={currentStyles.height || defaultStyles.height}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'height',
+              value,
+            });
+          }}
+        />
+
+        <hr />
+
+        <NumberInput
+          label="Margin top"
+          min={1}
+          value={currentStyles.marginTop || defaultStyles.marginTop}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'marginTop',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Margin right"
+          min={1}
+          value={currentStyles.marginRight || defaultStyles.marginRight}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'marginRight',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Margin bottom"
+          min={1}
+          value={currentStyles.marginBottom || defaultStyles.marginBottom}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'marginBottom',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Margin left"
+          min={1}
+          value={currentStyles.marginLeft || defaultStyles.marginLeft}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'marginLeft',
+              value,
+            });
+          }}
+        />
+
+        <hr />
+
+        <NumberInput
+          label="Padding top"
+          min={1}
+          value={currentStyles.paddingTop || defaultStyles.paddingTop}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'paddingTop',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Padding right"
+          min={1}
+          value={currentStyles.paddingRight || defaultStyles.paddingRight}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'paddingRight',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Padding bottom"
+          min={1}
+          value={currentStyles.paddingBottom || defaultStyles.paddingBottom}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'paddingBottom',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Padding left"
+          min={1}
+          value={currentStyles.paddingLeft || defaultStyles.paddingLeft}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'paddingLeft',
+              value,
+            });
+          }}
+        />
+      </KnobsBlock>
+
+      <KnobsBlock
         title="Appearance"
       >
         <KnobSliderInput
@@ -165,9 +333,90 @@ const EditorRight: React.FC = () => {
             });
           }}
         />
+      </KnobsBlock>
 
-        Background
+      <KnobsBlock
+        title="Border"
+      >
+        <KnobColorInput
+          label="Color"
+          value={currentStyles.borderColor !== undefined ? currentStyles.borderColor : defaultStyles.borderColor}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'borderColor',
+              value,
+            });
+          }}
+        />
 
+        <label className="pt-small row" style={{ marginBottom: 7 }}>
+          <span className="col-xs-4">
+            <span className="knob-label">
+              Style
+            </span>
+          </span>
+
+          <span className="col-xs-8">
+            <div className="pt-fill pt-select">
+              <select
+                value={currentStyles.borderStyle || defaultStyles.borderStyle}
+                onChange={(e) => {
+                  updateStylePropery({
+                    id: element.id,
+                    className: currentClassName,
+                    property: 'borderStyle',
+                    value: e.target.value,
+                  });
+                }}
+              >
+                <option value="none">none</option>
+                <option value="solid">solid</option>
+                <option value="dashed">dashed</option>
+                <option value="dotted">dotted</option>
+                <option value="double">double</option>
+                <option value="groove">groove</option>
+                <option value="outset">outset</option>
+                <option value="ridge">ridge</option>
+              </select>
+            </div>
+          </span>
+        </label>
+
+        <NumberInput
+          label="Width"
+          min={1}
+          value={currentStyles.borderWidth || defaultStyles.borderWidth}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'borderWidth',
+              value,
+            });
+          }}
+        />
+
+        <NumberInput
+          label="Radius"
+          min={1}
+          value={currentStyles.borderRadius || defaultStyles.borderRadius}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'borderRadius',
+              value,
+            });
+          }}
+        />
+
+      </KnobsBlock>
+
+      <KnobsBlock
+        title="Background"
+      >
         <KnobColorInput
           label="Color"
           value={currentStyles.backgroundColor !== undefined ? currentStyles.backgroundColor : defaultStyles.backgroundColor}
@@ -180,7 +429,46 @@ const EditorRight: React.FC = () => {
             });
           }}
         />
-        asd
+
+        <KnobImageInput
+          label="Image"
+          value={currentStyles.backgroundImage || defaultStyles.backgroundImage}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'backgroundImage',
+              value,
+            });
+          }}
+        />
+
+        <KnobButtonGroup
+          label="Size"
+          value={currentStyles.backgroundSize || defaultStyles.backgroundSize}
+          options={[
+            {
+              text: 'auto',
+              value: '100% auto',
+            },
+            {
+              text: 'contain',
+              value: 'contain',
+            },
+            {
+              text: 'cover',
+              value: 'cover',
+            },
+          ]}
+          onChange={(value) => {
+            updateStylePropery({
+              id: element.id,
+              className: currentClassName,
+              property: 'backgroundSize',
+              value,
+            });
+          }}
+        />
       </KnobsBlock>
 
       Selected element: {JSON.stringify(state.activeElement)}
