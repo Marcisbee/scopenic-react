@@ -227,7 +227,7 @@ export const EditorStore = createContextStore<IEditorState>(
 
           draft.state.activeElement = {
             id: element.id,
-            path: ['0', ...(addPath || ['0'])],
+            path: ['0', ...(addPath.length ? addPath : ['0'])],
           };
         }
       }),
