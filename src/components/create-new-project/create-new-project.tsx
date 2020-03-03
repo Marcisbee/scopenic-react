@@ -1,7 +1,7 @@
 import { useApolloClient } from '@apollo/react-hooks';
 import cc from 'classcat';
 import React, { useEffect, useState } from 'react';
-import useForm, { FormContext } from 'react-hook-form';
+import { FormContext, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import * as Yup from 'yup';
 
