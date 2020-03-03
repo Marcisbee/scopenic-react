@@ -37,7 +37,7 @@
     "fuse-box-typechecker": "^3.0.0-next.29",
     "jest": "^24.9.0",
     "jsdom": "^15.2.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "opn": "^6.0.0",
     "panic-overlay": "^1.0.39",
     "postcss-modules": "^1.4.1",
