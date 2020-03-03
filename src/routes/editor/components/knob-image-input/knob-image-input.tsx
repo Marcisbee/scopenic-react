@@ -16,7 +16,6 @@ const KnobImageInput: React.FC<IKnobImageInputProps> = ({
   value,
   onChange,
 }) => {
-  // @TODO: Make upload real
   const imageUrl = value && REGEX_CSS_URL.test(value) && value.trim().replace(REGEX_CSS_URL, '$1');
 
   const setImage = (url: string | null) => {
@@ -76,8 +75,28 @@ const KnobImageInput: React.FC<IKnobImageInputProps> = ({
           <a
             className="pt-button pt-fill"
             role="button"
-            onClick={() => setImage('https://img2.goodfon.com/wallpaper/nbig/a/25/makro-listik-listochek-listya-95.jpg')}
           >
+            <input type="file" onChange={(event) => {
+              if (!event || !event.target || !event.target.files) {
+                return;
+              }
+
+              event.preventDefault();
+
+              const file = event.target.files[0];
+              const formData = new FormData();
+
+              formData.append('image', file);
+
+              fetch(`http://localhost:8080/images/upload`, {
+                method: 'POST',
+                body: formData,
+              })
+                .then(res => res.json())
+                .then(response => {
+                  setImage(`http://localhost:8080${response.path}`);
+                });
+            }} />
             Upload image
           </a>
         )}

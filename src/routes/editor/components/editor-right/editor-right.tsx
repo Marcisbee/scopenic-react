@@ -9,8 +9,8 @@ import KnobColorInput from '../knob-color-input/knob-color-input';
 import KnobImageInput from '../knob-image-input/knob-image-input';
 import NumberInput from '../knob-number-input/knob-number-input';
 import KnobSliderInput from '../knob-slider-input/knob-slider-input';
-import KnobTextAlign from '../knob-text-align/knob-text-align';
 import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
+import KnobTextAlign from '../knob-text-align/knob-text-align';
 
 const EditorRight: React.FC = () => {
   const refs = useRefsContext();

@@ -78,12 +78,12 @@ export interface IProjectState {
     name: string;
     avatar: string;
   };
-  contributors: Array<{
+  contributors: {
     id: string;
     first_name: string;
     last_name: string;
     avatar: string;
-  }> | null;
+  }[] | null;
   data: {
     pages: Record<string, {
       name: string,
