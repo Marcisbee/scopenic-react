@@ -14,12 +14,16 @@ import KnobTextAlign from '../knob-text-align/knob-text-align';
 
 const EditorRight: React.FC = () => {
   const refs = useRefsContext();
-  const { state, isWorkspacePageActive } = EditorStore.useStoreState((s) => s);
+  const activeElement = EditorStore.useStoreState((s) => s.state.activeElement);
+  const stateCss = EditorStore.useStoreState((s) => s.state.data.css);
+  const pages = EditorStore.useStoreState((s) => s.state.data.pages);
+  const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
   const { updateElement, updateStyle, updateStylePropery } = EditorStore.useStoreActions((s) => s);
 
   const element = typeof isWorkspacePageActive === 'string'
-    && dlv(state.data.pages[isWorkspacePageActive], 'children.' + state.activeElement.path.slice(1).join('.children.'));
-  const currentClassName = (element && element.className) || state.activeElement.id;
+    && dlv(pages[isWorkspacePageActive], 'children.' + activeElement.path.slice(1).join('.children.'));
+  const currentClassName = (element && element.className) || activeElement.id;
+  const realClassName = element && element.className;
 
   const cssDeclarations = useMemo(() => {
     if (!refs.workspace || !refs.workspace.current) {
@@ -28,20 +32,22 @@ const EditorRight: React.FC = () => {
 
     const node: HTMLIFrameElement = (refs.workspace.current as any).node;
 
-    if (state.activeElement.id && node && node.contentDocument) {
-      const el = node.contentDocument.querySelector(`.${currentClassName}`);
+    if (activeElement.id && node && node.contentDocument) {
+      const el = realClassName
+        ? node.contentDocument.querySelector(`.${currentClassName}`)
+        : node.contentDocument.getElementById(currentClassName);
 
       if (el) {
         return window.getComputedStyle(el);
       }
     }
-  }, [state.activeElement.id, state.activeElement.path]);
+  }, [activeElement.id, activeElement.path.toString()]);
 
   if (!element) {
     return null;
   }
 
-  const currentStyles = state.data.css[currentClassName] || {};
+  const currentStyles = stateCss[currentClassName] || {};
 
   const defaultStyles = {
     backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
@@ -90,7 +96,7 @@ const EditorRight: React.FC = () => {
                 onChange={(e) => {
                   updateStylePropery({
                     id: element.id,
-                    className: currentClassName,
+                    className: realClassName,
                     property: 'fontFamily',
                     value: e.target.value,
                   });
@@ -117,7 +123,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'textAlign',
               value,
             });
@@ -131,7 +137,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'fontSize',
               value,
             });
@@ -144,7 +150,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'lineHeight',
               value,
             });
@@ -157,7 +163,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'color',
               value,
             });
@@ -178,7 +184,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'opacity',
               value,
             });
@@ -195,7 +201,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'backgroundColor',
               value,
             });
@@ -208,7 +214,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'backgroundImage',
               value,
             });
@@ -235,7 +241,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'backgroundSize',
               value,
             });
@@ -252,7 +258,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'borderColor',
               value,
             });
@@ -273,7 +279,7 @@ const EditorRight: React.FC = () => {
                 onChange={(e) => {
                   updateStylePropery({
                     id: element.id,
-                    className: currentClassName,
+                    className: realClassName,
                     property: 'borderStyle',
                     value: e.target.value,
                   });
@@ -299,7 +305,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'borderWidth',
               value,
             });
@@ -313,7 +319,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'borderRadius',
               value,
             });
@@ -332,7 +338,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'width',
               value,
             });
@@ -346,7 +352,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'height',
               value,
             });
@@ -364,7 +370,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'margin',
               value,
             });
@@ -379,7 +385,7 @@ const EditorRight: React.FC = () => {
           onChange={(value) => {
             updateStylePropery({
               id: element.id,
-              className: currentClassName,
+              className: realClassName,
               property: 'padding',
               value,
             });
@@ -389,7 +395,7 @@ const EditorRight: React.FC = () => {
 
       <hr />
 
-      Selected element: {JSON.stringify(state.activeElement)}
+      Selected element: {JSON.stringify(activeElement)}
       <br />
       ClassName: {currentClassName || <i>NONE</i>}
       <h2>Element:</h2>
@@ -400,7 +406,7 @@ const EditorRight: React.FC = () => {
           try {
             const value = JSON.parse(e.target.innerText);
 
-            updateElement({ path: state.activeElement.path.slice(1), element: value });
+            updateElement({ path: activeElement.path.slice(1), element: value });
           } catch (e) {
             console.error(e);
           }
@@ -415,12 +421,12 @@ const EditorRight: React.FC = () => {
         }}
       />
       <h2>Styles:</h2>
-      {state.activeElement.id && (
+      {activeElement.id && (
         <pre
           style={{ fontSize: 12 }}
           contentEditable={true}
           onBlur={(e) => {
-            const key = state.activeElement.id;
+            const key = activeElement.id;
             const className = element.className;
 
             try {
@@ -433,7 +439,7 @@ const EditorRight: React.FC = () => {
           }}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              dlv(state.data.css, currentClassName),
+              dlv(stateCss, currentClassName),
               null,
               ' ',
             ),

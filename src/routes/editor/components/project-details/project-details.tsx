@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import cc from 'classcat';
 import React, { useState } from 'react';
-import useForm, { FormContext } from 'react-hook-form';
+import { FormContext, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
 import Alert from '../../../../components/alert/alert';

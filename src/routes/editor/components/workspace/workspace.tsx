@@ -80,7 +80,9 @@ const ResizeHandlers: React.FC<{
 
 const Workspace = React.memo<any>(() => {
   const refs = useRefsContext();
-  const { state, isWorkspacePageActive } = EditorStore.useStoreState((s) => s);
+  const stateCss = EditorStore.useStoreState((s) => s.state.data.css);
+  const pages = EditorStore.useStoreState((s) => s.state.data.pages);
+  const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
   const [overlayContext] = useOverlayContext();
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(900);
@@ -97,7 +99,7 @@ const Workspace = React.memo<any>(() => {
     return 'desktop';
   }, [width]);
 
-  const css = buildCss(state.data.css);
+  const css = buildCss(stateCss);
 
   return (
     <div>
@@ -154,7 +156,7 @@ const Workspace = React.memo<any>(() => {
 
               {typeof isWorkspacePageActive === 'string' && (
                 <div>
-                  {state.data.pages[isWorkspacePageActive].children.map(
+                  {pages[isWorkspacePageActive].children.map(
                     (props: any, n: number) => renderChild(props, [String(n)]),
                   )}
                 </div>
@@ -163,7 +165,7 @@ const Workspace = React.memo<any>(() => {
               {overlayContext.element && <Overlay />}
             </Frame>
 
-            <ResizeHandlers setWidth={setWidth} setHeight={setHeight} />
+            {/* <ResizeHandlers setWidth={setWidth} setHeight={setHeight} /> */}
           </div>
         </>
       ) : (

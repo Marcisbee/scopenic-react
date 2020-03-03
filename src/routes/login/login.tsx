@@ -1,6 +1,6 @@
 import cc from 'classcat';
 import React, { useState } from 'react';
-import useForm, { FormContext } from 'react-hook-form';
+import { FormContext, useForm } from 'react-hook-form';
 import { Redirect } from 'react-router';
 import * as Yup from 'yup';
 

@@ -240,6 +240,8 @@ function SizeHandler({ direction = 'right', state, setState, onFinish }: any) {
 }
 
 const Overlay: React.FC = () => {
+  return null;
+
   const refs = useRefsContext();
   const el = useRef<HTMLDivElement>(null);
   const [overlayContext, setOverlayContext] = useOverlayContext();

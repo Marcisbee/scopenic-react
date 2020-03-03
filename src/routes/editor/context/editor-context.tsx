@@ -362,6 +362,9 @@ export const EditorStore = createContextStore<IEditorState>(
               (item) => item.id === fromItem.id && item,
             );
 
+            // @TODO: Fix issue where object is moved from children to previous sibling,
+            // it changes index for selected element.
+
             if (selectedElement) {
               draft.state.activeElement = {
                 id: selectedElement.item.id,
