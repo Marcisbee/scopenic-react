@@ -37,6 +37,10 @@ const EditorRight: React.FC = () => {
     }
   }, [state.activeElement.id, state.activeElement.path]);
 
+  if (!element) {
+    return null;
+  }
+
   const currentStyles = state.data.css[currentClassName] || {};
 
   const defaultStyles = {
