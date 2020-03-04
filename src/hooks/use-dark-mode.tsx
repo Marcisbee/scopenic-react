@@ -22,7 +22,7 @@ export const useDarkMode = () => {
   return [enabled, setEnabledState];
 };
 
-const usePrefersDarkMode = () => {
+const usePrefersDarkMode = (): boolean => {
   return useMedia(['(prefers-color-scheme: dark)'], [true], false);
 };
 
@@ -48,8 +48,8 @@ export const useMedia = (queries: string[], values: any[], defaultValue: any) =>
   return value;
 };
 
-const useLocalStorage = (key: string, initialValue?: any) => {
-  const [storedValue, setStoredValue] = useState(() => {
+const useLocalStorage = (key: string, initialValue?: any): [boolean, (value: any) => void] => {
+  const [storedValue, setStoredValue] = useState<boolean>(() => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
