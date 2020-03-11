@@ -122,7 +122,7 @@ const LeftPanel: React.FC = React.memo(() => {
       </div>
     </div>
   );
-});
+}, () => true);
 
 const plugin: IPluginInterface = {
   'editor.panel.menu': {

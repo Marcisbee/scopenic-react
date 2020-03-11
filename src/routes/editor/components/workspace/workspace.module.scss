@@ -1,7 +1,7 @@
 @import "../../../../assets/scss/variables.scss";
 
 $tabsHeight: 30px;
-$controlsHeight: 30px;
+$controlsHeight: 15px;
 $containerTop: $tabsHeight + $controlsHeight;
 
 .tabs {
@@ -12,8 +12,10 @@ $containerTop: $tabsHeight + $controlsHeight;
 
 .controls {
   display: block;
-  height: $tabsHeight;
+  height: $controlsHeight;
   text-align: center;
+  position: relative;
+  font-size: 0.8rem;
 
   button {
     height: $controlsHeight;
@@ -22,19 +24,37 @@ $containerTop: $tabsHeight + $controlsHeight;
     cursor: pointer;
     background-color: transparent;
     padding: 0 5px;
-    color: #a5b1b6;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    color: transparent;
+    box-shadow: inset 2px 0 0 #202b33, inset -2px 0 0 #202b33;
+    transform: translateX(-50%);
+    max-width: 100%;
 
-    &:hover {
-      color: #7a868b;
+    &:first-child {
+      background-color: #2a3742;
     }
 
-    &:global(.active) {
-      color: $primary-color;
+    &:hover {
+      color: #fff;
+      background-color: #3d4f5e;
     }
 
     i {
       font-size: 16px;
       line-height: $controlsHeight;
+    }
+  }
+
+  &:not(:hover) {
+    button {
+      &:global(.active) {
+        color: #ccc;
+      }
     }
   }
 }

@@ -74,7 +74,7 @@ const Plugin: React.FC<IPluginProps> = React.memo(({ wrapper: Wrapper, scope, sr
       <PluginComponent {...context} />
     </Wrapper>
   );
-}, () => false);
+}, () => true);
 
 export interface IPluginsProps {
   scope: IPluginScopeTypes;

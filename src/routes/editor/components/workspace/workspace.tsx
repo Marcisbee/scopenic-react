@@ -88,11 +88,11 @@ const Workspace = React.memo<any>(() => {
   const [height, setHeight] = useState(900);
 
   const type = useMemo(() => {
-    if (width <= 576 / 2) {
+    if (width <= 375 / 2) {
       return 'mobile';
     }
 
-    if (width <= 992 / 2) {
+    if (width <= 768 / 2) {
       return 'tablet';
     }
 
@@ -111,22 +111,31 @@ const Workspace = React.memo<any>(() => {
 
           <div className={styles.controls}>
             <button
-              onClick={() => setWidth(992 / 2)}
+              onClick={() => setWidth(2000)}
               className={cc({ active: type === 'desktop' })}
+              style={{
+                width: '100%',
+              }}
             >
-              <i className="im im-monitor-o" />
+              Desktop
             </button>
             <button
               onClick={() => setWidth(768 / 2)}
               className={cc({ active: type === 'tablet' })}
+              style={{
+                width: 768,
+              }}
             >
-              <i className="im im-laptop-o" />
+              Tablet - 768px
             </button>
             <button
-              onClick={() => setWidth(576 / 2)}
+              onClick={() => setWidth(375 / 2)}
               className={cc({ active: type === 'mobile' })}
+              style={{
+                width: 375,
+              }}
             >
-              <i className="im im-mobile" />
+              Mobile - 375px
             </button>
           </div>
 
