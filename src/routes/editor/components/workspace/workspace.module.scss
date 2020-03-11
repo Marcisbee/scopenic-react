@@ -31,17 +31,17 @@ $containerTop: $tabsHeight + $controlsHeight;
     width: 100%;
     background-color: transparent;
     color: transparent;
-    box-shadow: inset 2px 0 0 #202b33, inset -2px 0 0 #202b33;
+    box-shadow: inset 2px 0 0 #dbe3e7, inset -2px 0 0 #dbe3e7;
     transform: translateX(-50%);
     max-width: 100%;
 
     &:first-child {
-      background-color: #2a3742;
+      background-color: #c9d0d6;
     }
 
     &:hover {
-      color: #fff;
-      background-color: #3d4f5e;
+      color: #161616;
+      background-color: #b3bdc3;
     }
 
     i {
@@ -53,7 +53,7 @@ $containerTop: $tabsHeight + $controlsHeight;
   &:not(:hover) {
     button {
       &:global(.active) {
-        color: #ccc;
+        color: #333;
       }
     }
   }
@@ -204,6 +204,38 @@ $containerTop: $tabsHeight + $controlsHeight;
 :global(.pt-dark) {
   .tabs {
     background-color: #202529;
+  }
+
+  .controls {
+    button {
+      background-color: transparent;
+      color: transparent;
+      box-shadow: inset 2px 0 0 #202b33, inset -2px 0 0 #202b33;
+      transform: translateX(-50%);
+      max-width: 100%;
+
+      &:first-child {
+        background-color: #2a3742;
+      }
+
+      &:hover {
+        color: #fff;
+        background-color: #3d4f5e;
+      }
+
+      i {
+        font-size: 16px;
+        line-height: $controlsHeight;
+      }
+    }
+
+    &:not(:hover) {
+      button {
+        &:global(.active) {
+          color: #ccc;
+        }
+      }
+    }
   }
 
   .handle {

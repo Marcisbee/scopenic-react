@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 
 import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
+import { ILayerData } from '../../../../utils/vnode-helpers';
 import { EditorStore } from '../../context/editor-context';
 import KnobButtonGroup from '../knob-button-group/knob-button-group';
 import KnobColorInput from '../knob-color-input/knob-color-input';
@@ -22,19 +23,31 @@ const EditorRight: React.FC = () => {
   const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
   const { updateElement, updateStyle, updateStyleProperty } = EditorStore.useStoreActions((s) => s);
 
-  const element = typeof isWorkspacePageActive === 'string'
+  let element: ILayerData = typeof isWorkspacePageActive === 'string'
     && dlv(pages[isWorkspacePageActive], 'children.' + activeElement.path.slice(1).join('.children.'));
-  const currentClassName = (element && element.className) || activeElement.id;
+  const currentClassName = (element && element.className) || (activeElement.id || 'body');
   const realClassName = element && element.className;
 
   const cssDeclarations = useMemo(() => {
     if (!refs.workspace || !refs.workspace.current) {
-      return undefined;
+      return;
     }
 
     const node: HTMLIFrameElement = (refs.workspace.current as any).node;
 
-    if (activeElement.id && node && node.contentDocument) {
+    if (!(node && node.contentDocument)) {
+      return;
+    }
+
+    if (activeElement.id === null) {
+      const el = node.contentDocument.body;
+
+      if (el) {
+        return window.getComputedStyle(el);
+      }
+    }
+
+    if (activeElement.id) {
       const el = realClassName
         ? node.contentDocument.querySelector(`.${currentClassName}`)
         : node.contentDocument.getElementById(currentClassName);
@@ -43,10 +56,10 @@ const EditorRight: React.FC = () => {
         return window.getComputedStyle(el);
       }
     }
-  }, [activeElement.id, activeElement.path.toString(), prefix]);
+  }, [activeElement.id, activeElement.path.toString(), prefix, !!refs.workspace.current]);
 
   if (!element) {
-    return null;
+    element = {} as any;
   }
 
   const currentStyles = (prefix ? (stateCss[currentClassName] as any)[prefix] : stateCss[currentClassName]) || {};

@@ -1,5 +1,5 @@
 import dlv from 'dlv';
-import { Action, action, Computed, computed, createContextStore } from 'easy-peasy';
+import { Action, action, Computed, computed, createContextStore, debug } from 'easy-peasy';
 import { CSSProperties } from 'react';
 
 import { copyVNode } from '../../../utils/copy-vnode';
@@ -440,12 +440,15 @@ export const EditorStore = createContextStore<IEditorState>(
       }),
       updateStyleProperty: action((draft, { id, className, property, value, prefix }) => {
         if (!id) {
-          return;
+          className = 'body';
         }
 
         if (typeof draft.isWorkspacePageActive === 'string') {
           const layers = draft.state.data.pages[draft.isWorkspacePageActive];
-          const style = draft.state.data.css[className || id];
+          const key = (className || id) as string;
+          const style = draft.state.data.css[key] = {
+            ...draft.state.data.css[key],
+          };
 
           if (value !== undefined) {
             const updatedValue = {

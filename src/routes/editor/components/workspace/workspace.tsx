@@ -37,8 +37,12 @@ function buildSelectors(acc: string, [key, value]: [string, CSSProperties]): str
       return buildStyle(all, entry);
     }, '');
 
+  const newKey = key.slice(0, 3) === 'sc-'
+    ? `.${key}`
+    : `${key}`;
+
   return acc
-    .concat(`.${key} {${style}}`)
+    .concat(`${newKey} {${style}}`)
     .concat(
       buildCss(prefixSelectors)
     );
