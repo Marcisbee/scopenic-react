@@ -131,9 +131,9 @@ const KnobSpacingInput: React.FC<IKnobSpacingInputProps> = ({
             <InteractiveNumberInput
               min={min}
               max={max}
-              value={normalised[1].value}
-              metric={normalised[1].metric as any}
-              onChange={(v) => handleValueChange(v, 1)}
+              value={normalised[3].value}
+              metric={normalised[3].metric as any}
+              onChange={(v) => handleValueChange(v, 3)}
               readOnly={readOnly}
             />
           </span>
@@ -141,9 +141,9 @@ const KnobSpacingInput: React.FC<IKnobSpacingInputProps> = ({
             <InteractiveNumberInput
               min={min}
               max={max}
-              value={normalised[2].value}
-              metric={normalised[2].metric as any}
-              onChange={(v) => handleValueChange(v, 2)}
+              value={normalised[1].value}
+              metric={normalised[1].metric as any}
+              onChange={(v) => handleValueChange(v, 1)}
               readOnly={readOnly}
             />
           </span>
@@ -155,9 +155,9 @@ const KnobSpacingInput: React.FC<IKnobSpacingInputProps> = ({
             <InteractiveNumberInput
               min={min}
               max={max}
-              value={normalised[3].value}
-              metric={normalised[3].metric as any}
-              onChange={(v) => handleValueChange(v, 3)}
+              value={normalised[2].value}
+              metric={normalised[2].metric as any}
+              onChange={(v) => handleValueChange(v, 2)}
               readOnly={readOnly}
             />
           </span>

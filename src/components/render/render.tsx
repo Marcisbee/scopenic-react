@@ -82,6 +82,11 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
       </nav>
     );
   },
+  text: ({ text, ...rest }) => {
+    return (
+      <span {...rest}>{text}</span>
+    );
+  },
 };
 
 // const ComponentsCustom: Record<string, React.FC<any>> = {
@@ -252,6 +257,9 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
         localComponent,
         {
           ...props,
+          ref: el,
+          id: data.id,
+          className: [props.className, data.className].filter((a) => !!a).join(' '),
         },
         data.children && data.children.map((childProps, n) => renderChild(childProps, path.concat(String(n)), context)),
       );

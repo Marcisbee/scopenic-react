@@ -18,7 +18,7 @@ const EditorRight: React.FC = () => {
   const stateCss = EditorStore.useStoreState((s) => s.state.data.css);
   const pages = EditorStore.useStoreState((s) => s.state.data.pages);
   const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
-  const { updateElement, updateStyle, updateStylePropery } = EditorStore.useStoreActions((s) => s);
+  const { updateElement, updateStyle, updateStyleProperty } = EditorStore.useStoreActions((s) => s);
 
   const element = typeof isWorkspacePageActive === 'string'
     && dlv(pages[isWorkspacePageActive], 'children.' + activeElement.path.slice(1).join('.children.'));
@@ -94,7 +94,7 @@ const EditorRight: React.FC = () => {
               <select
                 value={currentStyles.fontFamily || defaultStyles.fontFamily}
                 onChange={(e) => {
-                  updateStylePropery({
+                  updateStyleProperty({
                     id: element.id,
                     className: realClassName,
                     property: 'fontFamily',
@@ -121,7 +121,7 @@ const EditorRight: React.FC = () => {
           label="Align"
           value={currentStyles.textAlign || defaultStyles.textAlign}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'textAlign',
@@ -135,7 +135,7 @@ const EditorRight: React.FC = () => {
           min={1}
           value={currentStyles.fontSize || defaultStyles.fontSize}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'fontSize',
@@ -148,7 +148,7 @@ const EditorRight: React.FC = () => {
           min={1}
           value={currentStyles.lineHeight || defaultStyles.lineHeight}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'lineHeight',
@@ -161,7 +161,7 @@ const EditorRight: React.FC = () => {
           label="Text color"
           value={currentStyles.color !== undefined ? currentStyles.color : defaultStyles.color}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'color',
@@ -182,7 +182,7 @@ const EditorRight: React.FC = () => {
           max={1}
           stepSize={0.05}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'opacity',
@@ -199,7 +199,7 @@ const EditorRight: React.FC = () => {
           label="Color"
           value={currentStyles.backgroundColor !== undefined ? currentStyles.backgroundColor : defaultStyles.backgroundColor}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'backgroundColor',
@@ -212,7 +212,7 @@ const EditorRight: React.FC = () => {
           label="Image"
           value={currentStyles.backgroundImage || defaultStyles.backgroundImage}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'backgroundImage',
@@ -239,7 +239,7 @@ const EditorRight: React.FC = () => {
             },
           ]}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'backgroundSize',
@@ -256,7 +256,7 @@ const EditorRight: React.FC = () => {
           label="Color"
           value={currentStyles.borderColor !== undefined ? currentStyles.borderColor : defaultStyles.borderColor}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'borderColor',
@@ -277,7 +277,7 @@ const EditorRight: React.FC = () => {
               <select
                 value={currentStyles.borderStyle || defaultStyles.borderStyle}
                 onChange={(e) => {
-                  updateStylePropery({
+                  updateStyleProperty({
                     id: element.id,
                     className: realClassName,
                     property: 'borderStyle',
@@ -303,7 +303,7 @@ const EditorRight: React.FC = () => {
           min={1}
           value={currentStyles.borderWidth || defaultStyles.borderWidth}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'borderWidth',
@@ -317,7 +317,7 @@ const EditorRight: React.FC = () => {
           min={1}
           value={currentStyles.borderRadius || defaultStyles.borderRadius}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'borderRadius',
@@ -336,7 +336,7 @@ const EditorRight: React.FC = () => {
           min={1}
           value={currentStyles.width || defaultStyles.width}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'width',
@@ -350,7 +350,7 @@ const EditorRight: React.FC = () => {
           min={1}
           value={currentStyles.height || defaultStyles.height}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'height',
@@ -368,7 +368,7 @@ const EditorRight: React.FC = () => {
           label="Margin"
           value={currentStyles.margin || defaultStyles.margin}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'margin',
@@ -383,7 +383,7 @@ const EditorRight: React.FC = () => {
           label="Padding"
           value={currentStyles.padding || defaultStyles.padding}
           onChange={(value) => {
-            updateStylePropery({
+            updateStyleProperty({
               id: element.id,
               className: realClassName,
               property: 'padding',

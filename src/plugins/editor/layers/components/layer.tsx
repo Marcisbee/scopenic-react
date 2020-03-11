@@ -76,7 +76,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
 
   let Icon = ContainerIcon;
 
-  if (layerData.text) {
+  if (layerData.text || layerData.component === 'text') {
     Icon = TypefaceIcon;
   }
 
@@ -84,7 +84,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
     Icon = TypefaceIcon;
   }
 
-  if (layerData.component) {
+  if (layerData.component && layerData.component !== 'text') {
     Icon = ComponentIcon;
   }
 

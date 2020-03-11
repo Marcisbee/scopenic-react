@@ -145,7 +145,20 @@ export interface IEditorState {
   moveElement: Action<IEditorState, { from: string[], to: string[] }>;
 
   updateStyle: Action<IEditorState, { id: string | null, className: string | undefined, style: any }>;
-  updateStylePropery: Action<IEditorState, { id: string | null, className: string | undefined, property: string, value: number | string | null }>;
+  updateStyleProperty: Action<IEditorState, {
+    id: string | null,
+    className: string | undefined,
+    property: string,
+    value: number | string | null,
+    // @TODO: Control `width` with arrows of predefined grid sizes
+    // @TODO: add media queries
+    prefix?: ':hover'
+    | ':active'
+    | ':focus'
+    | '@media only screen and (min-width: 48em)'
+    | '@media only screen and (min-width: 64em)'
+    | '@media only screen and (min-width: 75em)',
+  }>;
 
   setDataset: Action<IEditorState, { data: Record<string, any> }>;
 }
@@ -424,7 +437,7 @@ export const EditorStore = createContextStore<IEditorState>(
           }
         }
       }),
-      updateStylePropery: action((draft, { id, className, property, value }) => {
+      updateStyleProperty: action((draft, { id, className, property, value, prefix }) => {
         if (!id) {
           return;
         }

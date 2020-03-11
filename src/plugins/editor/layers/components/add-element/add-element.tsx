@@ -51,9 +51,12 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: TypefaceIcon,
     text: 'Text block',
     config: {
-      type: 'text',
-      node: 'Lorem ipsum',
-      children: null,
+      type: 'component',
+      node: 'text',
+      text: 'Text',
+      props: {
+        text: 'Lorem Ipsum',
+      },
     },
   },
   {

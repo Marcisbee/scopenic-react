@@ -254,7 +254,7 @@ const Overlay: React.FC = () => {
 
   const initialValues = useMemo(() => target && getComputedStyle(target) || {}, [target, currentPosition]);
 
-  const { updateStylePropery, setActiveElement } = EditorStore.useStoreActions((s) => s);
+  const { updateStyleProperty, setActiveElement } = EditorStore.useStoreActions((s) => s);
 
   const [marginTop, setMarginTop] = React.useState(parseInt(initialValues.marginTop, 10));
   const [marginBottom, setMarginBottom] = React.useState(parseInt(initialValues.marginBottom, 10));
@@ -313,7 +313,7 @@ const Overlay: React.FC = () => {
       return;
     }
 
-    updateStylePropery({
+    updateStyleProperty({
       id: data.id,
       className: data.className,
       property,
