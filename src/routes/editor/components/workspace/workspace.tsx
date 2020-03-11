@@ -24,9 +24,24 @@ function buildStyle(acc: string, [key, value]: [string, string]): string {
 }
 
 function buildSelectors(acc: string, [key, value]: [string, CSSProperties]): string {
-  const style = Object.entries(value).reduce(buildStyle, '');
+  const prefixSelectors: any = {};
+  const style = Object.entries(value)
+    .reduce((all, entry) => {
+      if (entry[0][0] === ':' || entry[0][0] === '@') {
+        const name = `${key}${entry[0]}`;
+        prefixSelectors[name] = entry[1];
 
-  return acc.concat(`.${key} {${style}}`);
+        return all;
+      }
+
+      return buildStyle(all, entry);
+    }, '');
+
+  return acc
+    .concat(`.${key} {${style}}`)
+    .concat(
+      buildCss(prefixSelectors)
+    );
 }
 
 function buildCss(css: Record<string, CSSProperties>): string {
@@ -171,7 +186,7 @@ const Workspace = React.memo<any>(() => {
                 </div>
               )}
 
-              {overlayContext.element && <Overlay />}
+              {/* {overlayContext.element && <Overlay />} */}
             </Frame>
 
             {/* <ResizeHandlers setWidth={setWidth} setHeight={setHeight} /> */}

@@ -155,63 +155,63 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
   const [, setOverlayContext] = useOverlayContext();
   const dataset = EditorStore.useStoreState((s) => s.dataset);
 
-  useEffect(() => {
-    if (el.current && isNode(data)) {
-      const handleHover = (e: MouseEvent) => {
-        const isRenderedElement = el.current === e.target;
+  // useEffect(() => {
+  //   if (el.current && isNode(data)) {
+  //     const handleHover = (e: MouseEvent) => {
+  //       const isRenderedElement = el.current === e.target;
 
-        if (!isRenderedElement) {
-          return true;
-        }
+  //       if (!isRenderedElement) {
+  //         return true;
+  //       }
 
-        e.stopPropagation();
-        e.preventDefault();
+  //       e.stopPropagation();
+  //       e.preventDefault();
 
-        const node = e.target as HTMLElement;
+  //       const node = e.target as HTMLElement;
 
-        if (!node) {
-          return;
-        }
+  //       if (!node) {
+  //         return;
+  //       }
 
-        const boundingClientRect = node.getBoundingClientRect();
+  //       const boundingClientRect = node.getBoundingClientRect();
 
-        if (refs.overlayElement) {
-          Object.assign(
-            refs.overlayElement,
-            el,
-          );
-        }
+  //       if (refs.overlayElement) {
+  //         Object.assign(
+  //           refs.overlayElement,
+  //           el,
+  //         );
+  //       }
 
-        setOverlayContext((draft) => {
-          draft.element = {
-            id: data.id,
-            node: data.node,
-            className: data.className,
-            path,
-          };
+  //       setOverlayContext((draft) => {
+  //         draft.element = {
+  //           id: data.id,
+  //           node: data.node,
+  //           className: data.className,
+  //           path,
+  //         };
 
-          draft.position = {
-            x: boundingClientRect.x,
-            y: boundingClientRect.y,
-            top: boundingClientRect.top,
-            left: boundingClientRect.left,
-            right: boundingClientRect.right,
-            bottom: boundingClientRect.bottom,
-            width: boundingClientRect.width,
-            height: boundingClientRect.height,
-          };
-        });
-      };
+  //         draft.position = {
+  //           x: boundingClientRect.x,
+  //           y: boundingClientRect.y,
+  //           top: boundingClientRect.top,
+  //           left: boundingClientRect.left,
+  //           right: boundingClientRect.right,
+  //           bottom: boundingClientRect.bottom,
+  //           width: boundingClientRect.width,
+  //           height: boundingClientRect.height,
+  //         };
+  //       });
+  //     };
 
-      el.current.addEventListener('mouseenter', handleHover, {});
+  //     el.current.addEventListener('mouseenter', handleHover, {});
 
-      return () => {
-        if (el.current) {
-          el.current.removeEventListener('mouseenter', handleHover);
-        }
-      };
-    }
-  }, []);
+  //     return () => {
+  //       if (el.current) {
+  //         el.current.removeEventListener('mouseenter', handleHover);
+  //       }
+  //     };
+  //   }
+  // }, []);
 
   if (!isRepeated && data.dataset && data.dataset.path) {
     const repeatSet = dataset[data.dataset.path];

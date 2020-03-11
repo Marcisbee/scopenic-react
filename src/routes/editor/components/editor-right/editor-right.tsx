@@ -1,5 +1,6 @@
+import cc from 'classcat';
 import dlv from 'dlv';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
@@ -13,6 +14,7 @@ import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
 
 const EditorRight: React.FC = () => {
+  const [prefix, setPrefix] = useState<null | ':hover' | ':active' | ':focus'>(null);
   const refs = useRefsContext();
   const activeElement = EditorStore.useStoreState((s) => s.state.activeElement);
   const stateCss = EditorStore.useStoreState((s) => s.state.data.css);
@@ -41,13 +43,13 @@ const EditorRight: React.FC = () => {
         return window.getComputedStyle(el);
       }
     }
-  }, [activeElement.id, activeElement.path.toString()]);
+  }, [activeElement.id, activeElement.path.toString(), prefix]);
 
   if (!element) {
     return null;
   }
 
-  const currentStyles = stateCss[currentClassName] || {};
+  const currentStyles = (prefix ? (stateCss[currentClassName] as any)[prefix] : stateCss[currentClassName]) || {};
 
   const defaultStyles = {
     backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
@@ -79,6 +81,47 @@ const EditorRight: React.FC = () => {
     <div>
       <br />
       <br />
+
+      <label className="pt-small">
+        <div className="pt-button-group" style={{ padding: 6, textAlign: 'center' }}>
+          {[
+            {
+              text: 'none',
+              value: null,
+            },
+            {
+              text: ':hover',
+              value: ':hover',
+            },
+            {
+              text: ':active',
+              value: ':active',
+            },
+            {
+              text: ':focus',
+              value: ':focus',
+            },
+          ].map(({ text, value }) => (
+            <a
+              key={text}
+              className={cc([
+                'pt-button',
+                (prefix === value)
+                && 'pt-intent-primary',
+              ])}
+              role="button"
+              onClick={() => {
+                if (setPrefix) {
+                  setPrefix(value as any);
+                }
+              }}
+            >
+              {text}
+            </a>
+          ))}
+        </div>
+      </label>
+
       <KnobsBlock
         title="Text format"
       >
@@ -95,6 +138,7 @@ const EditorRight: React.FC = () => {
                 value={currentStyles.fontFamily || defaultStyles.fontFamily}
                 onChange={(e) => {
                   updateStyleProperty({
+                    prefix,
                     id: element.id,
                     className: realClassName,
                     property: 'fontFamily',
@@ -122,6 +166,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.textAlign || defaultStyles.textAlign}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'textAlign',
@@ -136,6 +181,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.fontSize || defaultStyles.fontSize}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'fontSize',
@@ -149,6 +195,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.lineHeight || defaultStyles.lineHeight}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'lineHeight',
@@ -162,6 +209,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.color !== undefined ? currentStyles.color : defaultStyles.color}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'color',
@@ -183,6 +231,7 @@ const EditorRight: React.FC = () => {
           stepSize={0.05}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'opacity',
@@ -200,6 +249,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.backgroundColor !== undefined ? currentStyles.backgroundColor : defaultStyles.backgroundColor}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'backgroundColor',
@@ -213,6 +263,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.backgroundImage || defaultStyles.backgroundImage}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'backgroundImage',
@@ -240,6 +291,7 @@ const EditorRight: React.FC = () => {
           ]}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'backgroundSize',
@@ -257,6 +309,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.borderColor !== undefined ? currentStyles.borderColor : defaultStyles.borderColor}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'borderColor',
@@ -278,6 +331,7 @@ const EditorRight: React.FC = () => {
                 value={currentStyles.borderStyle || defaultStyles.borderStyle}
                 onChange={(e) => {
                   updateStyleProperty({
+                    prefix,
                     id: element.id,
                     className: realClassName,
                     property: 'borderStyle',
@@ -304,6 +358,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.borderWidth || defaultStyles.borderWidth}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'borderWidth',
@@ -318,6 +373,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.borderRadius || defaultStyles.borderRadius}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'borderRadius',
@@ -337,6 +393,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.width || defaultStyles.width}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'width',
@@ -351,6 +408,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.height || defaultStyles.height}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'height',
@@ -369,6 +427,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.margin || defaultStyles.margin}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'margin',
@@ -384,6 +443,7 @@ const EditorRight: React.FC = () => {
           value={currentStyles.padding || defaultStyles.padding}
           onChange={(value) => {
             updateStyleProperty({
+              prefix,
               id: element.id,
               className: realClassName,
               property: 'padding',

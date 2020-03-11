@@ -4,7 +4,7 @@ import React from 'react';
 interface IKnobButtonGroupProps {
   label?: string;
   value?: number | string;
-  options?: Array<{ text: string, value: string | number }>;
+  options?: { text: string, value: string | number }[];
   readOnly?: boolean;
   onChange?: (value: any) => void;
 }

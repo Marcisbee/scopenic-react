@@ -151,10 +151,11 @@ export interface IEditorState {
     property: string,
     value: number | string | null,
     // @TODO: Control `width` with arrows of predefined grid sizes
-    // @TODO: add media queries
-    prefix?: ':hover'
+    prefix: null
+    | ':hover'
     | ':active'
     | ':focus'
+    // @TODO: add media queries
     | '@media only screen and (min-width: 48em)'
     | '@media only screen and (min-width: 64em)'
     | '@media only screen and (min-width: 75em)',
@@ -444,16 +445,29 @@ export const EditorStore = createContextStore<IEditorState>(
 
         if (typeof draft.isWorkspacePageActive === 'string') {
           const layers = draft.state.data.pages[draft.isWorkspacePageActive];
-          const style = draft.state.data.css[className || id] = {
-            ...draft.state.data.css[className || id],
-          };
+          const style = draft.state.data.css[className || id];
 
           if (value !== undefined) {
-            Object.assign(style, {
+            const updatedValue = {
               [property as string]: value,
-            });
+            };
+
+            if (prefix) {
+              if (!(style as any)[prefix]) {
+                (style as any)[prefix] = {};
+              }
+              Object.assign((style as any)[prefix], updatedValue);
+            } else {
+              Object.assign(style, updatedValue);
+            }
           } else {
-            delete (style as any)[property];
+            if (prefix) {
+              if ((style as any)[prefix]) {
+                delete (style as any)[prefix][property];
+              }
+            } else {
+              delete (style as any)[property];
+            }
           }
 
           if (className) {
