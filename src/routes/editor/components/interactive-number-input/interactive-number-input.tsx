@@ -10,10 +10,11 @@ interface IInteractiveNumberInputProps {
   metric?: '%' | 'px' | 'rem' | 'em' | 'vw' | 'vh';
   readOnly?: boolean;
   onChange?: (value: string) => void;
+  whitelist?: string[];
 }
 
-function separateValueFromMetric(data: string | number) {
-  if (typeof data === 'number' || data === 'auto') {
+function separateValueFromMetric(data: string | number, whitelist: string[]) {
+  if (typeof data === 'number' || whitelist.indexOf(data) !== -1) {
     return {
       value: data,
     };
@@ -35,8 +36,9 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
   metric: defaultMetric,
   onChange,
   readOnly,
+  whitelist = ['auto'],
 }) => {
-  const normalised = separateValueFromMetric(defaultValue);
+  const normalised = separateValueFromMetric(defaultValue, whitelist);
   const value = normalised.value;
   const metric = defaultMetric || normalised.metric || 'px';
 
@@ -98,15 +100,15 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
     const {
       value: currentValue,
       metric: currentMetric,
-    } = separateValueFromMetric(beforeValue);
+    } = separateValueFromMetric(beforeValue, whitelist);
     let newValue: number | undefined;
 
     if (direction === 'up') {
-      newValue = Math.min(max, parseInt(currentValue as string, 10) + modifier);
+      newValue = Math.min(max, (parseInt(currentValue as string, 10) || 0) + modifier);
     }
 
     if (direction === 'down') {
-      newValue = Math.max(min, parseInt(currentValue as string, 10) - modifier);
+      newValue = Math.max(min, (parseInt(currentValue as string, 10) || 0) - modifier);
     }
 
     if (newValue !== undefined && onChange) {
@@ -123,7 +125,8 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
   }
 
   function validateValue(inputValue: string | number): boolean {
-    const valid = /^(\-?\d+(\.\d+)?(px|rem|em|%|vw|vh)|auto)$/.test(String(inputValue));
+    const valid = /^\-?\d+(\.\d+)?(px|rem|em|%|vw|vh)$/.test(String(inputValue))
+      || new RegExp(`^${whitelist.join('|')}$`).test(String(inputValue));
 
     if (selfRef.current) {
       selfRef.current.value = String(inputValue);

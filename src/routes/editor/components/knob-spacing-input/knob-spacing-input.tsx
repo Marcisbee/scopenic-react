@@ -9,6 +9,7 @@ interface IKnobSpacingInputProps {
   value?: number | string;
   readOnly?: boolean;
   onChange?: (value: any) => void;
+  whitelist?: string[];
 }
 
 interface IValueProp {
@@ -16,8 +17,8 @@ interface IValueProp {
   metric: string;
 }
 
-function separateValueFromMetric(data: string | number): IValueProp {
-  if (typeof data === 'number' || data === 'auto') {
+function separateValueFromMetric(data: string | number, whitelist: string[]): IValueProp {
+  if (typeof data === 'number' || whitelist.indexOf(data) !== -1) {
     return {
       value: data,
       metric: 'px',
@@ -33,10 +34,10 @@ function separateValueFromMetric(data: string | number): IValueProp {
   };
 }
 
-const extractSeparateValues = (value: string): [IValueProp, IValueProp, IValueProp, IValueProp] => {
+const extractSeparateValues = (value: string, whitelist: string[]): [IValueProp, IValueProp, IValueProp, IValueProp] => {
   const values = value.split(' ');
   const [top, right, bottom, left] = values.map((val) => {
-    return separateValueFromMetric(val);
+    return separateValueFromMetric(val, whitelist);
   });
 
   if (values.length < 2) {
@@ -81,8 +82,9 @@ const KnobSpacingInput: React.FC<IKnobSpacingInputProps> = ({
   value: defaultValue = '0 0 0 0',
   onChange,
   readOnly,
+  whitelist = ['auto'],
 }) => {
-  const normalised = extractSeparateValues(String(defaultValue));
+  const normalised = extractSeparateValues(String(defaultValue), whitelist);
 
   const handleValueChange = (value: string, index: number) => {
     if (!onChange) {
@@ -91,7 +93,7 @@ const KnobSpacingInput: React.FC<IKnobSpacingInputProps> = ({
 
     const newValue = normalised
       .map((val, i) => {
-        if (i === index || val.value === 'auto') {
+        if (i === index || whitelist.indexOf(val.value as string) !== -1) {
           return value;
         }
 
