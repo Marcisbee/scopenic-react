@@ -1,7 +1,7 @@
 // tslint:disable-next-line: no-implicit-dependencies
 import React from 'react';
 
-export = {
+export default {
   'dashboard.panel.menu': (): React.ReactNode => {
     // console.log('got loaded');
     // "translate" was a service this plugin consumes

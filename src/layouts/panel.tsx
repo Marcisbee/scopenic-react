@@ -41,7 +41,7 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
       <div className={styles.sidebar}>
         <div className={styles.logo}>
           <Link to="/projects">
-            <img src={require('../assets/images/logo.png')} alt="Scopenic" />
+            <img src={'/resources/' + require('../assets/images/logo.png')} alt="Scopenic" />
           </Link>
         </div>
 

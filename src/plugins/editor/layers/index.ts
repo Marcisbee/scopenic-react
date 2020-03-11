@@ -1,3 +1,3 @@
 import layersPlugin from './layers';
 
-export = layersPlugin;
+export default layersPlugin;

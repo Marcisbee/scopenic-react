@@ -1,3 +1,3 @@
 import datasetPlugin from './dataset';
 
-export = datasetPlugin;
+export default datasetPlugin;

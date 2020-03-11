@@ -1,1 +1,3 @@
-export { default } from './settings-security';
+import SettingsSecurity from './settings-security';
+
+export default SettingsSecurity;

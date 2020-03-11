@@ -87,4 +87,4 @@ const plugin: IPluginInterface = {
   },
 };
 
-export = plugin;
+export default plugin;

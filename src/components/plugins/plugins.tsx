@@ -27,6 +27,10 @@ export interface IPluginInterface {
   'editor.panel.right'?: IPluginConfig;
 }
 
+export interface IPluginModule {
+  default: IPluginInterface;
+}
+
 interface IPluginProps {
   wrapper?: React.FC<{ config: Record<string, any> }>;
   scope: IPluginScopeTypes;
@@ -34,7 +38,7 @@ interface IPluginProps {
 }
 
 const Plugin: React.FC<IPluginProps> = React.memo(({ wrapper: Wrapper, scope, src }) => {
-  const [result, error, state] = usePromise<IPluginInterface>(src, [scope, src]);
+  const [result, error, state] = usePromise<IPluginModule>(src, [scope, src]);
 
   if (error) {
     // tslint:disable-next-line: no-console
@@ -45,7 +49,7 @@ const Plugin: React.FC<IPluginProps> = React.memo(({ wrapper: Wrapper, scope, sr
     return <Suspend />;
   }
 
-  const pluginConfig = result && result[scope];
+  const pluginConfig = result && result.default && result.default[scope];
 
   if (!pluginConfig) {
     return null;
