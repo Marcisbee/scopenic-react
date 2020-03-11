@@ -13,7 +13,7 @@ interface IInteractiveNumberInputProps {
 }
 
 function separateValueFromMetric(data: string | number) {
-  if (typeof data === 'number') {
+  if (typeof data === 'number' || data === 'auto') {
     return {
       value: data,
     };
@@ -102,11 +102,11 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
     let newValue: number | undefined;
 
     if (direction === 'up') {
-      newValue = Math.min(max, currentValue + modifier);
+      newValue = Math.min(max, parseInt(currentValue as string, 10) + modifier);
     }
 
     if (direction === 'down') {
-      newValue = Math.max(min, currentValue - modifier);
+      newValue = Math.max(min, parseInt(currentValue as string, 10) - modifier);
     }
 
     if (newValue !== undefined && onChange) {
@@ -123,7 +123,7 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
   }
 
   function validateValue(inputValue: string | number): boolean {
-    const valid = /^\-?\d+(\.\d+)?(px|rem|em|%|vw|vh)$/.test(String(inputValue));
+    const valid = /^(\-?\d+(\.\d+)?(px|rem|em|%|vw|vh)|auto)$/.test(String(inputValue));
 
     if (selfRef.current) {
       selfRef.current.value = String(inputValue);
@@ -157,8 +157,11 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
   }, []);
 
   useEffect(() => {
-    validateValue(`${value}${metric}`);
+    const valueToValidate = typeof value === 'string' ? value : `${value}${metric}`;
+    validateValue(valueToValidate);
   }, [value, metric]);
+
+  const valueToShow = typeof value === 'string' ? value : `${value}${metric}`;
 
   return (
     <span className="pt-small pt-control-group pt-fill">
@@ -179,7 +182,7 @@ const InteractiveNumberInput: React.FC<IInteractiveNumberInputProps> = ({
             'pt-input',
             isInvalid && 'pt-intent-danger',
           ])}
-          defaultValue={`${value}${metric}`}
+          defaultValue={valueToShow}
           onChange={() => { }}
           onInput={onInput}
           onKeyDown={onKeyDown}

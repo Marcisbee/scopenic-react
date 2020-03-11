@@ -62,7 +62,7 @@ const EditorRight: React.FC = () => {
     element = {} as any;
   }
 
-  const currentStyles = (prefix ? (stateCss[currentClassName] as any)[prefix] : stateCss[currentClassName]) || {};
+  const currentStyles = (prefix ? (stateCss[currentClassName] && (stateCss[currentClassName] as any)[prefix]) : stateCss[currentClassName]) || {};
 
   const defaultStyles = {
     backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,

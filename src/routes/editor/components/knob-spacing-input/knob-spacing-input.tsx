@@ -1,4 +1,3 @@
-import cc from 'classcat';
 import React from 'react';
 
 import InteractiveNumberInput from '../interactive-number-input/interactive-number-input';
@@ -13,12 +12,12 @@ interface IKnobSpacingInputProps {
 }
 
 interface IValueProp {
-  value: number;
+  value: number | string;
   metric: string;
 }
 
 function separateValueFromMetric(data: string | number): IValueProp {
-  if (typeof data === 'number') {
+  if (typeof data === 'number' || data === 'auto') {
     return {
       value: data,
       metric: 'px',
@@ -91,9 +90,13 @@ const KnobSpacingInput: React.FC<IKnobSpacingInputProps> = ({
     }
 
     const newValue = normalised
-      .map((val, i) => (
-        i === index ? value : `${val.value}${val.metric}`
-      ))
+      .map((val, i) => {
+        if (i === index || val.value === 'auto') {
+          return value;
+        }
+
+        return `${val.value}${val.metric}`;
+      })
       .join(' ');
 
     onChange(newValue);
