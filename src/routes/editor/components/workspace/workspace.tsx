@@ -1,5 +1,5 @@
 import cc from 'classcat';
-import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
+import React, { CSSProperties, useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import Frame from 'react-frame-component';
 
 import DragPortal from '../../../../components/drag-portal/drag-portal';
@@ -99,15 +99,17 @@ const ResizeHandlers: React.FC<{
 
 const Workspace = React.memo<any>(() => {
   const refs = useRefsContext();
+  const cssRef = useRef<HTMLStyleElement>();
   const stateCss = EditorStore.useStoreState((s) => s.state.data.css);
   const pages = EditorStore.useStoreState((s) => s.state.data.pages);
   const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
   const [overlayContext] = useOverlayContext();
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(900);
+  const [isFrameLoaded, setIsFrameLoaded] = useState(false);
 
   const type = useMemo(() => {
-    if (width <= 375 / 2) {
+    if (width <= 500 / 2) {
       return 'mobile';
     }
 
@@ -118,7 +120,29 @@ const Workspace = React.memo<any>(() => {
     return 'desktop';
   }, [width]);
 
+  const htmlNodes = useMemo(() => {
+    return typeof isWorkspacePageActive === 'string' && (
+      <div>
+        {pages[isWorkspacePageActive].children.map(
+          (props: any, n: number) => renderChild(props, [String(n)]),
+        )}
+      </div>
+    );
+  }, [isWorkspacePageActive, JSON.stringify(pages[isWorkspacePageActive as any].children)]);
+
   const css = buildCss(stateCss);
+  useEffect(() => {
+    if (cssRef.current) {
+      cssRef.current.innerHTML = buildCss(stateCss);
+    }
+  }, [isFrameLoaded, css]);
+
+  const handleFrameLoaded = useCallback(() => {
+    // Avoid react warning about this being bad practice
+    setTimeout(() => {
+      setIsFrameLoaded(true);
+    }, 0);
+  }, []);
 
   return (
     <div>
@@ -148,13 +172,13 @@ const Workspace = React.memo<any>(() => {
               Tablet - 768px
             </button>
             <button
-              onClick={() => setWidth(375 / 2)}
+              onClick={() => setWidth(500 / 2)}
               className={cc({ active: type === 'mobile' })}
               style={{
-                width: 375,
+                width: 500,
               }}
             >
-              Mobile - 375px
+              Mobile - 500px
             </button>
           </div>
 
@@ -166,7 +190,7 @@ const Workspace = React.memo<any>(() => {
             }}
           >
             {/* https://github.com/ryanseddon/react-frame-component */}
-            <Frame ref={refs.workspace}>
+            <Frame ref={refs.workspace} onLoad={handleFrameLoaded}>
               <link
                 rel="stylesheet"
                 href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -180,15 +204,9 @@ const Workspace = React.memo<any>(() => {
                   }
                 `}
               </style>
-              <style>{css}</style>
+              <style ref={cssRef as any} />
 
-              {typeof isWorkspacePageActive === 'string' && (
-                <div>
-                  {pages[isWorkspacePageActive].children.map(
-                    (props: any, n: number) => renderChild(props, [String(n)]),
-                  )}
-                </div>
-              )}
+              {htmlNodes}
 
               {/* {overlayContext.element && <Overlay />} */}
             </Frame>

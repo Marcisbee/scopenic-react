@@ -13,8 +13,8 @@ interface IRenderProps {
   isRepeated?: boolean;
 }
 
-const ComponentsLocal: Record<string, React.FC<any>> = {
-  header: ({ children }) => {
+const ComponentsLocal: Record<string, React.RefForwardingComponent<HTMLElement, any>> = {
+  header: ({ children }, ref) => {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">Navbar</a>
@@ -54,7 +54,7 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
       </nav>
     );
   },
-  card: ({ title, text, width, children }) => {
+  card: ({ title, text, width, children }, ref) => {
     return (
       <div className="card" style={{ width: width || '18rem' }}>
         <div className="card-body">
@@ -65,7 +65,7 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
       </div>
     );
   },
-  pagination: ({ children }) => {
+  pagination: ({ children }, ref) => {
     return (
       <nav aria-label="Page navigation example">
         <ul className="pagination justify-content-center">
@@ -82,9 +82,9 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
       </nav>
     );
   },
-  text: ({ text, ...rest }) => {
+  text: ({ text, ...rest }, ref) => {
     return (
-      <span {...rest}>{text}</span>
+      <span ref={ref} {...rest}>{text}</span>
     );
   },
 };
@@ -150,7 +150,7 @@ const ComponentsLocal: Record<string, React.FC<any>> = {
 // };
 
 const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => {
-  const el = useRef<HTMLElement | null>(null);
+  const el = useRef<HTMLElement>(null);
   const refs = useRefsContext();
   const [, setOverlayContext] = useOverlayContext();
   const dataset = EditorStore.useStoreState((s) => s.dataset);
@@ -253,8 +253,9 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
     }, {});
 
     if (!!localComponent) {
+      const htmlElement = React.forwardRef(localComponent);
       return React.createElement(
-        localComponent,
+        htmlElement,
         {
           ...props,
           ref: el,

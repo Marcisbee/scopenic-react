@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
-import jsondiffpatch from '@as-com/jsondiffpatch';
+import * as jsondiffpatch from '@as-com/jsondiffpatch/dist/jsondiffpatch.cjs';
 import cc from 'classcat';
 import React, { useEffect, useState } from 'react';
 
