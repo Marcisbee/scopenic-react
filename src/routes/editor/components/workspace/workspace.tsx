@@ -122,13 +122,16 @@ const Workspace = React.memo<any>(() => {
 
   const htmlNodes = useMemo(() => {
     return typeof isWorkspacePageActive === 'string' && (
-      <div>
+      <div onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}>
         {pages[isWorkspacePageActive].children.map(
           (props: any, n: number) => renderChild(props, [String(n)]),
         )}
       </div>
     );
-  }, [isWorkspacePageActive, JSON.stringify(pages[isWorkspacePageActive as any].children)]);
+  }, [isWorkspacePageActive, pages[isWorkspacePageActive as any] && JSON.stringify(pages[isWorkspacePageActive as any].children)]);
 
   const css = buildCss(stateCss);
   useEffect(() => {

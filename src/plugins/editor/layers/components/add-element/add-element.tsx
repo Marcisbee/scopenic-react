@@ -48,6 +48,18 @@ const ELEMENTS_LIST: IElementNode[] = [
     },
   },
   {
+    icon: ContainerIcon,
+    text: 'Grid',
+    config: {
+      type: 'component',
+      node: 'grid',
+      text: 'Grid',
+      props: {
+        children: [],
+      },
+    },
+  },
+  {
     icon: TypefaceIcon,
     text: 'Text block',
     config: {

@@ -87,6 +87,11 @@ const ComponentsLocal: Record<string, React.RefForwardingComponent<HTMLElement, 
       <span ref={ref} {...rest}>{text}</span>
     );
   },
+  grid: ({ children, ...rest }, ref) => {
+    return (
+      <div ref={ref} {...rest} style={{ display: 'flex' }}>{children}</div>
+    );
+  },
 };
 
 // const ComponentsCustom: Record<string, React.FC<any>> = {
@@ -279,9 +284,6 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
       };
     }, {});
 
-    if (data.node === 'img') {
-      return <>Image: {data.node}</>;
-    }
 
     return React.createElement(
       data.node,

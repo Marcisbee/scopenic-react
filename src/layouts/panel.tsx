@@ -131,6 +131,6 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
       </div>
     </div>
   );
-}, () => true);
+}, () => false);
 
 export default PanelLayout;

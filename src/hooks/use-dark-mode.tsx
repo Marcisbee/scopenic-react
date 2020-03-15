@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useDarkMode = () => {
+export const useDarkMode = (): [boolean, (value: any) => void] => {
   const [enabledState, setEnabledState] = useLocalStorage('dark-mode-enabled');
   const prefersDarkMode = usePrefersDarkMode();
   const enabled =
