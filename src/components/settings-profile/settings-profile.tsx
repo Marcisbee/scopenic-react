@@ -153,7 +153,7 @@ const SettingsProfile: React.FC = () => {
                 return (
                   <AvatarUpload
                     current={values.avatar}
-                    userName={`${values.first_name} ${values.last_name}`}
+                    userName={`${defaultValues.first_name} ${defaultValues.last_name}`}
                     onSetAvatar={async (avatarUrl) => {
                       await setValue('avatar', avatarUrl);
                     }}
