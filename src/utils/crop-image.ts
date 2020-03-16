@@ -48,4 +48,5 @@ export async function cropImage(imageSrc: string, pixelCrop: Record<string, any>
 
   // As Base64 string
   return canvas.toDataURL('image/jpeg');
+  return new Promise((resolve) => canvas.toBlob(resolve));
 }

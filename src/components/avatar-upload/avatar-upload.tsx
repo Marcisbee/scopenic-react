@@ -39,10 +39,19 @@ const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, userName, onSetAv
         croppedPixels,
       );
 
-      if (croppedImage) {
-        closeModal();
-        onSetAvatar(croppedImage);
-      }
+      const formData = new FormData();
+
+      formData.append('image', croppedImage);
+
+      fetch(`http://localhost:8080/images/upload`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then(res => res.json())
+        .then(response => {
+          closeModal();
+          onSetAvatar(`http://localhost:8080${response.path}`);
+        });
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error(e);
