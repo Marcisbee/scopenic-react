@@ -96,10 +96,8 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
             <Plugins
               scope="editor.panel.menu"
               src={enabledPlugins}
-            // render={renderPlugins}
-            >
-              {renderPlugins}
-            </Plugins>
+              render={renderPlugins}
+            />
           </ul>
         )}
 
