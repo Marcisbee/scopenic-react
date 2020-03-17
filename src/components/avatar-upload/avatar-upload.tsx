@@ -14,7 +14,7 @@ interface IAvatarUploadProps {
 }
 
 const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, userName, onSetAvatar }) => {
-  const [image, setImage] = useState();
+  const [image, setImage] = useState<string>();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedPixels, setCroppedPixels] = useState();
@@ -100,7 +100,7 @@ const AvatarUpload: React.FC<IAvatarUploadProps> = ({ current, userName, onSetAv
   );
 };
 
-function readFile(file: Blob) {
+function readFile(file: Blob): Promise<string | undefined> {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => resolve(reader.result), false);

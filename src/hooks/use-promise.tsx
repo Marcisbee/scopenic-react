@@ -43,17 +43,24 @@ function reducer(state: any, action: any) {
   }
 }
 
+const fulfilledPromises: Record<string, any> = {};
+
 export function usePromise<T = undefined>(
   promise: ((() => Promise<T>) | Promise<T>),
   inputs?: any,
 ): [T | undefined, Error | undefined, 'pending' | 'fulfilled' | 'rejected'] {
+  const cached = fulfilledPromises[String(inputs)];
   const [{ error, result, state }, dispatch] = useReducer(reducer, {
     error: undefined,
-    result: undefined,
-    state: states.pending,
+    result: cached,
+    state: !!cached ? states.resolved : states.pending,
   });
 
   useLayoutEffect(() => {
+    if (state === states.resolved) {
+      return;
+    }
+
     promise = resolvePromise(promise) as Promise<T>;
 
     if (!promise) {
@@ -65,10 +72,17 @@ export function usePromise<T = undefined>(
     dispatch({ type: states.pending });
 
     promise.then(
-      (res) => !canceled && dispatch({
-        payload: res,
-        type: states.resolved,
-      }),
+      (res) => {
+        if (canceled) {
+          return;
+        }
+
+        fulfilledPromises[String(inputs)] = res;
+        dispatch({
+          payload: res,
+          type: states.resolved,
+        });
+      },
       (err) => !canceled && dispatch({
         payload: err,
         type: states.rejected,

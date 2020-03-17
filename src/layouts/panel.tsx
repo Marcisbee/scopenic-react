@@ -25,6 +25,7 @@ const enabledPlugins = {
   // 'hello-world': () => import('../plugins/panel/hello-world'),
   'layers': () => import('../plugins/editor/layers'),
   'dataset': () => import('../plugins/editor/dataset'),
+  'commitHistory': () => import('../plugins/editor/commit-history'),
 };
 
 const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
@@ -32,9 +33,28 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
   children,
 }) => {
   const panelLeftActive = UiStore.useStoreState((s) => s.panel.left.active);
-  const { setPanelLeftActive } = UiStore.useStoreActions((s) => s);
+  const setPanelLeftActive = UiStore.useStoreActions((s) => s.setPanelLeftActive);
   const { user, signout } = useAuth();
   const [darkMode, setDarkMode] = useDarkMode();
+
+  const renderPlugins: React.FC<{ config: Record<string, any> }> = React.memo(({
+    config: pluginConfig,
+    children: child,
+  }) => {
+    return (
+      <li>
+        <span
+          className={cc([
+            panelLeftActive === pluginConfig.action && styles.menuActive,
+          ])}
+          onClick={() => setPanelLeftActive(pluginConfig.action)}
+        >
+          <ScopeShape className={styles.menuIconBg} />
+          {child}
+        </span>
+      </li>
+    );
+  });
 
   return (
     <div className={styles.panel} style={{ minWidth: type === 'editor' ? 1100 : '100%' }}>
@@ -76,20 +96,10 @@ const PanelLayout: React.FC<{ type: 'dashboard' | 'editor' }> = React.memo(({
             <Plugins
               scope="editor.panel.menu"
               src={enabledPlugins}
-              render={({ config: pluginConfig, children: child }) => (
-                <li>
-                  <span
-                    className={cc([
-                      panelLeftActive === pluginConfig.action && styles.menuActive,
-                    ])}
-                    onClick={() => setPanelLeftActive(pluginConfig.action)}
-                  >
-                    <ScopeShape className={styles.menuIconBg} />
-                    {child}
-                  </span>
-                </li>
-              )}
-            />
+            // render={renderPlugins}
+            >
+              {renderPlugins}
+            </Plugins>
           </ul>
         )}
 

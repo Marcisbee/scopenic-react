@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
+// @ts-ignore
 import * as jsondiffpatch from '@as-com/jsondiffpatch/dist/jsondiffpatch.cjs';
 import cc from 'classcat';
 import React, { useEffect, useState } from 'react';
@@ -23,11 +24,13 @@ import styles from './editor-left.module.scss';
 //   'dataset': () => import('../../../../plugins/editor/dataset'),
 // };
 
+import commitHistory from '../../../../plugins/editor/commit-history';
 import dataset from '../../../../plugins/editor/dataset';
 import layers from '../../../../plugins/editor/layers';
 
-const LayersPlugin = (layers['editor.panel.left'] as any).render;
+const CommitHistoryPlugin = (commitHistory['editor.panel.left'] as any).render;
 const DatasetPlugin = (dataset['editor.panel.left'] as any).render;
+const LayersPlugin = (layers['editor.panel.left'] as any).render;
 
 const createJsonDiff = (jsondiffpatch as any).create({
   cloneDiffValues: false,
@@ -135,6 +138,9 @@ const EditorLeft: React.FC = () => {
         )}
         {panelLeftActive === 'dataset' && (
           <DatasetPlugin />
+        )}
+        {panelLeftActive === 'commitHistory' && (
+          <CommitHistoryPlugin />
         )}
         {/* <Plugins
           scope="editor.panel.left"

@@ -716,6 +716,33 @@ export const TextAlignRight: React.FC<{ className?: string }> = ({ className }) 
   );
 };
 
+export const CommitHistoryIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
+        <g>
+          <path
+            className="primary"
+            fill="#B0A8FF"
+            d="M13.2 11H16a1 1 0 010 2h-4a1 1 0 01-1-1V8a1 1 0 012 0v2.8c0 .11.09.2.2.2z"
+          />
+          <path
+            className="secondary"
+            fill="#594BC8"
+            d="M12 3a9 9 0 11-8.345 12.377 1 1 0 111.854-.75A7.002 7.002 0 0019 12 7 7 0 006.965 7.136l1.863 1.863A.586.586 0 018.414 10H3.586A.586.586 0 013 9.414V4.586a.586.586 0 011-.414l1.55 1.55A8.99 8.99 0 0112 3z"
+          />
+        </g>
+      </g>
+    </svg>
+  );
+};
+
 export const IncreaseDecrease: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg

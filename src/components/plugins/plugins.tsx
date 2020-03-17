@@ -74,7 +74,7 @@ const Plugin: React.FC<IPluginProps> = React.memo(({ wrapper: Wrapper, scope, sr
       <PluginComponent {...context} />
     </Wrapper>
   );
-}, () => true);
+}, () => false);
 
 export interface IPluginsProps {
   scope: IPluginScopeTypes;
@@ -88,7 +88,7 @@ const Plugins: React.FC<IPluginsProps> = ({ scope, render: Render, src }) => {
   return (
     <ErrorBoundary silent={true}>
       {pluginList.map(([key, plugin]) => (
-        <Plugin wrapper={Render} key={`plugin-${key}`} scope={scope} src={plugin} />
+        <Plugin wrapper={Render} key={`plugin-${key}-${scope}`} scope={scope} src={plugin} />
       ))}
     </ErrorBoundary>
   );
