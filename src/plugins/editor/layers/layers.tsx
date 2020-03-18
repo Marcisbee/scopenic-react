@@ -37,7 +37,7 @@ const LeftPanel: React.FC = React.memo(() => {
   const duplicateElement = EditorStore.useStoreActions((a) => a.duplicateElement);
 
   const layers = [
-    createVNode('node', 'body', 'body', undefined, activePage.children),
+    createVNode('node', 'body', 'body', undefined, activePage.children, null, '1', 'body-vnode'),
   ];
 
   const moveLayer = useCallback(

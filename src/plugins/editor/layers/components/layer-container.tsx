@@ -13,20 +13,18 @@ const RenderLayer: React.FC<{ moveLayer: any, path: string[], layer: ILayerData,
 
   if (isRoot) {
     return (
-      <li key={layer.id} className={styles.layerWrapper}>
-        <Layer
-          index={index}
-          path={newPath}
-          moveLayer={moveLayer}
-          isRoot={isRoot}
-          layer={layer}
-        />
-      </li>
+      <Layer
+        index={index}
+        path={newPath}
+        moveLayer={moveLayer}
+        isRoot={isRoot}
+        layer={layer}
+      />
     );
   }
 
   return (
-    <li key={layer.id} className={styles.layerWrapper}>
+    <>
       <DropInBetween
         index={index}
         id={layer.id}
@@ -46,26 +44,25 @@ const RenderLayer: React.FC<{ moveLayer: any, path: string[], layer: ILayerData,
         path={path.concat(String(index + 1))}
         moveLayer={moveLayer}
       />
-    </li>
+    </>
   );
 };
 
-const RenderLayerMemo = React.memo(RenderLayer, (prev, next) => true);
-// const RenderLayerMemo = RenderLayer;
+const RenderLayerMemo = React.memo(RenderLayer);
 
 const LayerContainer: React.FC<{ data: ILayerData[], moveLayer: any, path?: string[] }> = ({ moveLayer, data: layers, path = [] }) => {
   return (
     <ul className={styles.layers}>
       {layers.map((layer, i) => (
-        <RenderLayerMemo
-          key={`render-layer-${layer.id}`}
-          layer={layer}
-          moveLayer={moveLayer}
-          path={path}
-          index={i}
-        />
+        <li key={layer.id} className={styles.layerWrapper}>
+          <RenderLayerMemo
+            layer={layer}
+            moveLayer={moveLayer}
+            path={path}
+            index={i}
+          />
+        </li>
       ))}
-      {/* {layers.map((layer, i) => RenderLayer(layer as any, i))} */}
     </ul>
   );
 };

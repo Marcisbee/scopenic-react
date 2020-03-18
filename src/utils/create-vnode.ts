@@ -10,8 +10,9 @@ export function createVNode(
   children: null | any[] = [],
   dataset: ILayerDataset = null,
   version: string = '1',
+  customId?: string,
 ): ILayerData {
-  const id = `sc-${shortid.generate()}`;
+  const id = customId || `sc-${shortid.generate()}`;
 
   if (type === 'text') {
     return {
