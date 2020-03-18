@@ -25,6 +25,7 @@ const itemStyle = cc([
 
 interface IElementNodeConfig {
   type: 'text' | 'node' | 'component' | 'var';
+  version: string;
   node: string;
   text?: string;
   props?: Record<string, any>;
@@ -42,6 +43,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: ContainerIcon,
     text: 'Container',
     config: {
+      version: '1',
       type: 'node',
       node: 'div',
       text: 'Container',
@@ -51,6 +53,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: ContainerIcon,
     text: 'Grid',
     config: {
+      version: '1',
       type: 'component',
       node: 'grid',
       text: 'Grid',
@@ -63,6 +66,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: TypefaceIcon,
     text: 'Text block',
     config: {
+      version: '1',
       type: 'component',
       node: 'text',
       text: 'Text',
@@ -75,6 +79,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: ImageIcon,
     text: 'Image',
     config: {
+      version: '1',
       type: 'node',
       node: 'img',
       text: 'Image',
@@ -85,6 +90,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: null,
     text: 'Button',
     config: {
+      version: '1',
       type: 'node',
       node: 'button',
       text: 'Button',
@@ -95,6 +101,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: null,
     text: 'Input',
     config: {
+      version: '1',
       type: 'node',
       node: 'input',
       text: 'Input',
@@ -106,6 +113,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: CheckIcon,
     text: 'Checkbox',
     config: {
+      version: '1',
       type: 'node',
       node: 'input',
       text: 'Checkbox',
@@ -117,6 +125,7 @@ const ELEMENTS_LIST: IElementNode[] = [
     icon: TextIcon,
     text: 'Anchor (link)',
     config: {
+      version: '1',
       type: 'node',
       node: 'a',
       text: 'Anchor',
@@ -130,6 +139,7 @@ const COMPONENTS_LIST: IElementNode[] = [
     icon: ComponentIcon,
     text: 'Header',
     config: {
+      version: '1',
       type: 'component',
       node: 'header',
       text: 'Header component',
@@ -139,6 +149,7 @@ const COMPONENTS_LIST: IElementNode[] = [
     icon: ComponentIcon,
     text: 'Pagination',
     config: {
+      version: '1',
       type: 'component',
       node: 'pagination',
       text: 'Pagination component',
@@ -148,6 +159,7 @@ const COMPONENTS_LIST: IElementNode[] = [
     icon: ComponentIcon,
     text: 'Card',
     config: {
+      version: '1',
       type: 'component',
       node: 'card',
       text: 'Card component',
@@ -260,6 +272,8 @@ const AddElement: React.FC<IAddElementProps> = ({
       config.text,
       config.props,
       config.children,
+      null,
+      config.version,
     ));
   }
 

@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 
 import KnobsBlock from '../../../../components/knobs-block';
 import { useRefsContext } from '../../../../utils/refs-context';
-import { ILayerData } from '../../../../utils/vnode-helpers';
+import { ILayerData, isComponent } from '../../../../utils/vnode-helpers';
 import { EditorStore } from '../../context/editor-context';
 import KnobButtonGroup from '../knob-button-group/knob-button-group';
 import KnobColorInput from '../knob-color-input/knob-color-input';
@@ -13,6 +13,92 @@ import NumberInput from '../knob-number-input/knob-number-input';
 import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
+import { ComponentsLocal } from '../../../../components/render/render';
+
+export const allCustomKnobs = [
+  {
+    type: 'textarea',
+    render({ label, value, onChange }) {
+      return (
+        <label className="pt-small row" style={{ marginBottom: 7 }}>
+          <span className="col-xs-4">
+            <span className="knob-label">
+              {label}
+            </span>
+          </span>
+
+          <span className="col-xs-8">
+            <div className="pt-fill">
+              <input
+                type="text"
+                className="pt-input"
+                value={value}
+                onChange={onChange}
+              />
+            </div>
+          </span>
+        </label>
+      );
+    },
+  },
+];
+
+export const allStyleKnobs = [];
+
+const CustomKnobs: React.FC<{ element: ILayerData }> = React.memo(({ element }) => {
+  const updateElementProp = EditorStore.useStoreActions((s) => s.updateElementProp);
+
+  if (!isComponent(element)) {
+    return null;
+  }
+
+  const componentConfig = ComponentsLocal[element.component];
+
+  if (!componentConfig.props.custom) {
+    return null;
+  }
+
+  const customKnobsToRender = Object
+    .entries(componentConfig.props.custom)
+    .reduce((acc, [key, config]) => {
+      const knob = allCustomKnobs.find(({ type }) => type === config.type);
+
+      if (!knob || typeof config !== 'object') {
+        return acc;
+      }
+
+      return [
+        ...acc,
+        {
+          key,
+          type: knob.type,
+          render: knob.render,
+          name: config.name,
+        },
+      ];
+    }, []);
+
+  return (
+    <KnobsBlock
+      title="Component Properties"
+    >
+      {customKnobsToRender.map((knobConfig) => (
+        <div key={`knob-${knobConfig.type}-${knobConfig.key}`}>
+          <knobConfig.render
+            label={knobConfig.name}
+            value={element.props[knobConfig.key]}
+            onChange={(e) => {
+              updateElementProp({
+                property: knobConfig.key,
+                value: e.target.value,
+              });
+            }}
+          />
+        </div>
+      ))}
+    </KnobsBlock>
+  );
+});
 
 const EditorRight: React.FC = () => {
   const [prefix, setPrefix] = useState<null | ':hover' | ':active' | ':focus'>(null);
@@ -21,7 +107,9 @@ const EditorRight: React.FC = () => {
   const stateCss = EditorStore.useStoreState((s) => s.state.data.css);
   const pages = EditorStore.useStoreState((s) => s.state.data.pages);
   const isWorkspacePageActive = EditorStore.useStoreState((s) => s.isWorkspacePageActive);
-  const { updateElement, updateStyle, updateStyleProperty } = EditorStore.useStoreActions((s) => s);
+  const updateElement = EditorStore.useStoreActions((s) => s.updateElement);
+  const updateStyle = EditorStore.useStoreActions((s) => s.updateStyle);
+  const updateStyleProperty = EditorStore.useStoreActions((s) => s.updateStyleProperty);
 
   let element: ILayerData = typeof isWorkspacePageActive === 'string'
     && dlv(pages[isWorkspacePageActive], 'children.' + activeElement.path.slice(1).join('.children.'));
@@ -43,7 +131,7 @@ const EditorRight: React.FC = () => {
       const el = node.contentDocument.body;
 
       if (el) {
-        return window.getComputedStyle(el);
+        return { ...window.getComputedStyle(el) };
       }
     }
 
@@ -53,7 +141,7 @@ const EditorRight: React.FC = () => {
         : node.contentDocument.getElementById(currentClassName);
 
       if (el) {
-        return window.getComputedStyle(el);
+        return { ...window.getComputedStyle(el) };
       }
     }
   }, [activeElement.id, activeElement.path.toString(), prefix, !!refs.workspace.current]);
@@ -90,10 +178,14 @@ const EditorRight: React.FC = () => {
     return null;
   }
 
+  const knobsToRender = [...allStyleKnobs];
+
   return (
     <div>
       <br />
       <br />
+
+      <CustomKnobs element={element} />
 
       <label className="pt-small">
         <div className="pt-button-group" style={{ padding: 6, textAlign: 'center' }}>

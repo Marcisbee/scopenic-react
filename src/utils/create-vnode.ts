@@ -9,12 +9,14 @@ export function createVNode(
   props: Record<string, any> = {},
   children: null | any[] = [],
   dataset: ILayerDataset = null,
+  version: string = '1',
 ): ILayerData {
   const id = `sc-${shortid.generate()}`;
 
   if (type === 'text') {
     return {
       id,
+      version,
       name,
       dataset,
       text: node,
@@ -25,6 +27,7 @@ export function createVNode(
   if (type === 'var') {
     return {
       id,
+      version,
       name,
       dataset,
       var: node,
@@ -35,6 +38,7 @@ export function createVNode(
   if (node === 'img') {
     return {
       id,
+      version,
       name,
       dataset,
       node,
@@ -45,6 +49,7 @@ export function createVNode(
   if (type === 'component') {
     return {
       id,
+      version,
       name,
       dataset,
       component: node,
@@ -55,6 +60,7 @@ export function createVNode(
 
   return {
     id,
+    version,
     name,
     dataset,
     node,

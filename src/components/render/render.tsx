@@ -13,84 +13,122 @@ interface IRenderProps {
   isRepeated?: boolean;
 }
 
-const ComponentsLocal: Record<string, React.RefForwardingComponent<HTMLElement, any>> = {
-  header: ({ children }, ref) => {
-    return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">Navbar</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon" />
-        </button>
+export type ILayerKnobTypes = 'textarea';
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+interface ILocalComponetConfig {
+  render: React.RefForwardingComponent<HTMLElement, any>;
+  props: {
+    css?: boolean;
+    custom?: {
+      [key: string]: {
+        type: ILayerKnobTypes,
+        name: 'Text',
+      };
+    };
+  };
+}
+
+export const ComponentsLocal: Record<string, ILocalComponetConfig> = {
+  header: {
+    render({ children }, ref) {
+      return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a className="navbar-brand" href="#">Navbar</a>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon" />
+          </button>
+
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item active">
+                <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Link</a>
+              </li>
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Dropdown
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a className="dropdown-item" href="#">Action</a>
+                  <a className="dropdown-item" href="#">Another action</a>
+                  <div className="dropdown-divider" />
+                  <a className="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link disabled" href="#" tabIndex={-1} aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            {children}
+            <form className="form-inline my-2 my-lg-0">
+              <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+              <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
+        </nav>
+      );
+    },
+    props: {},
+  },
+  card: {
+    render({ title, text, width, children }, ref) {
+      return (
+        <div className="card" style={{ width: width || '18rem' }}>
+          <div className="card-body">
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{text}</p>
+            {children}
+          </div>
+        </div>
+      );
+    },
+    props: {},
+  },
+  pagination: {
+    render({ children }, ref) {
+      return (
+        <nav aria-label="Page navigation example">
+          <ul className="pagination justify-content-center">
+            <li className="page-item disabled">
+              <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">Previous</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Link</a>
-            </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">Action</a>
-                <a className="dropdown-item" href="#">Another action</a>
-                <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link disabled" href="#" tabIndex={-1} aria-disabled="true">Disabled</a>
+            <li className="page-item"><a className="page-link" href="#">1</a></li>
+            <li className="page-item"><a className="page-link" href="#">2</a></li>
+            <li className="page-item"><a className="page-link" href="#">3</a></li>
+            <li className="page-item">
+              <a className="page-link" href="#">Next</a>
             </li>
           </ul>
-          {children}
-          <form className="form-inline my-2 my-lg-0">
-            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-      </nav>
-    );
+        </nav>
+      );
+    },
+    props: {},
   },
-  card: ({ title, text, width, children }, ref) => {
-    return (
-      <div className="card" style={{ width: width || '18rem' }}>
-        <div className="card-body">
-          <h5 className="card-title">{title}</h5>
-          <p className="card-text">{text}</p>
-          {children}
-        </div>
-      </div>
-    );
+  text: {
+    render({ text, ...rest }, ref) {
+      return (
+        <span ref={ref} {...rest}>{text}</span>
+      );
+    },
+    props: {
+      custom: {
+        text: {
+          type: 'textarea',
+          name: 'Text',
+        },
+      },
+      css: true,
+    },
   },
-  pagination: ({ children }, ref) => {
-    return (
-      <nav aria-label="Page navigation example">
-        <ul className="pagination justify-content-center">
-          <li className="page-item disabled">
-            <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">Previous</a>
-          </li>
-          <li className="page-item"><a className="page-link" href="#">1</a></li>
-          <li className="page-item"><a className="page-link" href="#">2</a></li>
-          <li className="page-item"><a className="page-link" href="#">3</a></li>
-          <li className="page-item">
-            <a className="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
-    );
-  },
-  text: ({ text, ...rest }, ref) => {
-    return (
-      <span ref={ref} {...rest}>{text}</span>
-    );
-  },
-  grid: ({ children, ...rest }, ref) => {
-    return (
-      <div ref={ref} {...rest} style={{ display: 'flex' }}>{children}</div>
-    );
+  grid: {
+    render({ children, ...rest }, ref) {
+      return (
+        <div ref={ref} {...rest} style={{ display: 'flex' }}>{children}</div>
+      );
+    },
+    props: {},
   },
 };
 
@@ -249,7 +287,8 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
   }
 
   if (isComponent(data)) {
-    const localComponent = ComponentsLocal[data.component];
+    const localComponentConfig = ComponentsLocal[data.component];
+    const localComponent = localComponentConfig.render;
     const props: Record<string, any> = Object.keys(data.props).reduce((acc, key) => {
       return {
         ...acc,

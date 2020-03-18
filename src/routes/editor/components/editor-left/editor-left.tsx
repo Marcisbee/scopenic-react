@@ -30,7 +30,7 @@ import layers from '../../../../plugins/editor/layers';
 
 const CommitHistoryPlugin = (commitHistory['editor.panel.left'] as any).render;
 const DatasetPlugin = (dataset['editor.panel.left'] as any).render;
-const LayersPlugin = (layers['editor.panel.left'] as any).render;
+const LayersPlugin = React.memo((layers['editor.panel.left'] as any).render, () => true);
 
 const createJsonDiff = (jsondiffpatch as any).create({
   cloneDiffValues: false,

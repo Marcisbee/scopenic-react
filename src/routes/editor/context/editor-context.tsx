@@ -141,6 +141,7 @@ export interface IEditorState {
   addElement: Action<IEditorState, { element: any, path?: string[] }>;
   removeElement: Action<IEditorState, { path?: string[] }>;
   updateElement: Action<IEditorState, { element: any, path?: string[] }>;
+  updateElementProp: Action<IEditorState, { property: string, value: any, path?: string[] }>;
   duplicateElement: Action<IEditorState, { path?: string[] }>;
   moveElement: Action<IEditorState, { from: string[], to: string[] }>;
 
@@ -309,6 +310,21 @@ export const EditorStore = createContextStore<IEditorState>(
           );
 
           Object.assign(item, payload.element);
+        }
+      }),
+      updateElementProp: action((draft, payload) => {
+        const updatePath = payload.path || draft.state.activeElement.path.slice(1);
+        const { pathFull } = parsePath(updatePath);
+
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
+
+          const item = dlv(
+            layers,
+            pathFull.concat('props'),
+          );
+
+          Object.assign(item, { [payload.property]: payload.value });
         }
       }),
       duplicateElement: action((draft, payload) => {

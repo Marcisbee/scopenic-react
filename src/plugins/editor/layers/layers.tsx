@@ -32,11 +32,9 @@ const LeftPanel: React.FC = React.memo(() => {
     name: null,
     children: [],
   };
-  const {
-    moveElement,
-    removeElement,
-    duplicateElement,
-  } = EditorStore.useStoreActions((a) => a);
+  const moveElement = EditorStore.useStoreActions((a) => a.moveElement);
+  const removeElement = EditorStore.useStoreActions((a) => a.removeElement);
+  const duplicateElement = EditorStore.useStoreActions((a) => a.duplicateElement);
 
   const layers = [
     createVNode('node', 'body', 'body', undefined, activePage.children),

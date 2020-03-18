@@ -6,6 +6,7 @@ export type ILayerDataset = null | ILayerDatasetConfig;
 
 export interface ILayerText {
   id: string;
+  version: string;
   name?: string;
   dataset: ILayerDataset;
   className?: string;
@@ -15,6 +16,7 @@ export interface ILayerText {
 
 export interface ILayerVar {
   id: string;
+  version: string;
   name?: string;
   dataset: ILayerDataset;
   className?: string;
@@ -24,6 +26,7 @@ export interface ILayerVar {
 
 export interface ILayerComponent {
   id: string;
+  version: string;
   name?: string;
   dataset: ILayerDataset;
   className?: string;
@@ -34,6 +37,7 @@ export interface ILayerComponent {
 
 export interface ILayerNode {
   id: string;
+  version: string;
   name?: string;
   dataset: ILayerDataset;
   className?: string;
