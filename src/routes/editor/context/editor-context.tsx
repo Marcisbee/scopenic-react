@@ -145,6 +145,9 @@ export interface IEditorState {
   duplicateElement: Action<IEditorState, { path?: string[] }>;
   moveElement: Action<IEditorState, { from: string[], to: string[] }>;
 
+  hideElement: Action<IEditorState, { path: string[] }>;
+  showElement: Action<IEditorState, { path: string[] }>;
+
   updateStyle: Action<IEditorState, { id: string | null, className: string | undefined, style: any }>;
   updateStyleProperty: Action<IEditorState, {
     id: string | null,
@@ -423,6 +426,32 @@ export const EditorStore = createContextStore<IEditorState>(
               path: newEl.path,
             };
           }
+        }
+      }),
+      hideElement: action((draft, { path }) => {
+        if (!path) {
+          return;
+        }
+
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
+          const fromPath = parsePath(path.slice(1));
+          const fromLayer = dlv(layers, fromPath.pathFull);
+
+          fromLayer.hide = true;
+        }
+      }),
+      showElement: action((draft, { path }) => {
+        if (!path) {
+          return;
+        }
+
+        if (typeof draft.isWorkspacePageActive === 'string') {
+          const layers = draft.state.data.pages[draft.isWorkspacePageActive];
+          const fromPath = parsePath(path.slice(1));
+          const fromLayer = dlv(layers, fromPath.pathFull);
+
+          fromLayer.hide = false;
         }
       }),
       updateStyle: action((draft, { id, className, style }) => {

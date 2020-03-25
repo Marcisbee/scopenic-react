@@ -5,6 +5,7 @@ import { EditorStore } from '../../routes/editor/context/editor-context';
 import { messageFormat } from '../../utils/messageformat';
 import { useRefsContext } from '../../utils/refs-context';
 import { ILayerData, isComponent, isNode, isText, isVar } from '../../utils/vnode-helpers';
+import { ImageIcon, TypefaceIcon } from '../icons';
 
 interface IRenderProps {
   data: ILayerData;
@@ -16,13 +17,16 @@ interface IRenderProps {
 export type ILayerKnobTypes = 'textarea';
 
 interface ILocalComponetConfig {
+  icon?: React.FC<{
+    className?: string | undefined;
+  }>,
   render: React.RefForwardingComponent<HTMLElement, any>;
   props: {
     css?: boolean;
     custom?: {
       [key: string]: {
         type: ILayerKnobTypes,
-        name: 'Text',
+        name: string,
       };
     };
   };
@@ -107,6 +111,7 @@ export const ComponentsLocal: Record<string, ILocalComponetConfig> = {
     props: {},
   },
   text: {
+    icon: TypefaceIcon,
     render({ text, ...rest }, ref) {
       return (
         <span ref={ref} {...rest}>{text}</span>
@@ -117,6 +122,27 @@ export const ComponentsLocal: Record<string, ILocalComponetConfig> = {
         text: {
           type: 'textarea',
           name: 'Text',
+        },
+      },
+      css: true,
+    },
+  },
+  image: {
+    icon: ImageIcon,
+    render({ img, alt, ...rest }, ref) {
+      return (
+        <img ref={ref} img={img} alt={alt} {...rest} />
+      );
+    },
+    props: {
+      custom: {
+        src: {
+          type: 'textarea',
+          name: 'Source',
+        },
+        alt: {
+          type: 'textarea',
+          name: 'Alt text',
         },
       },
       css: true,
@@ -255,6 +281,10 @@ const Render: React.FC<IRenderProps> = ({ data, context, isRepeated, path }) => 
   //     };
   //   }
   // }, []);
+
+  if (data.hide) {
+    return null;
+  }
 
   if (!isRepeated && data.dataset && data.dataset.path) {
     const repeatSet = dataset[data.dataset.path];

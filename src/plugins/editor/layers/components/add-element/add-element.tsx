@@ -80,8 +80,8 @@ const ELEMENTS_LIST: IElementNode[] = [
     text: 'Image',
     config: {
       version: '1',
-      type: 'node',
-      node: 'img',
+      type: 'component',
+      node: 'image',
       text: 'Image',
       children: null,
     },

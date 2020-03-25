@@ -301,6 +301,21 @@
   cursor: pointer;
   width: 100%;
 
+  &:global(.isHidden) {
+    > .layerHandler {
+      opacity: 0.5;
+    }
+
+    > .layerWrapper {
+      opacity: 0.5;
+
+      .layerWrapper,
+      .layerHandler {
+        opacity: 1;
+      }
+    }
+  }
+
   &:global(.isActive) {
     > .layerHandler {
       background-color: $primary-color !important;
@@ -318,6 +333,13 @@
 
       .displayIcon {
         opacity: 1;
+
+        &:global(.active) {
+          :global(.primary),
+          :global(.secondary) {
+            fill: #fff;
+          }
+        }
 
         :global(.primary) {
           fill: #51ccff;
@@ -417,24 +439,38 @@
 .displayIcon {
   margin-right: 5px;
   vertical-align: bottom;
-  margin-top: -10px;
   height: 18px;
-  width: 18px;
   position: absolute;
   top: 50%;
   right: 0;
   opacity: 0;
+  width: 24px;
+  font-size: 16px;
+  line-height: 22px;
+  margin: -9px 2px;
 
   &:hover {
     opacity: 1 !important;
   }
 
-  :global(.primary) {
+  svg {
+    width: 100%;
+  }
+
+  :global(.primary),
+  :global(.secondary) {
     fill: #333;
   }
 
-  :global(.secondary) {
-    fill: #333;
+  &:global(.active) {
+    opacity: 1 !important;
+
+    &:hover {
+      :global(.primary),
+      :global(.secondary) {
+        fill: $primary-hover-color;
+      }
+    }
   }
 }
 

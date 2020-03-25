@@ -3,11 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { ComponentIcon, ContainerIcon, ImageIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
+import { ComponentIcon, ContainerIcon, HideIcon, TypefaceIcon, ViewIcon } from '../../../../components/icons';
 import { EditorStore } from '../../../../routes/editor/context/editor-context';
-import { ILayerData } from '../../../../utils/vnode-helpers';
+import { ILayerData, isComponent, isVar } from '../../../../utils/vnode-helpers';
 import styles from '../layers.module.scss';
 
+import { ComponentsLocal } from '../../../../components/render/render';
 import LayerContainer from './layer-container';
 
 export interface IDragItem {
@@ -26,15 +27,17 @@ export interface ILayerProps {
 }
 
 const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer }) => {
-  const layerData: any = layer;
+  const layerData: ILayerData = layer;
   const [showChildren, setShowChildren] = useState(true);
   const activeElement = EditorStore.useStoreState((s) => s.state.activeElement);
-  const { setActiveElement } = EditorStore.useStoreActions((s) => s);
+  const setActiveElement = EditorStore.useStoreActions((s) => s.setActiveElement);
+  const hideElement = EditorStore.useStoreActions((s) => s.hideElement);
+  const showElement = EditorStore.useStoreActions((s) => s.showElement);
   const ref = useRef<HTMLDivElement>(null);
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'layer',
     drop(item: IDragItem, monitor: DropTargetMonitor) {
-      const shouldBeAbleToDrop = monitor.isOver({ shallow: true }) && canDrop && layerData.children;
+      const shouldBeAbleToDrop = monitor.isOver({ shallow: true }) && canDrop && (layerData as any).children;
       if (!shouldBeAbleToDrop || !ref.current) {
         return;
       }
@@ -48,7 +51,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
-      canDrop: monitor.canDrop() && !layerData.var && !layerData.img && !layerData.text && layerData.children,
+      canDrop: monitor.canDrop() && !(layerData as any).var && !(layerData as any).img && !(layerData as any).text && (layerData as any).children,
     }),
   });
 
@@ -65,6 +68,7 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
 
   const isTarget = !isDragging && canDrop && isOver;
   const isActive = !activeElement.id && isRoot || activeElement.id === layer.id;
+  const isHidden = !!layerData.hide;
   const opacity = isDragging ? 0.5 : 1;
 
   // Do not drag this layer here
@@ -74,36 +78,47 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
     drag(drop(ref));
   }
 
+  const localComponent = isComponent(layerData) && ComponentsLocal[layerData.component];
   let Icon = ContainerIcon;
 
-  if (layerData.text || layerData.component === 'text') {
+  if (isVar(layerData)) {
     Icon = TypefaceIcon;
   }
 
-  if (layerData.var) {
-    Icon = TypefaceIcon;
-  }
-
-  if (layerData.component && layerData.component !== 'text') {
+  if (isComponent(layerData) && layerData.component !== 'text') {
     Icon = ComponentIcon;
   }
 
-  if (layerData.node === 'img') {
-    Icon = ImageIcon;
+  if (localComponent && localComponent.icon) {
+    Icon = localComponent.icon;
   }
 
   function setActiveElementMethod() {
     setActiveElement({ id: isRoot ? null : layer.id, path });
   }
 
+  function handleLayerHide(event: React.MouseEvent<HTMLElement, MouseEvent>) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    hideElement({ path });
+  }
+
+  function handleLayerShow(event: React.MouseEvent<HTMLElement, MouseEvent>) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    showElement({ path });
+  }
+
   return (
-    <div ref={ref} style={{ opacity }} className={cc([styles.layer, { isActive, isTarget }])}>
+    <div ref={ref} style={{ opacity }} className={cc([styles.layer, { isActive, isTarget, isHidden }])}>
       <div
         className={styles.layerHandler} style={{ paddingLeft: (path.length - 1) * 10 }}
         onClick={setActiveElementMethod}
       >
         <div>
-          {!isRoot && layerData.children && layerData.children.length > 0 && (
+          {!isRoot && (layerData as any).children && (layerData as any).children.length > 0 && (
             <i className={`im im-angle-${showChildren ? 'down' : 'right'}`} onClick={(e) => {
               e.stopPropagation();
               setShowChildren((s) => !s);
@@ -111,14 +126,23 @@ const Layer: React.FC<ILayerProps> = ({ isRoot, index, path, moveLayer, layer })
           )}
           <Icon className={styles.icon} />
           <span>
-            {layerData.name || layerData.text || layerData.var || layerData.component || layerData.node}
+            {layerData.name || (layerData as any).text || (layerData as any).var || (layerData as any).component || (layerData as any).node}
           </span>
-          <ViewIcon className={styles.displayIcon} />
+          {!layerData.hide
+            ? (
+              <i onClick={handleLayerHide} className={styles.displayIcon}>
+                <ViewIcon />
+              </i>
+            ) : (
+              <i onClick={handleLayerShow} className={cc([styles.displayIcon, 'active'])}>
+                <HideIcon />
+              </i>
+            )}
         </div>
       </div>
-      {showChildren && layerData.children && (
-        <div>
-          <LayerContainer path={path} moveLayer={moveLayer} data={layerData.children} />
+      {showChildren && (layerData as any).children && (
+        <div className={styles.layerWrapper}>
+          <LayerContainer path={path} moveLayer={moveLayer} data={(layerData as any).children} />
         </div>
       )}
     </div>

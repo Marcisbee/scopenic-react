@@ -12,6 +12,7 @@ export interface ILayerText {
   className?: string;
   text: string;
   props: Record<string, any>;
+  hide: boolean;
 }
 
 export interface ILayerVar {
@@ -22,6 +23,7 @@ export interface ILayerVar {
   className?: string;
   var: string;
   props: Record<string, any>;
+  hide: boolean;
 }
 
 export interface ILayerComponent {
@@ -32,6 +34,7 @@ export interface ILayerComponent {
   className?: string;
   component: string;
   props: Record<string, any>;
+  hide: boolean;
   children?: null | ILayerData[];
 }
 
@@ -43,6 +46,7 @@ export interface ILayerNode {
   className?: string;
   node: string;
   props: Record<string, any>;
+  hide: boolean;
   children?: null | ILayerData[];
 }
 

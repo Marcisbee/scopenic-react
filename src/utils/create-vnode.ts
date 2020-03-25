@@ -22,6 +22,7 @@ export function createVNode(
       dataset,
       text: node,
       props,
+      hide: false,
     };
   }
 
@@ -33,6 +34,7 @@ export function createVNode(
       dataset,
       var: node,
       props,
+      hide: false,
     };
   }
 
@@ -44,6 +46,7 @@ export function createVNode(
       dataset,
       node,
       props,
+      hide: false,
     };
   }
 
@@ -55,6 +58,7 @@ export function createVNode(
       dataset,
       component: node,
       props,
+      hide: false,
       children,
     };
   }
@@ -66,6 +70,7 @@ export function createVNode(
     dataset,
     node,
     props,
+    hide: false,
     children,
   };
 }
