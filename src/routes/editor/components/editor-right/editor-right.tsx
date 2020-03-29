@@ -3,6 +3,7 @@ import dlv from 'dlv';
 import React, { useMemo, useState } from 'react';
 
 import KnobsBlock from '../../../../components/knobs-block';
+import { ComponentsLocal } from '../../../../components/render/render';
 import { useRefsContext } from '../../../../utils/refs-context';
 import { ILayerData, isComponent } from '../../../../utils/vnode-helpers';
 import { EditorStore } from '../../context/editor-context';
@@ -13,7 +14,6 @@ import NumberInput from '../knob-number-input/knob-number-input';
 import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
-import { ComponentsLocal } from '../../../../components/render/render';
 
 export const allCustomKnobs = [
   {
