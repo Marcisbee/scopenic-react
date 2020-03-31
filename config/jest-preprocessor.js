@@ -31,3 +31,31 @@ module.exports = {
     return src;
   }
 };
+
+// const { coreTransformerList, testTransform } = require('fuse-box');
+
+// const compilerOptions = {
+//   jsxFactory: 'React.createElement',
+//   noEmit: true,
+//   skipLibCheck: true,
+//   skipDefaultLibCheck: true,
+// };
+
+// module.exports = {
+//   canInstrument: true,
+//   process(src, path) {
+//     if (path.endsWith('.js') || path.endsWith('.ts') || path.endsWith('.tsx')) {
+//       const result = testTransform({
+//         code: src,
+//         compilerOptions,
+//         jsx: true,
+//         props: { module: { absPath: path } },
+//         transformers: coreTransformerList,
+//       });
+
+//       return result.code;
+//     }
+
+//     return src;
+//   }
+// };
