@@ -15,7 +15,21 @@ import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
 
-export const allCustomKnobs = [
+interface ICustomKnob {
+  type: string;
+  render: React.FC<{
+    label: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  }>;
+}
+
+interface ICustomKnobRender extends ICustomKnob {
+  key: string;
+  name: string;
+}
+
+export const allCustomKnobs: ICustomKnob[] = [
   {
     type: 'textarea',
     render({ label, value, onChange }) {
@@ -60,7 +74,7 @@ const CustomKnobs: React.FC<{ element: ILayerData }> = React.memo(({ element }) 
 
   const customKnobsToRender = Object
     .entries(componentConfig.props.custom)
-    .reduce((acc, [key, config]) => {
+    .reduce<ICustomKnobRender[]>((acc, [key, config]) => {
       const knob = allCustomKnobs.find(({ type }) => type === config.type);
 
       if (!knob || typeof config !== 'object') {
