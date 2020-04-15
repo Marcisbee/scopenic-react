@@ -194,6 +194,8 @@ const EditorRight: React.FC = () => {
 
   const knobsToRender = [...allStyleKnobs];
 
+  const cssList = dlv(stateCss, currentClassName) || {};
+
   return (
     <div>
       <br />
@@ -201,7 +203,54 @@ const EditorRight: React.FC = () => {
 
       <CustomKnobs element={element} />
 
-      <label className="pt-small">
+      <KnobsBlock
+        title="Appearance"
+      >
+        <style>{`
+          .rl {
+            margin-bottom: 3px;
+            user-select: text;
+          }
+          .l {
+            width: 38%;
+            border: 1px solid #28333e;
+            border-color: transparent;
+            background-color: transparent;
+            height: 22px;
+            border-radius: 1px;
+            padding: 0;
+            color: #51cdff;
+          }
+          .r:hover,
+          .l:hover,
+          .r:focus,
+          .l:focus {
+            background-color: #1f2b32;
+            box-shadow: -2px 1px 0 1px #1f2b32, 2px 1px 0 1px #1f2b32;
+          }
+          .r {
+            width: 58%;
+            border: 1px solid #28333e;
+            border-color: transparent;
+            background-color: transparent;
+            margin-left: 2px;
+            height: 22px;
+            border-radius: 1px;
+            padding: 0;
+            color: inherit;
+          }
+        `}</style>
+        element {'{'}
+        {Object.entries(cssList).map(([key, value]) => (
+          <div className="rl" key={`${key}-${value}`}>
+            <input type="checkbox" checked={true} /> <span tabIndex={1} className="l" contentEditable={true} dangerouslySetInnerHTML={{ __html: key.replace(/[A-Z]/, (match) => `-${match.toLowerCase()}`) }} />:
+            <span tabIndex={1} className="r" contentEditable={true} dangerouslySetInnerHTML={{ __html: value }} />
+          </div>
+        ))}
+        {'}'}
+      </KnobsBlock>
+
+      {/* <label className="pt-small">
         <div className="pt-button-group" style={{ padding: 6, textAlign: 'center' }}>
           {[
             {
@@ -570,7 +619,7 @@ const EditorRight: React.FC = () => {
             });
           }}
         />
-      </KnobsBlock>
+      </KnobsBlock> */}
 
       <hr />
 
