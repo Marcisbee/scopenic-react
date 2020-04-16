@@ -14,6 +14,7 @@ import NumberInput from '../knob-number-input/knob-number-input';
 import KnobSliderInput from '../knob-slider-input/knob-slider-input';
 import KnobSpacingInput from '../knob-spacing-input/knob-spacing-input';
 import KnobTextAlign from '../knob-text-align/knob-text-align';
+import { CssPropertiesEditor, IPropertyChange, CssPropertiesEditorMemo } from '../css-properties-editor/css-properties-editor';
 
 interface ICustomKnob {
   type: string;
@@ -130,63 +131,63 @@ const EditorRight: React.FC = () => {
   const currentClassName = (element && element.className) || (activeElement.id || 'body');
   const realClassName = element && element.className;
 
-  const cssDeclarations = useMemo(() => {
-    if (!refs.workspace || !refs.workspace.current) {
-      return;
-    }
+  // const cssDeclarations = useMemo(() => {
+  //   if (!refs.workspace || !refs.workspace.current) {
+  //     return;
+  //   }
 
-    const node: HTMLIFrameElement = (refs.workspace.current as any).node;
+  //   const node: HTMLIFrameElement = (refs.workspace.current as any).node;
 
-    if (!(node && node.contentDocument)) {
-      return;
-    }
+  //   if (!(node && node.contentDocument)) {
+  //     return;
+  //   }
 
-    if (activeElement.id === null) {
-      const el = node.contentDocument.body;
+  //   if (activeElement.id === null) {
+  //     const el = node.contentDocument.body;
 
-      if (el) {
-        return { ...window.getComputedStyle(el) };
-      }
-    }
+  //     if (el) {
+  //       return { ...window.getComputedStyle(el) };
+  //     }
+  //   }
 
-    if (activeElement.id) {
-      const el = realClassName
-        ? node.contentDocument.querySelector(`.${currentClassName}`)
-        : node.contentDocument.getElementById(currentClassName);
+  //   if (activeElement.id) {
+  //     const el = realClassName
+  //       ? node.contentDocument.querySelector(`.${currentClassName}`)
+  //       : node.contentDocument.getElementById(currentClassName);
 
-      if (el) {
-        return { ...window.getComputedStyle(el) };
-      }
-    }
-  }, [activeElement.id, activeElement.path.toString(), prefix, !!refs.workspace.current]);
+  //     if (el) {
+  //       return { ...window.getComputedStyle(el) };
+  //     }
+  //   }
+  // }, [activeElement.id, activeElement.path.toString(), prefix, !!refs.workspace.current]);
 
   if (!element) {
     element = {} as any;
   }
 
-  const currentStyles = (prefix ? (stateCss[currentClassName] && (stateCss[currentClassName] as any)[prefix]) : stateCss[currentClassName]) || {};
+  // const currentStyles = (prefix ? (stateCss[currentClassName] && (stateCss[currentClassName] as any)[prefix]) : stateCss[currentClassName]) || {};
 
-  const defaultStyles = {
-    backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
-    backgroundImage: cssDeclarations && cssDeclarations.backgroundImage,
-    backgroundSize: cssDeclarations && cssDeclarations.backgroundSize,
-    color: cssDeclarations && cssDeclarations.color,
-    fontSize: cssDeclarations && cssDeclarations.fontSize,
-    fontFamily: cssDeclarations && cssDeclarations.fontFamily,
-    lineHeight: cssDeclarations && cssDeclarations.lineHeight,
-    textAlign: cssDeclarations && cssDeclarations.textAlign,
-    opacity: cssDeclarations && cssDeclarations.opacity,
+  // const defaultStyles = {
+  //   backgroundColor: cssDeclarations && cssDeclarations.backgroundColor,
+  //   backgroundImage: cssDeclarations && cssDeclarations.backgroundImage,
+  //   backgroundSize: cssDeclarations && cssDeclarations.backgroundSize,
+  //   color: cssDeclarations && cssDeclarations.color,
+  //   fontSize: cssDeclarations && cssDeclarations.fontSize,
+  //   fontFamily: cssDeclarations && cssDeclarations.fontFamily,
+  //   lineHeight: cssDeclarations && cssDeclarations.lineHeight,
+  //   textAlign: cssDeclarations && cssDeclarations.textAlign,
+  //   opacity: cssDeclarations && cssDeclarations.opacity,
 
-    borderColor: cssDeclarations && cssDeclarations.borderColor,
-    borderStyle: cssDeclarations && cssDeclarations.borderStyle,
-    borderWidth: cssDeclarations && cssDeclarations.borderWidth,
-    borderRadius: cssDeclarations && cssDeclarations.borderRadius,
+  //   borderColor: cssDeclarations && cssDeclarations.borderColor,
+  //   borderStyle: cssDeclarations && cssDeclarations.borderStyle,
+  //   borderWidth: cssDeclarations && cssDeclarations.borderWidth,
+  //   borderRadius: cssDeclarations && cssDeclarations.borderRadius,
 
-    width: cssDeclarations && cssDeclarations.width,
-    height: cssDeclarations && cssDeclarations.height,
-    margin: cssDeclarations && cssDeclarations.margin,
-    padding: cssDeclarations && cssDeclarations.padding,
-  };
+  //   width: cssDeclarations && cssDeclarations.width,
+  //   height: cssDeclarations && cssDeclarations.height,
+  //   margin: cssDeclarations && cssDeclarations.margin,
+  //   padding: cssDeclarations && cssDeclarations.padding,
+  // };
 
   if (!currentClassName) {
     return null;
@@ -194,7 +195,18 @@ const EditorRight: React.FC = () => {
 
   const knobsToRender = [...allStyleKnobs];
 
-  const cssList = dlv(stateCss, currentClassName) || {};
+  const cssRules: Record<string, string> = dlv(stateCss, currentClassName) || {};
+
+  function onCssPropertyChange(previous: IPropertyChange, next: IPropertyChange) {
+    updateStyleProperty({
+      prefix,
+      id: element.id,
+      className: realClassName,
+      property: previous.property,
+      nextProperty: next.property,
+      value: next.value,
+    });
+  }
 
   return (
     <div>
@@ -203,51 +215,17 @@ const EditorRight: React.FC = () => {
 
       <CustomKnobs element={element} />
 
+      [Switch: Mobile, Tablet, Desktop]
+
       <KnobsBlock
         title="Appearance"
       >
-        <style>{`
-          .rl {
-            margin-bottom: 3px;
-            user-select: text;
-          }
-          .l {
-            width: 38%;
-            border: 1px solid #28333e;
-            border-color: transparent;
-            background-color: transparent;
-            height: 22px;
-            border-radius: 1px;
-            padding: 0;
-            color: #51cdff;
-          }
-          .r:hover,
-          .l:hover,
-          .r:focus,
-          .l:focus {
-            background-color: #1f2b32;
-            box-shadow: -2px 1px 0 1px #1f2b32, 2px 1px 0 1px #1f2b32;
-          }
-          .r {
-            width: 58%;
-            border: 1px solid #28333e;
-            border-color: transparent;
-            background-color: transparent;
-            margin-left: 2px;
-            height: 22px;
-            border-radius: 1px;
-            padding: 0;
-            color: inherit;
-          }
-        `}</style>
-        element {'{'}
-        {Object.entries(cssList).map(([key, value]) => (
-          <div className="rl" key={`${key}-${value}`}>
-            <input type="checkbox" checked={true} /> <span tabIndex={1} className="l" contentEditable={true} dangerouslySetInnerHTML={{ __html: key.replace(/[A-Z]/, (match) => `-${match.toLowerCase()}`) }} />:
-            <span tabIndex={1} className="r" contentEditable={true} dangerouslySetInnerHTML={{ __html: value }} />
-          </div>
-        ))}
-        {'}'}
+        <CssPropertiesEditorMemo
+          key={element.id}
+          onChange={onCssPropertyChange}
+          rules={cssRules}
+        />
+        {/* <input className="l" type="text" />:<input className="r" type="text" /> */}
       </KnobsBlock>
 
       {/* <label className="pt-small">
@@ -674,8 +652,8 @@ const EditorRight: React.FC = () => {
           }}
         />
       )}
-      <h3>Default styles:</h3>
-      <pre style={{ fontSize: 12, overflow: 'hidden' }}>{JSON.stringify(defaultStyles, null, ' ')}</pre>
+      {/* <h3>Default styles:</h3>
+      <pre style={{ fontSize: 12, overflow: 'hidden' }}>{JSON.stringify(defaultStyles, null, ' ')}</pre> */}
     </div>
   );
 };

@@ -153,6 +153,7 @@ export interface IEditorState {
     id: string | null,
     className: string | undefined,
     property: string,
+    nextProperty?: string,
     value: number | string | null,
     // @TODO: Control `width` with arrows of predefined grid sizes
     prefix: null
@@ -483,7 +484,7 @@ export const EditorStore = createContextStore<IEditorState>(
           }
         }
       }),
-      updateStyleProperty: action((draft, { id, className, property, value, prefix }) => {
+      updateStyleProperty: action((draft, { id, className, property, nextProperty, value, prefix }) => {
         if (!id) {
           className = 'body';
         }
@@ -494,6 +495,18 @@ export const EditorStore = createContextStore<IEditorState>(
           const style = draft.state.data.css[key] = {
             ...draft.state.data.css[key],
           };
+
+          if (nextProperty && nextProperty !== property) {
+            if (prefix) {
+              if ((style as any)[prefix]) {
+                delete (style as any)[prefix][property];
+              }
+            } else {
+              delete (style as any)[property];
+            }
+
+            property = nextProperty;
+          }
 
           if (value !== undefined) {
             const updatedValue = {

@@ -1,0 +1,67 @@
+@import "../../../../assets/scss/variables.scss";
+
+.block {
+  display: block;
+  user-select: text;
+
+  > span {
+    display: block;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  &:hover .checkbox {
+    display: inline-block;
+  }
+}
+
+.rule {
+  margin-bottom: 3px;
+  padding-left: 16px;
+  position: relative;
+}
+
+.checkbox {
+  position: absolute;
+  display: none;
+  left: 0;
+  top: 3px;
+}
+
+.property {
+  width: 38%;
+  border: 1px solid #28333e;
+  border-color: transparent;
+  background-color: transparent;
+  height: 22px;
+  border-radius: 1px;
+  padding: 0 0 1px 0;
+  color: #51cdff;
+}
+
+.value {
+  width: 58%;
+  border: 1px solid #28333e;
+  border-color: transparent;
+  background-color: transparent;
+  margin-left: 2px;
+  height: 22px;
+  border-radius: 1px;
+  padding: 0 0 1px 0;
+  color: inherit;
+}
+
+.value,
+.property {
+  &::selection {
+    background-color: $primary-color;
+    color: #fff;
+  }
+
+  &:focus,
+  &:focus {
+    background-color: #1f2b32;
+    color: #fff;
+    box-shadow: -2px 0 0 1px #1f2b32, 2px 0 0 1px #1f2b32;
+  }
+}
