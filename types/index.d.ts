@@ -1,6 +1,6 @@
 declare module '*.inline.scss' {
   const style: string;
-  export default classes;
+  export default style;
 }
 
 declare module '*.module.css' {
